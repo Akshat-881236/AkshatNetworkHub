@@ -1,207 +1,547 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Official authority hub of Akshat Prasad featuring personal journal, educational background, and interconnected GitHub Pages projects powered by SitemapJS." />
-<meta name="author" content="Akshat Prasad">
-<meta name="robots" content="index, follow">
-<!-- ===== BASIC SEO ===== -->
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="googlebot" content="index, follow">
-<meta name="bingbot" content="index, follow">
-<meta name="description" content="Official authority hub of Akshat Prasad featuring personal journal, educational background, and interconnected GitHub Pages projects powered by SitemapJS.">
-<meta name="keywords" content="Akshat Prasad, SitemapJS, GitHub Pages, SEO infrastructure, Project Hub, QuizzoneAI, Key of Success, Portfolio, Learning club , Akshat Prasad Portfolio, Portfolio-881236, Quizzone - Learning Suite, AkshatAI, Project Network, Personal Journal, Educational Background, Web Development, Open Source Projects">
-<meta name="author" content="Akshat Prasad">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akshat Network Hub</title>
 
-<!-- ===== OWNERSHIP / AUTHORITY ===== -->
-<meta name="creator" content="Akshat Prasad">
-<meta name="publisher" content="Akshat Prasad">
-<meta name="owner" content="Akshat Prasad">
-<meta name="copyright" content="© Akshat Prasad">
+<style>
+/* ==================================================
+   BASE RESET
+================================================== */
+* {
+  box-sizing: border-box;
+}
 
-<!-- ===== CANONICAL & INDEX ===== -->
-<link rel="canonical" href="https://akshat-881236.github.io/sitemapjs/">
-<link rel="alternate" hreflang="en-IN" href="https://akshat-881236.github.io/sitemapjs/">
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
 
-<!-- ===== PROJECT INDEX LINKS (HELP GOOGLE) ===== -->
-<link rel="index" href="https://akshat-881236.github.io/sitemapjs/">
-<link rel="contents" href="https://akshat-881236.github.io/sitemapjs/">
+.header {
+  background: linear-gradient(90deg, #111, #1c1c1c);
+  color: #fff;
+}
 
-<link rel="Portfolio-881236" href="https://akshat-881236.github.io/Portfolio-881236/">
-<link rel="Key-of-Success" href="https://akshat-881236.github.io/Key-of-Success/">
-<link rel="Quizzone" href="https://akshat-881236.github.io/Quizzone/">
+/* ==================================================
+   HEADER CONTAINER
+================================================== */
+.header-container {
+  max-width: 1400px;
+  margin: auto;
+  padding: 20px 28px;
+  display: grid;
+  align-items: center;
+  gap: 18px;
+}
 
-<!-- ===== AUTHOR PROFILES / SOCIAL IDENTITY ===== -->
-<link rel="Github Profile Page" href="https://github.com/Akshat-881236">
-<link rel="Follow me on LinkedIn" href="https://linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=akshat-prasad-b53936379">
-<link rel="Twitter Profile" href="https://x.com/akshatpsd2005">
-<meta name="contact" content="akshatprasad@users.noreply.github.com">
+/* ==================================================
+   MENU BUTTON
+================================================== */
+.menu-button {
+  cursor: pointer;
+}
 
-<!-- ===== OPEN GRAPH (SOCIAL + AI READABLE) ===== -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="Akshat Prasad – Project Network & Journal">
-<meta property="og:description" content="A central authority hub linking all GitHub Pages projects by Akshat Prasad using SitemapJS infrastructure.">
-<meta property="og:url" content="https://akshat-881236.github.io/sitemapjs/">
-<meta property="og:site_name" content="Akshat Projects Network">
+.menu-button .bar {
+  width: 18px;
+  height: 3px;
+  background: #fff;
+  margin: 4px 0;
+}
 
-<!-- ===== TWITTER / X ===== -->
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Akshat Prasad – SitemapJS Project Hub">
-<meta name="twitter:description" content="Personal blog, project references, and SEO infrastructure hub by Akshat Prasad.">
+/* ==================================================
+   LOGO
+================================================== */
+.logo-image {
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+}
 
-<!-- ===== CONTENT CLASSIFICATION ===== -->
-<meta name="rating" content="general">
-<meta name="distribution" content="global">
-<meta name="language" content="en-IN">
-<meta name="revisit-after" content="7 days">
-<link rel="canonical" href="https://akshat-881236.github.io/sitemapjs/">
-  <title>Akshat Network Hub</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
+/* ==================================================
+   TEXT
+================================================== */
+.trademark-title {
+  font-size: 28px;
+  margin: 0;
+}
+
+.trademark-subtitle {
+  margin: 4px 0 0;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.greeting-text {
+  margin-top: 6px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* ==================================================
+   OWNER IMAGE
+================================================== */
+.owner-image {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+/* ==================================================
+   DESKTOP / LAPTOP
+================================================== */
+@media (min-width: 992px) {
+
+  .header-container {
+    grid-template-columns: auto auto 1fr auto;
+  }
+
+  .menu-button {
+    grid-column: 1;
+  }
+
+  .trademark-logo {
+    grid-column: 2;
+  }
+
+  .trademark-text {
+    grid-column: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 750px;
+  }
+
+  .ownerphoto {
+    grid-column: 4;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
+
+/* ==================================================
+   MOBILE / TABLET (FIXED)
+================================================== */
+@media (max-width: 991px) {
+
+  .header {
+    padding: 14px 16px;
+  }
+
+  .header-container {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    grid-template-rows: auto auto auto auto;
+    row-gap: 12px;
+    align-items: center;
+  }
+
+  /* MENU */
+  .menu-button {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  /* LOGO */
+  .trademark-logo {
+    grid-column: 2;
+    grid-row: 1;
+    justify-content: center;
+  }
+
+  .logo-image {
+    width: 48px;
+    height: 48px;
+  }
+
+  /* TEXT BLOCK */
+  .trademark-text {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .trademark-title {
+    font-size: 22px;
+    line-height: 1.25;
+  }
+
+  .trademark-subtitle {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  .greeting-text {
+    font-size: 13px;
+    opacity: 0.85;
+  }
+
+  /* OWNER IMAGE – CENTERED & SEPARATE */
+  .ownerphoto {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .owner-image {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+  }
+}
+
+/* ==================================================
+   SIDEBAR STYLES
+================================================== */
+.sidebar {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #111;
+  padding-top: 60px;
+  z-index: 1000;
+}
+.sidebar a {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #fff;
+  display: block;
+}
+.sidebar a:hover {
+  background-color: #575757;
+}
+.space {
+  margin-left: 0; /* No margin by default */
+  padding: 20px;
+}
+.content-area {
+  max-width: 1000px;
+  margin: auto;
+}
+.card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  display: inline-block;
+  width: calc(50% - 20px);
+  vertical-align: top;
+}
+.card .content {
+  margin-bottom: 12px;
+}
+.card .h4 {
+  margin-top: 0;
+  font-size: 18px;
+}
+.card p {
+  font-size: 14px;
+  color: #666;
+}
+.card h4 {
+  color: #222;
+}
+.card h4:hover {
+  color: #007BFF;
+}
+.card a {
+  color: #007BFF;
+  text-decoration: none;
+}
+.card a:hover {
+  text-decoration: underline;
+}
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.main h2, .main h3 {
+  color: #333;
+}
+.main p {
+  color: #555;
+}
+section {
+  margin-bottom: 24px;
+  font-size: 16px;
+}
+
+</style>
 <script src="https://akshat-881236.github.io/TrackerJS/redirect.js"></script>
 <script src="https://akshat-881236.github.io/TrackerJS/akshatnetworkhub.min.js"></script>
 <script src="https://akshat-881236.github.io/TrackerJS/tracker.js"></script>
 <script src="https://akshat-881236.github.io/TrackerJS/trackermeta.js"></script>
 <script src="https://akshat-881236.github.io/TrackerJS/ui.js"></script>
 <script src="https://akshat-881236.github.io/TrackerJS/index.js"></script>
-<meta name="google-site-verification" content="Kp1gscirNuecI5_9R4LDkE5ql4w4zt0NmneiPktuMu4" />
+
+<meta name="google-site-verification"
+content="Kp1gscirNuecI5_9R4LDkE5ql4w4zt0NmneiPktuMu4" />
+</head>
+
 <body onload="pushData()">
-  <div class="app">
-    <!-- Header -->
-    <header class="site-header" role="banner">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">
-          <!-- Inline SVG Logo -->
-          <img src="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png" alt="Akshat Logo" width="40" height="40"/>
-        </div>
-        <div class="titles">
-          <h1>Akshat Network Hub</h1>
-          <p class="subtitle">A centralized hub of all my collections and projects</p>
-        </div>
-      </div>
 
-      <div class="header-actions">
-        <div class="search-filter">
-          <input id="global-search" type="search" placeholder="Search projects..." aria-label="Search projects" />
-          <button id="filter-toggle" class="btn icon" title="Toggle tag filter" aria-pressed="false">
-            <!-- Filter SVG -->
-            <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M10 18h4v-2h-4v2zm-7-8v2h18v-2H3zm3-6v2h12V4H6z"/></svg>
-          </button>
-        </div>
+<header class="header">
+  <div class="header-container">
 
-        <button id="open-ai" class="btn primary" title="Open AkshatAI">Get help with AkshatAI</button>
-      </div>
-    </header>
-
-    <!-- Main layout: sidebar + content -->
-    <div class="layout">
-      <aside class="sidebar" role="complementary" aria-label="Sidebar">
-        <nav class="spa-nav" aria-label="Site navigation">
-          <ul>
-            <li><a href="#" data-route="home" class="nav-link active">Home</a></li>
-            <li><a href="#" data-route="readme" class="nav-link">License / README.md</a></li>
-            <li><a href="#" data-route="links" class="nav-link">Links</a></li>
-            <li><a href="#" data-route="daily" class="nav-link">Daily Thoughts</a></li>
-          </ul>
-        </nav>
-
-        <div class="sidebar-ai">
-          <button id="open-ai-sidebar" class="btn icon" title="Open AkshatAI from sidebar">
-            <!-- Chat icon -->
-            <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v14l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-            <span>AkshatAI</span>
-          </button>
-        </div>
-
-        <div class="sidebar-footer">
-          <div class="socials" aria-label="Owner social links">
-            <a class="social" href="https://wa.me/917838250289?text=Hello%20Akshat%20%0A%0AI%20visited%20your%20portfolio%20and%20would%20like%20to%20connect%20with%20you.%0A%0ARegards" target="_blank" rel="noopener" aria-label="WhatsApp">
-              <!-- WhatsApp -->
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.52 3.48A11.94 11.94 0 0012 .04 11.9 11.9 0 003.36 3.5 11.96 11.96 0 00.04 12c0 2.05.54 3.98 1.56 5.7L0 24l6.65-1.72A11.96 11.96 0 0012 24c6.62 0 12-5.38 12-12 0-1.96-.44-3.8-1.48-5.52zM12 21.5c-1.47 0-2.9-.4-4.14-1.16l-.3-.19-3.95 1.02 1.06-3.85-.2-.31A8.44 8.44 0 013.5 12c0-4.7 3.82-8.52 8.5-8.52 4.7 0 8.52 3.82 8.52 8.52 0 4.7-3.82 8.52-8.52 8.52zM17.3 14.1c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.8.98-.98 1.18-.18.2-.36.22-.66.07-.3-.15-1.26-.47-2.4-1.49-.89-.8-1.49-1.78-1.66-2.08-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2 0-.38-.05-.53-.05-.15-.68-1.6-.93-2.2-.25-.58-.5-.5-.68-.51l-.58-.01c-.2 0-.52.07-.8.35-.28.28-1.08 1.05-1.08 2.56 0 1.5 1.1 2.95 1.25 3.16.15.2 2.16 3.3 5.24 4.62 3.08 1.32 3.08.88 3.64.83.57-.05 1.78-.73 2.03-1.45.25-.73.25-1.36.18-1.45-.06-.08-.25-.13-.55-.28z" /></svg>
-            </a>
-            <a class="social" href="https://github.com/Akshat-881236/" title="GitHub" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5C5.7.5.8 5.4.8 11.7c0 4.8 3.1 8.8 7.4 10.2.5.1.7-.2.7-.5v-1.9c-3 .7-3.6-1.3-3.6-1.3-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.8-.6 2.2-1.1-.9-.1-1.8-.5-1.8-2.1 0-.5.2-1 .6-1.4-.1-.1-.3-.6.1-1.3 0 0 .5-.2 1.6.6.5-.1 1-.1 1.5 0 1.1-.8 1.6-.6 1.6-.6.4.7.2 1.2.1 1.3.4.4.6.9.6 1.4 0 1.6-.9 2-1.8 2.1.6.6 1.2 1.3 1.2 2.6v3.8c0 .3.2.6.7.5 4.3-1.4 7.4-5.4 7.4-10.2C23.2 5.4 18.3.5 12 .5z"/></svg>
-            </a>
-            <a class="social" href="https://linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=akshat-prasad-b53936379" title="LinkedIn" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 11.04 0H4.98zM3 6.9h4v13H3v-13zM9 6.9h3.8v1.7h.1c.5-.9 1.9-1.8 4-1.8 4.3 0 5.1 2.9 5.1 6.8v7.3h-4v-6.5c0-1.6 0-3.7-2.3-3.7-2.3 0-2.7 1.8-2.7 3.6v6.6H9v-13z"/></svg>
-            </a>
-            <a class="social" href="mailto:akshatpsd2005@gmail.com" title="Email" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            </a>
-            <a class="social" href="https://akshat-881236.github.io/Portfolio-881236/" title="Portfolio" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24"><path fill="currentColor" d="M4 7h16v10H4z"/></svg>
-            </a>
-          </div>
-        </div>
-      </aside>
-
-      <main class="content" role="main">
-        <!-- Intro -->
-        <section class="intro" id="intro">
-          <h2>Intro</h2>
-          <p>Welcome! Browse project cards below. Use search and filters to find items. Use AkshatAI for help from the sidebar or header.</p>
-        </section>
-
-        <!-- Controls for tag filters -->
-        <section class="controls">
-          <div id="tag-container" class="tags" aria-label="Project tags filter"></div>
-        </section>
-
-        <!-- Project Cards -->
-        <section id="projects" class="projects-grid" aria-live="polite"></section>
-
-        <!-- AJAX Link Section (scrollable categories) -->
-        <section id="link-section" class="link-section">
-          <h3>Links</h3>
-          <div class="link-carousel">
-            <button class="carousel-btn left" aria-label="Scroll left">&larr;</button>
-            <div class="carousel-track" id="carousel-track" role="list"></div>
-            <button class="carousel-btn right" aria-label="Scroll right">&rarr;</button>
-          </div>
-          <div id="link-details" class="link-details" aria-live="polite"></div>
-        </section>
-
-        <!-- README / License area -->
-        <section id="readme-area" class="readme-area" hidden></section>
-
-        <!-- Daily thoughts area -->
-        <section id="daily-area" class="daily-area" hidden>
-          <h3>Daily Thoughts</h3>
-          <div class="daily-frame-wrap">
-            <iframe id="daily-iframe" title="Daily thoughts stream"></iframe>
-          </div>
-        </section>
-      </main>
+    <div class="menu-button" onclick="toggleMenu()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
     </div>
 
-    <!-- Modals -->
-    <div id="modal-root" aria-live="assertive"></div>
-
-    <!-- AkshatAI panel -->
-    <div id="ai-panel" class="ai-panel" hidden>
-      <div class="ai-header">
-        <h4>AkshatAI</h4>
-        <div class="ai-controls">
-          <select id="ai-language" title="Response language">
-            <option value="en">English</option>
-            <option value="es">Spanish</option>
-            <option value="fr">French</option>
-            <option value="de">German</option>
-          </select>
-          <button id="close-ai" class="btn icon" title="Close AkshatAI">&times;</button>
-        </div>
-      </div>
-      <div class="ai-body" id="ai-body" role="log"></div>
-      <form id="ai-form" class="ai-form">
-        <input id="ai-input" type="text" placeholder="Ask AkshatAI a question..." aria-label="Ask AkshatAI" required />
-        <button class="btn primary" type="submit">Send</button>
-      </form>
+    <div class="trademark-logo">
+      <img src="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png"
+           class="logo-image"
+           alt="Akshat Network Hub Logo">
     </div>
+
+    <div class="trademark-text">
+      <h1 class="trademark-title">Akshat Network Hub</h1>
+      <p class="trademark-subtitle" id="tagline"></p>
+      <p class="greeting-text" id="greeting-text"></p>
+    </div>
+
+    <div class="ownerphoto">
+      <img src="http://student.mdu.ac.in/Student_Biometrics/881238_Snap_10-4-2024_305%20AKSHAT%20P.jpg"
+           class="owner-image"
+           alt="Owner Photo">
+    </div>
+
   </div>
+</header>
 
-  <script src="app.js" defer></script>
+<main class="space">
+  <!-- Sidebar content goes here  ( By default, it's hidden on mobile) When menu button on header is click or finger swap left to right or right to left it hide and display -->
+   <div id="sidebar" class="sidebar">
+    <!-- Link that uses Ajax to load content dynamically without refreshing the page -->
+     <!-- Menu button Sidebar -->
+      <a onclick="toggleMenu()">&#8801; Menu</a>
+     <!-- Links go here -->
+      <a onclick="refresh()">Home</a>
+      <a onclick="loadReadme()">README.md</a>
+      <a onclick="loadLicense()">LICENSE</a>
+      <a onclick="loadPortfolio()">My Portfolio</a>
+      <a onclick="loadMyDashboard()">My Profile Dashboard</a>
+      <a onclick="loadJournal()">My Journal</a>
+      <a onclick="loadMiniAI()">Mini AI</a>
+      <a onclick="loadSitemapGeneratorXml()">Sitemap Generator XML</a>
+      <a onclick="loadKOS()">Key of Success</a>
+   </div>
+   <div class="content-area">
+     <!-- Dynamic content will be loaded here -->
+     <h2>Welcome to Akshat Network Hub</h2>
+     <p>Select a menu item to load content.</p>
+     <section id="intro">
+        <h3>Introduction</h3>
+        <p>Akshat Network Hub is a centralized platform which links all of my projects , skills , academic achievement , my scholastic records and many more in one place.</p>
+        <p>I am Akshat, a passionate student of Bachelor of Computer Application at MDU, Rohtak. This hub showcases my journey through academic excellence, personal growth, and professional development.</p>
+        <p>It link you to various sections including my projects, skills, achievements, and contact information.</p>
+
+        <h3>Purpose</h3>
+        <p>The purpose of Akshat Network Hub is to provide a comprehensive overview of my skills, achievements, and projects. It serves as a portfolio for potential employers, collaborators, and anyone interested in learning more about my work.</p>
+        <p>By centralizing all of this information, I aim to make it easier for others to connect with me and explore my contributions to the field of computer science.</p>
+        <p>Feel free to navigate through the various sections using the menu to learn more about me and my work. My goal is to continuously update and expand this hub as I progress in my academic and professional journey.</p>
+        <p>You can secuely navigate to all my projects and other sections using the sidebar menu. It uses <span>redirect.js</span> that store all trusted domains and <span>Akshat network domain</span> to avoid phishing attacks.</p>
+        <p>If you click external link , <span>redirect.js</span> trigger a confirmation dialog box to ensure you are navigating to a untrusted / trusted domain.</p>
+        <p>Enjoy exploring Akshat Network Hub!</p>
+     </section>
+     <section id="features">
+        <h3>Features :</h3>
+        <ul>
+          <li>Centralized platform for all my projects and achievements.</li>
+          <li>Responsive design for optimal viewing on all devices.</li>
+          <li>Secure navigation with redirect.js to prevent phishing attacks.</li>
+          <li>Regular updates to showcase new projects and skills.</li>
+          <li>Acts as a central hub for all my digital presence.</li>
+          <li>It showcase my academic records and scholastic achievements.</li>
+        </ul>
+      </section>
+      <section id="techstack">
+        <h3>Tech Stack Used :</h3>
+        <ul>
+          <li>HTML5 for structuring the content.</li>
+          <li>CSS3 for styling and responsive design.</li>
+          <li>JavaScript for interactivity and dynamic content loading.</li>>
+          <li>Redirect.js for secure navigation to external links.</li>
+          <li>Custom CSS Grid layout for flexible and adaptive design.</li>
+        </ul>
+      </section>
+      <section id="projectCards">
+        <h3>Project Cards :</h3>
+        <p>Each project is represented as a card that includes a title, description, and link to the project details. The cards are designed to be visually appealing and easy to navigate.</p>
+        <div class="card">
+          <div class="content">
+            <img src="http://student.mdu.ac.in/Student_Biometrics/881238_Snap_10-4-2024_305%20AKSHAT%20P.jpg" alt="Portfolio Logo" style="width: 48px; height: 48px; float: left; margin-right: 12px;">
+            </div>
+            <div class="content">
+          <h4>Portfolio</h4>
+          <p>A personal portfolio website showcasing my skills, projects, and achievements.</p>
+          <a href="https://akshat-881236.github.io/Portfolio-881236/" style="color: #007BFF; text-decoration: none;">View Project</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="content">
+            <img src="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png" alt="Akshat Network Hub Logo" style="width: 48px; height: 48px; float: left; margin-right: 12px;">
+            </div>
+          <div class="content">
+          <h4>Akshat Network Hub</h4>
+          <p>The central hub for all my projects, skills, and achievements.</p>
+          <a href="https://akshat-881236.github.io/sitemapjs/" style="color: #007BFF; text-decoration: none;">View Project</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="content">
+            <img src="https://akshat-881236.github.io/SitemapGeneratorXml/Assets/icon-128.png" alt="Sitemap Generator XML Logo" style="width: 48px; height: 48px; float: left; margin-right: 12px;">
+            </div>
+          <div class="content">
+          <h4>Sitemap Generator XML</h4>
+          <p>A tool to generate XML sitemaps for websites to improve SEO.</p>
+          <a href="https://akshat-881236.github.io/SitemapGeneratorXml/" style="color: #007BFF; text-decoration: none;">View Project</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="content">
+            <img src="https://akshat-881236.github.io/TrackerJS/Assets/KOSLogo.png" alt="KOS Logo" style="width: 48px; height: 48px; float: left; margin-right: 12px;">
+            </div>
+          <div class="content">
+          <h4>Key of Success</h4>
+          <p>Academic Record & Performance Management System. A comprehensive solution for managing academic records and performance.</p>
+          <a href="https://akshat-881236.github.io/Key-of-Success/" style="color: #007BFF; text-decoration: none;">View Project</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="content">
+            <img src="http://student.mdu.ac.in/Student_Biometrics/881238_Snap_10-4-2024_305%20AKSHAT%20P.jpg" alt="Akshat Profile Dashboard" style="width: 48px; height: 48px; float: left; margin-right: 12px;">
+            </div>
+          <div class="content">
+          <h4>Akshat | Profile Dashboard</h4>
+          <p>A personal profile dashboard showcasing my academic journey and achievements.</p>
+          <a href="https://akshat-881236.github.io/LocalRepo/" style="color: #007BFF; text-decoration: none;">View Project</a>
+          </div>
+        </div>
+      </section>
+    </div>
+</main>
+
+<script>
+/* ===== ORIGINAL JS LOGIC (UNCHANGED) ===== */
+
+// Taglines
+const taglines = [
+  "Connecting the World, One Network at a Time.",
+  "Your Gateway to Seamless Connectivity.",
+  "Empowering Networks, Empowering You.",
+  "Innovate, Connect, Succeed with Akshat Network Hub.",
+  "Where Technology Meets Excellence.",
+  "Akshat Network Hub: Bridging Distances, Building Futures.",
+  "Transforming Networks for a Digital Tomorrow.",
+  "Experience the Future of Networking Today.",
+  "Reliable. Fast. Secure. Akshat Network Hub.",
+  "Join the Network Revolution with Akshat Network Hub.",
+  "Shaping the Future of Connectivity.",
+  "Your Network, Our Priority.",
+  "Connecting Ideas, Creating Opportunities."
+];
+
+let taglineIndex = 0;
+const taglineElement = document.getElementById("tagline");
+
+function updateTagline() {
+  taglineElement.textContent = taglines[taglineIndex];
+  taglineIndex = (taglineIndex + 1) % taglines.length;
+}
+setInterval(updateTagline, 4000);
+updateTagline();
+
+// Greetings
+const greetings = {
+  morning: ["Good Morning! Rise and shine!"],
+  afternoon: ["Hope your afternoon is going well!"],
+  evening: ["Good Evening!"],
+  night: ["Good Night!"]
+};
+
+function updateTime() {
+  return new Date().toLocaleTimeString();
+}
+
+function updateGreeting() {
+  const h = new Date().getHours();
+  const t = h < 12 ? "morning" : h < 16 ? "afternoon" : h < 20 ? "evening" : "night";
+  document.getElementById("greeting-text").textContent =
+    greetings[t][0] + " | Current Time: " + updateTime();
+}
+
+setInterval(updateGreeting, 1000);
+updateGreeting();
+
+/* ===== SIDEBAR MENU LOGIC ===== */
+function toggleMenu() {
+  const sidebar = document.getElementById("sidebar");
+  if (sidebar.style.display === "block") {
+    sidebar.style.display = "none";
+  } else {
+    sidebar.style.display = "block";
+  }
+}
+
+function loadReadme() {
+  fetch('https://akshat-881236.github.io/AkshatNetworkHub/README.md')
+    .then(response => response.text())
+    .then(data => {
+      document.querySelector('.content-area').innerHTML = '<pre>' + data + '</pre>';
+      toggleMenu(); // Close sidebar after loading
+    });
+}
+function loadLicense() {
+  fetch('https://akshat-881236.github.io/AkshatNetworkHub/LICENSE')
+    .then(response => response.text())
+    .then(data => {
+      document.querySelector('.content-area').innerHTML = '<pre>' + data + '</pre>';
+      toggleMenu(); // Close sidebar after loading
+    });
+}
+function refresh() {
+  location.reload();
+  toggleMenu(); // Close sidebar after loading
+}
+/* === Load in main content area using Iframe === */
+function loadPortfolio() {
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/Portfolio-881236/" style="width:100%; height:600px; border:none;"></iframe>';
+  toggleMenu(); // Close sidebar after loading
+}
+function loadMyDashboard() {
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/LocalRepo/" style="width:100%; height:600px; border:none;"></iframe>';
+  toggleMenu(); // Close sidebar after loading
+}
+function loadJournal() {
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/sitemapjs/" style="width:100%; height:600px; border:none;"></iframe>';
+  toggleMenu(); // Close sidebar after loading
+}
+function loadMiniAI() {
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/AkshatNetworkHub/MiniAI.htm" style="width:100%; height:600px; border:none;"></iframe>';
+  toggleMenu(); // Close sidebar after loading
+}
+function loadSitemapGeneratorXml() {
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/SitemapGeneratorXml/" style="width:100%; height:600px; border:none;"></iframe>';
+  toggleMenu(); // Close sidebar after loading
+}
+function loadKOS() {
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/Key-of-Success/" style="width:100%; height:600px; border:none;"></iframe>';
+  toggleMenu(); // Close sidebar after loading
+}
+</script>
+
 </body>
 </html>
