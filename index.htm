@@ -4,7 +4,94 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Akshat Network Hub</title>
-
+<meta name="description" content="Akshat Network Hub - Centralized platform for all my projects, skills, and achievements.">
+<meta name="keywords" content="Akshat Network Hub, Portfolio, Projects, Skills, Achievements, Computer Science, MDU Rohtak">
+<meta name="author" content="Akshat Prasad">
+<link rel="icon" type="image/png" href="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png">
+<link rel="apple-touch-icon" href="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png">
+<link rel="canonical" href="https://akshat-881236.github.io/sitemapjs/" />
+<link rel="canonical" href="https://akshat-881236.github.io/Portfolio-881236/" />
+<link rel="canonical" title="Portfolio - Akshat Prasad" href="https://akshat-881236.github.io/Portfolio-881236/" />
+<link rel="canonical" title="Sitemap Generator XML" href="https://akshat-881236.github.io/SitemapGeneratorXml/" />
+<link rel="canonical" title="Key of Success - Academic Record & Performance Management System" href="https://akshat-881236.github.io/Key-of-Success/" />
+<link rel="canonical" title="Akshat | Profile Dashboard" href="https://akshat-881236.github.io/LocalRepo/" />
+<link rel="canonical" title="Akshat AI Bot" href="https://akshat-881236.github.io/AI-Bot/" />
+<link rel="canonical" title="Akshat Network Hub" href="https://akshat-881236.github.io/AkshatNetworkHub/" />
+<link rel="canonical" title="Akshat Journal" href="https://akshat-881236.github.io/sitemapjs/" />
+<link rel="script" title="minified javascript" href="https://akshat-881236.github.io/sitemapjs/sitemap.min.js" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://akshat-881236.github.io/AkshatNetworkHub/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Portfolio",
+      "item": "https://akshat-881236.github.io/Portfolio-881236/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Sitemap Generator XML",
+      "item": "https://akshat-881236.github.io/SitemapGeneratorXml/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Key of Success",
+      "item": "https://akshat-881236.github.io/Key-of-Success/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "Profile Dashboard",
+      "item": "https://akshat-881236.github.io/LocalRepo/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "Akshat AI Bot",
+      "item": "https://akshat-881236.github.io/AI-Bot/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "name": "Akshat Journal",
+      "item": "https://akshat-881236.github.io/sitemapjs/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "name": "Navigation System",
+      "item": "https://akshat-881236.github.io/sitemapjs/breadcrumb.js/"
+    }
+  ]
+}
+</script>
+<meta name="robots" content="index, follow">
+<link rel="canonical" title="Navigation System" href="https://akshat-881236.github.io/sitemapjs/breadcrumb.js/">
+// More sEO Optimization tags can be added here
+// Such as Open Graph tags, Twitter Card tags, etc given below
+<meta property="og:title" content="Akshat Network Hub">
+<meta property="og:description" content="Akshat Network Hub - Centralized platform for all my projects, skills, and achievements.">
+<meta property="og:image" content="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png">
+<meta property="og:url" content="https://akshat-881236.github.io/AkshatNetworkHub/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Akshat Network Hub">
+<meta name="twitter:description" content="Akshat Network Hub - Centralized platform for all my projects, skills, and achievements.">
+<meta name="twitter:image" content="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png">
+<meta name="twitter:url" content="https://akshat-881236.github.io/AkshatNetworkHub/">
+<meta name="theme-color" content="#111111">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta ownerphoto="http://student.mdu.ac.in/Student_Biometrics/881238_Snap_10-4-2024_305%20AKSHAT%20P.jpg">
 <style>
 /* ==================================================
    BASE RESET
@@ -278,6 +365,7 @@ section {
 }
 
 </style>
+<script src="https://akshat-881236.github.io/sitemapjs/breadcrumb.js"></script>
 <script src="https://akshat-881236.github.io/TrackerJS/redirect.js"></script>
 <script src="https://akshat-881236.github.io/TrackerJS/akshatnetworkhub.min.js"></script>
 <script src="https://akshat-881236.github.io/TrackerJS/tracker.js"></script>
@@ -332,7 +420,7 @@ content="Kp1gscirNuecI5_9R4LDkE5ql4w4zt0NmneiPktuMu4" />
       <a onclick="loadPortfolio()">My Portfolio</a>
       <a onclick="loadMyDashboard()">My Profile Dashboard</a>
       <a onclick="loadJournal()">My Journal</a>
-      <a onclick="loadMiniAI()">Mini AI</a>
+      <a onclick="loadAkshatAI()">Akshat AI Bot</a>
       <a onclick="loadSitemapGeneratorXml()">Sitemap Generator XML</a>
       <a onclick="loadKOS()">Key of Success</a>
    </div>
@@ -452,22 +540,22 @@ const taglines = [
   "Connecting Ideas, Creating Opportunities."
 ];
 
+// Function to update tagline in writing effect
 let taglineIndex = 0;
-const taglineElement = document.getElementById("tagline");
-
 function updateTagline() {
+  const taglineElement = document.getElementById("tagline");
   taglineElement.textContent = taglines[taglineIndex];
   taglineIndex = (taglineIndex + 1) % taglines.length;
 }
-setInterval(updateTagline, 4000);
-updateTagline();
+setInterval(updateTagline, 10000); // Change tagline every 10 seconds
+updateTagline(); // Initial call
 
 // Greetings
 const greetings = {
   morning: ["Good Morning! Rise and shine!"],
   afternoon: ["Hope your afternoon is going well!"],
-  evening: ["Good Evening!"],
-  night: ["Good Night!"]
+  evening: ["Good Evening! May this evening bring happiness in your life"],
+  night: ["Good Night! Have a nice dream"]
 };
 
 function updateTime() {
@@ -516,27 +604,27 @@ function refresh() {
 }
 /* === Load in main content area using Iframe === */
 function loadPortfolio() {
-  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/Portfolio-881236/" style="width:100%; height:600px; border:none;"></iframe>';
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/Portfolio-881236/" style="width:100%; height:900px; border:none;"></iframe>';
   toggleMenu(); // Close sidebar after loading
 }
 function loadMyDashboard() {
-  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/LocalRepo/" style="width:100%; height:600px; border:none;"></iframe>';
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/LocalRepo/" style="width:100%; height:900px; border:none;"></iframe>';
   toggleMenu(); // Close sidebar after loading
 }
 function loadJournal() {
-  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/sitemapjs/" style="width:100%; height:600px; border:none;"></iframe>';
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/sitemapjs/" style="width:100%; height:900px; border:none;"></iframe>';
   toggleMenu(); // Close sidebar after loading
 }
-function loadMiniAI() {
-  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/AkshatNetworkHub/MiniAI.htm" style="width:100%; height:600px; border:none;"></iframe>';
+function loadAkshatAI() {
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://chief-architect--Akshat-881236.replit.app" style="width:100%; height:900px; border:none;"></iframe>';
   toggleMenu(); // Close sidebar after loading
 }
 function loadSitemapGeneratorXml() {
-  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/SitemapGeneratorXml/" style="width:100%; height:600px; border:none;"></iframe>';
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/SitemapGeneratorXml/" style="width:100%; height:900px; border:none;"></iframe>';
   toggleMenu(); // Close sidebar after loading
 }
 function loadKOS() {
-  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/Key-of-Success/" style="width:100%; height:600px; border:none;"></iframe>';
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/Key-of-Success/" style="width:100%; height:900px; border:none;"></iframe>';
   toggleMenu(); // Close sidebar after loading
 }
 function visitMyDashboard() {
