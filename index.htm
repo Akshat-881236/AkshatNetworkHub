@@ -416,6 +416,7 @@ content="Kp1gscirNuecI5_9R4LDkE5ql4w4zt0NmneiPktuMu4" />
       <a onclick="loadAkshatAI()">Quizzone AI Bot</a>
       <a onclick="loadSitemapGeneratorXml()">Sitemap Generator XML</a>
       <a onclick="loadKOS()">Key of Success</a>
+      <a onclick="loadLearningClub()">Learning Club</a>
    </div>
    <div class="content-area">
      <!-- Dynamic content will be loaded here -->
@@ -648,6 +649,10 @@ function loadSitemapGeneratorXml() {
 }
 function loadKOS() {
   document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/Key-of-Success/" style="width:100%; height:900px; border:none;"></iframe>';
+  toggleMenu(); // Close sidebar after loading
+}
+function loadLearningClub() {
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/" style="width:100%; height:900px; border:none;"></iframe>';
   toggleMenu(); // Close sidebar after loading
 }
 function visitMyDashboard() {
