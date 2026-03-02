@@ -271,6 +271,52 @@ body {
     border-radius: 50%;
     border: 2px solid #ffffff;
   }
+
+  .content-area {
+    padding: 12px;
+  }
+
+  .content-area h2 {
+    font-size: 22px;
+  }
+
+  .content-area p {
+    font-size: 14px;
+  }
+
+  .content-area section {
+    font-size: 14px;
+  }
+
+  .content-area .card {
+    width: 100%;
+  }
+
+  /* Hide sidebar on mobile by default, it will be toggled with menu button */
+  .sidebar {
+    display: none;
+  }
+
+  /* When sidebar is active, it will cover the entire screen */
+  .sidebar.active {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #111;
+    padding-top: 60px;
+    z-index: 1000;
+  }
+
+  /* Sidebar Text look visible and good stylish layout on mobile */
+  .sidebar a {
+    padding: 12px 20px;
+    font-size: 20px;
+    color: #fff;
+    display: block;
+  }
 }
 
 /* ==================================================
