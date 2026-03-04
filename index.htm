@@ -463,6 +463,7 @@ content="Kp1gscirNuecI5_9R4LDkE5ql4w4zt0NmneiPktuMu4" />
       <a onclick="loadSitemapGeneratorXml()">Sitemap Generator XML</a>
       <a onclick="loadKOS()">Key of Success</a>
       <a onclick="loadLearningClub()">Learning Club</a>
+      <a onclick="loadActivity()">Activity Log</a>
    </div>
    <div class="content-area">
      <!-- Dynamic content will be loaded here -->
@@ -738,6 +739,10 @@ function loadLearningClub() {
 }
 function visitMyDashboard() {
   window.location.href = "https://akshat-881236.github.io/LocalRepo/";
+}
+function loadActivity() {
+  document.querySelector('.content-area').innerHTML = '<iframe src="https://itsakshatnetworkhub-881238.github.io/ANH-Analysis/" style="width:100%; height:900px; border:none;"></iframe>';
+  toggleMenu(); // Close sidebar after loading
 }
 </script>
 </body>
