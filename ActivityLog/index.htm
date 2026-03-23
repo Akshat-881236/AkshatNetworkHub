@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ANH - Akshat Network Hub - Your Browser History Dashboard">
+    <meta name="author" content="Akshat Prasad">
+    <title>ANH - Browser History Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px 10px;
+        }
+        .search-input {
+            border: none;
+            outline: none;
+            width: 200px;
+        }
+        .search-btn {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: #333;
+        }
+        .btn-clear-all {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Mobile Optimized Unique table columns layout extreme different from desktop */
+        @media (max-width: 768px) {
+            .col-sr, .col-timestamp, .col-screentime {
+                display: none;
+            }
+            .col-title, .col-url, .col-actions {
+                width: 100%;
+            }
+             .search-box {
+                width: 100%;
+            }
+             .search-input {
+                width: 100%;
+            }
+             .btn-clear-all {
+                width: 100%;
+                justify-content: center;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png" alt="ANH Logo" class="logo-img">
+                <div class="header-text">
+                    <h1 class="site-title">AKSHAT NETWORK HUB</h1>
+                    <p class="site-subtitle">POWER BY AKSHAT PRASAD</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="https://akshat-881236.github.io/AkshatNetworkHub/" class="nav-link active">Home</a></li>
+                <li><a href="https://akshat-881236.github.io/LocalRepo/" class="nav-link">About Akshat</a></li>
+                <li><a href="https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/" class="nav-link">Learning Club</a></li>
+                <li><a href="https://akshat-881236.github.io/URL-Inspector-SEO-Analyst/GlobalGithubPagesAdvanceSEOInspectionTool.htm" class="nav-link">Inspection Mode</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+        <section class="dashboard-section">
+            <div class="dashboard-header">
+                <h2>Your History Log</h2>
+                <div class="dashboard-controls">
+                    <div class="search-box">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            class="search-input" 
+                            placeholder="Search by URL or title..."
+                            aria-label="Search history"
+                        >
+                        <button class="search-btn" aria-label="Search">
+                            <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="btn-clear-all" id="clearAllBtn" aria-label="Clear all history">
+                        <svg viewBox="0 0 24 24" width="18" height="18">
+                            <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-9l-1 1H5v2h14V4z"/>
+                        </svg>
+                        Clear All
+                    </button>
+                </div>
+            </div>
+
+            <!-- History Table -->
+            <div class="table-responsive">
+                <table class="history-table" id="historyTable">
+                    <thead>
+                        <tr>
+                            <th class="col-sr">SR NO.</th>
+                            <th class="col-title">Title</th>
+                            <th class="col-url">URL</th>
+                            <th class="col-timestamp">Timestamp</th>
+                            <th class="col-screentime">Screentime</th>
+                            <th class="col-actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <tr class="empty-state">
+                            <td colspan="6">
+                                <div class="empty-message">
+                                    <p>No history records yet</p>
+                                    <small>Start browsing to see your history</small>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Statistics Section -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalVisits">0</div>
+                    <div class="stat-label">Total Visits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalScreentime">0h</div>
+                    <div class="stat-label">Total Screentime</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalDomains">0</div>
+                    <div class="stat-label">Unique Domains</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avgSessionTime">0m</div>
+                    <div class="stat-label">Avg Session Time</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="copyright">&copy; 2026 Akshat Network Hub. All rights reserved. Powered by Akshat Prasad.</p>
+            <div class="footer-links">
+                <a href="https://github.com/akshat-881236">Github</a>
+                <a href="https://github.com/akshatnetworkhub">Github</a>
+                <a href="https://linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=akshat-prasad-b53936379">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="router.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
