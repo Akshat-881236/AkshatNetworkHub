@@ -160,19 +160,19 @@ p {
 
 </div>
 <script>
-// Normalize url to its correct form
-const currentPath = window.location.pathname;
-if (currentPath.endsWith('/404.html') || currentPath.endsWith('/404.htm')) {
-  // Do nothing, already on the correct page
-} else if (currentPath.endsWith('/404')) {
-  window.location.href = '404.html';
-} else {
-  // Redirect to 404 page if path is not recognized
-  window.location.href = '404.html';
-}
-// Auto redirect to home after 10 seconds
+// Track previous page from which user came to 404 page
+const previousPage = document.referrer || 'Direct Access';
+// Onload replace url to https://akshat-881236.github.io/AkshatNetworkHub/404.html silently without refreshing
+window.onload = function() {
+  history.replaceState(null, null, 'https://akshat-881236.github.io/AkshatNetworkHub/404.html');
+};
+// Auto redirect to previous page after 10 seconds or if no previous page, redirect to homepage
 setTimeout(() => {
-  window.location.href = 'index.htm';
+  if (previousPage !== 'Direct Access') {
+    window.location.href = previousPage;
+  } else {
+    window.location.href = 'index.htm';
+  }
 }, 10000);
 </script>
 </body>
