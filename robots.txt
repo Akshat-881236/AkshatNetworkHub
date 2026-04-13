@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Block sensitive or non-SEO files
+Disallow: /private/
+Disallow: /assets/js/
+Disallow: /tracker/
+Disallow: /temp/
+Disallow: /404.html
+
+# Allow important resources
+Allow: /assets/css/
+Allow: /assets/images/
+
+# Sitemap (if you have one)
+Sitemap: https://akshat-881236.github.io/AkshatNetworkHub/sitemap.xml
