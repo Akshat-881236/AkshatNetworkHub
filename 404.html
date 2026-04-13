@@ -160,6 +160,16 @@ p {
 
 </div>
 <script>
+// Normalize url to its correct form
+const currentPath = window.location.pathname;
+if (currentPath.endsWith('/404.html') || currentPath.endsWith('/404.htm')) {
+  // Do nothing, already on the correct page
+} else if (currentPath.endsWith('/404')) {
+  window.location.href = '404.html';
+} else {
+  // Redirect to 404 page if path is not recognized
+  window.location.href = '404.html';
+}
 // Auto redirect to home after 10 seconds
 setTimeout(() => {
   window.location.href = 'index.htm';
