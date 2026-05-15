@@ -874,43 +874,6 @@ async function handleMagicCommands(prompt){
 
     }
 
-    // Arithmetic & Bodmas commands
-
-    if(
-      lower.includes("what is") || lower.includes("calculate") || lower.includes("solve")
-    ){
-
-      const expression =
-        prompt.replace(
-          /what is|calculate|solve/gi,
-          ""
-        );
-
-      try{
-
-        const result =
-          eval(expression);
-
-        addMessage(
-          `The answer is: ${result}`,
-          "ai"
-        );
-
-      }
-
-      catch(error){
-
-        addMessage(
-          "Sorry, I couldn't calculate that.",
-          "ai"
-        );
-
-      }
-
-      return true;
-
-    }
-  
     if ( lower.includes("who are you") || lower.includes("what can you do") || lower.includes("introduce yourself") || lower.includes("your capabilities") || lower.includes("help me") || lower.includes("how can you assist me") ) {
 
       addMessage(
