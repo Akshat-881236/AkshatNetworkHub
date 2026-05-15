@@ -221,15 +221,15 @@ async function sendMessage(){
 
   removeWelcome();
 
-  /* USER UI */
+  /* USER MESSAGE */
 
   addMessage(prompt, "user");
 
-  /* SAVE MEMORY */
+  /* MEMORY */
 
   messages.push({
-    role:"user",
-    content:prompt
+    role: "user",
+    content: prompt
   });
 
   /* MAGIC COMMANDS */
@@ -249,30 +249,35 @@ async function sendMessage(){
 
   try{
 
-    /* REQUEST */
+    /* API REQUEST */
 
     const response =
       await fetch(API_URL, {
 
-        method:"POST",
+        method: "POST",
 
-        headers:{
+        headers: {
           "Content-Type":
             "application/json"
         },
 
-        body:JSON.stringify({
+        body: JSON.stringify({
 
-          prompt: prompt,
+          /* IMPORTANT */
+          message: prompt,
 
           messages: messages,
+
+          stream: false,
 
           model:
             "meta/llama-3.1-70b-instruct",
 
-          temperature:0.7,
+          temperature: 0.7,
 
-          max_tokens:2048
+          max_tokens: 2048,
+
+          top_p: 0.9
 
         })
 
@@ -285,7 +290,7 @@ async function sendMessage(){
       response
     );
 
-    /* JSON */
+    /* PARSE JSON */
 
     const data =
       await response.json();
@@ -299,19 +304,25 @@ async function sendMessage(){
 
     loader.remove();
 
-    /* ERROR */
+    /* HANDLE HTTP ERRORS */
 
     if(!response.ok){
 
       throw new Error(
+
         data.error ||
+
+        data.details ||
+
         JSON.stringify(data) ||
+
         "Worker Error"
+
       );
 
     }
 
-    /* PARSE */
+    /* EXTRACT AI RESPONSE */
 
     let aiMessage =
       extractAIResponse(data);
@@ -332,11 +343,11 @@ Possible Issues:
 
     }
 
-    /* SAVE */
+    /* SAVE MEMORY */
 
     messages.push({
-      role:"assistant",
-      content:aiMessage
+      role: "assistant",
+      content: aiMessage
     });
 
     /* RENDER */
@@ -346,7 +357,7 @@ Possible Issues:
       "ai"
     );
 
-    /* STORE */
+    /* SAVE */
 
     saveChatHistory();
 
@@ -366,7 +377,7 @@ Possible Issues:
 
     loader.remove();
 
-    /* OFFLINE SEARCH */
+    /* OFFLINE CACHE */
 
     const offline =
       await searchOfflineDB(
@@ -432,7 +443,7 @@ function extractAIResponse(data){
     data
   );
 
-  /* STRING */
+  /* DIRECT STRING */
 
   if(typeof data === "string"){
 
@@ -442,47 +453,16 @@ function extractAIResponse(data){
 
   /* YOUR WORKER FORMAT */
 
-  if(data.reply){
-
-    return data.reply;
-
-  }
-
-  /* ALT FORMAT */
-
-  if(data.response){
-
-    return data.response;
-
-  }
-
-  /* ALT FORMAT */
-
-  if(data.message){
-
-    return data.message;
-
-  }
-
-  /* OPENAI/NVIDIA FORMAT */
-
   if(
-    data.choices &&
-    data.choices[0]
-  ){
 
-    return data
-      .choices[0]
-      .message
-      .content;
-
-  }
-
-  /* NESTED */
-
-  if(
     data.response &&
-    data.response.choices
+
+    data.response.choices &&
+
+    data.response.choices[0] &&
+
+    data.response.choices[0].message
+
   ){
 
     return data
@@ -490,6 +470,39 @@ function extractAIResponse(data){
       .choices[0]
       .message
       .content;
+
+  }
+
+  /* DIRECT NVIDIA FORMAT */
+
+  if(
+
+    data.choices &&
+
+    data.choices[0] &&
+
+    data.choices[0].message
+
+  ){
+
+    return data
+      .choices[0]
+      .message
+      .content;
+
+  }
+
+  /* SIMPLE FORMAT */
+
+  if(data.reply){
+
+    return data.reply;
+
+  }
+
+  if(data.message){
+
+    return data.message;
 
   }
 
