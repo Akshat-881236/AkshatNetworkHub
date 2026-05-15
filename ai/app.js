@@ -1,5 +1,6 @@
 /* =========================================================
-   AKSHAT NETWORK HUB AI FRONTEND
+   AKSHAT NETWORK HUB AI
+   ADVANCED APP.JS
 ========================================================= */
 
 /* =========================================================
@@ -7,7 +8,7 @@
 ========================================================= */
 
 const API_URL =
-  "https://akshatai-backend.akshatpsd2005.workers.dev/api/chat";
+  "https://akshatai-backend.akshatpsd2005.workers.dev/";
 
 /* =========================================================
    DOM
@@ -22,352 +23,925 @@ const promptInput =
 const sendBtn =
   document.getElementById("sendBtn");
 
+const fileInput =
+  document.getElementById("fileInput");
+
+const filePreviewContainer =
+  document.getElementById(
+    "filePreviewContainer"
+  );
+
+const historyList =
+  document.getElementById("historyList");
+
+const toast =
+  document.getElementById("toast");
+
+const sidebar =
+  document.getElementById("sidebar");
+
+const overlay =
+  document.getElementById("overlay");
+
+const menuBtn =
+  document.getElementById("menuBtn");
+
+const closeSidebarBtn =
+  document.getElementById(
+    "closeSidebarBtn"
+  );
+
+const previewModal =
+  document.getElementById(
+    "previewModal"
+  );
+
+const previewFrame =
+  document.getElementById(
+    "previewFrame"
+  );
+
+const closePreviewBtn =
+  document.getElementById(
+    "closePreviewBtn"
+  );
+
+const imageModal =
+  document.getElementById(
+    "imageModal"
+  );
+
+const modalImage =
+  document.getElementById(
+    "modalImage"
+  );
+
+const historySearch =
+  document.getElementById(
+    "historySearch"
+  );
+
 /* =========================================================
-   CHAT MEMORY
+   GLOBALS
 ========================================================= */
 
 let messages = [];
+
+let uploadedFiles = [];
+
+let db;
+
+/* =========================================================
+   INIT
+========================================================= */
+
+window.addEventListener(
+  "DOMContentLoaded",
+  async () => {
+
+    initIndexedDB();
+
+    loadChatHistory();
+
+    initEvents();
+
+    initSwipe();
+
+    initQuickButtons();
+
+    detectOnlineStatus();
+
+  }
+);
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+function initEvents(){
+
+  sendBtn.addEventListener(
+    "click",
+    sendMessage
+  );
+
+  promptInput.addEventListener(
+    "keydown",
+    handleEnterSend
+  );
+
+  promptInput.addEventListener(
+    "input",
+    autoResize
+  );
+
+  fileInput.addEventListener(
+    "change",
+    handleFiles
+  );
+
+  menuBtn.addEventListener(
+    "click",
+    openSidebar
+  );
+
+  closeSidebarBtn.addEventListener(
+    "click",
+    closeSidebar
+  );
+
+  overlay.addEventListener(
+    "click",
+    closeSidebar
+  );
+
+  closePreviewBtn.addEventListener(
+    "click",
+    closePreview
+  );
+
+  imageModal.addEventListener(
+    "click",
+    () => {
+      imageModal.classList.remove(
+        "active"
+      );
+    }
+  );
+
+  historySearch.addEventListener(
+    "input",
+    searchHistory
+  );
+
+}
 
 /* =========================================================
    AUTO RESIZE
 ========================================================= */
 
-promptInput.addEventListener("input", () => {
+function autoResize(){
 
   promptInput.style.height = "auto";
 
   promptInput.style.height =
     promptInput.scrollHeight + "px";
 
-});
+}
 
 /* =========================================================
    ENTER SEND
 ========================================================= */
 
-promptInput.addEventListener("keydown", (e) => {
+function handleEnterSend(e){
 
-  if (
+  if(
     e.key === "Enter" &&
     !e.shiftKey
-  ) {
+  ){
 
     e.preventDefault();
 
     sendMessage();
+
   }
 
-});
-
-/* =========================================================
-   BUTTON
-========================================================= */
-
-sendBtn.addEventListener(
-  "click",
-  sendMessage
-);
+}
 
 /* =========================================================
    SEND MESSAGE
 ========================================================= */
 
-async function sendMessage() {
+async function sendMessage(){
 
   const prompt =
     promptInput.value.trim();
 
-  if (!prompt) return;
+  if(
+    !prompt &&
+    uploadedFiles.length === 0
+  ) return;
 
-  /* USER MESSAGE */
+  removeWelcome();
+
+  /* USER UI */
 
   addMessage(prompt, "user");
 
+  /* MEMORY */
+
   messages.push({
-    role: "user",
-    content: prompt
+    role:"user",
+    content:prompt
   });
 
-  promptInput.value = "";
+  /* COMMANDS */
 
-  promptInput.style.height = "60px";
+  if(
+    await handleMagicCommands(prompt)
+  ){
 
-  /* LOADING */
+    promptInput.value = "";
 
-  const loadingElement =
-    addLoadingMessage();
+    return;
 
-  try {
+  }
 
-    /* FETCH */
+  /* LOADER */
 
-    const response = await fetch(
-      API_URL,
-      {
-        method: "POST",
+  const loader =
+    addLoader();
 
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
+  try{
 
-        body: JSON.stringify({
+    /* FORM DATA */
 
-          message: prompt,
+    const formData =
+      new FormData();
 
-          messages,
-
-          stream: false,
-
-          model:
-            "meta/llama-3.1-70b-instruct",
-
-          temperature: 0.7,
-
-          max_tokens: 2048
-        })
-      }
+    formData.append(
+      "message",
+      prompt
     );
 
-    /* RAW RESPONSE */
+    formData.append(
+      "messages",
+      JSON.stringify(messages)
+    );
+
+    /* FILES */
+
+    uploadedFiles.forEach(file => {
+
+      formData.append(
+        "files",
+        file
+      );
+
+    });
+
+    /* API */
+
+    const response =
+      await fetch(
+        API_URL,
+        {
+          method:"POST",
+          body:formData
+        }
+      );
+
+    /* JSON */
 
     const data =
       await response.json();
 
-    console.log("AI RESPONSE:", data);
+    loader.remove();
 
-    /* REMOVE LOADER */
+    /* RESPONSE */
 
-    loadingElement.remove();
+    let aiMessage =
+      extractAIResponse(data);
 
-    /* ERROR CHECK */
+    /* FALLBACK */
 
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "AI Request Failed"
-      );
-    }
-
-    /* FIXED MESSAGE EXTRACTION */
-
-    let aiMessage = "";
-
-    if (typeof data.message === "string") {
-
-      aiMessage = data.message;
-
-    } else if (
-      data.response &&
-      data.response.choices &&
-      data.response.choices[0]
-    ) {
+    if(!aiMessage){
 
       aiMessage =
-        data.response
-        .choices[0]
-        .message
-        .content;
+`⚠️ AI response unavailable.
 
-    } else {
+Possible Issues:
+- NVIDIA API Key
+- Worker Error
+- CORS
+- API Timeout`;
 
-      aiMessage =
-        "No AI response received.";
     }
 
     /* SAVE */
 
     messages.push({
-      role: "assistant",
-      content: aiMessage
+      role:"assistant",
+      content:aiMessage
     });
 
     /* RENDER */
 
-    addMessage(aiMessage, "ai");
+    addMessage(
+      aiMessage,
+      "ai"
+    );
 
-    updateDynamicSEO(prompt);
+    /* STORE */
 
-  } catch (error) {
+    saveChatHistory();
 
-    loadingElement.remove();
+    storeOfflineMessage(
+      prompt,
+      aiMessage
+    );
+
+  }
+
+  catch(error){
 
     console.error(error);
 
-    addMessage(
-      `
-❌ AI Error
+    loader.remove();
+
+    const offline =
+      await searchOfflineDB(prompt);
+
+    if(offline){
+
+      addMessage(
+        "📦 Offline Result:\n\n" +
+        offline,
+        "ai"
+      );
+
+    }else{
+
+      addMessage(
+`❌ AI Error
 
 ${error.message}
 
-Check:
-- Cloudflare Worker
-- NVIDIA API Key
-- CORS
-- Console Logs
-      `,
-      "ai"
-    );
+Offline response unavailable.`,
+        "ai"
+      );
+
+    }
+
   }
+
+  /* RESET */
+
+  promptInput.value = "";
+
+  promptInput.style.height = "60px";
+
+  uploadedFiles = [];
+
+  filePreviewContainer.innerHTML = "";
+
+}
+
+/* =========================================================
+   AI RESPONSE PARSER
+========================================================= */
+
+function extractAIResponse(data){
+
+  if(
+    typeof data === "string"
+  ){
+    return data;
+  }
+
+  if(
+    data.response
+  ){
+    return data.response;
+  }
+
+  if(
+    data.message
+  ){
+    return data.message;
+  }
+
+  if(
+    data.choices &&
+    data.choices[0]
+  ){
+
+    return data
+      .choices[0]
+      .message
+      .content;
+
+  }
+
+  return null;
+
 }
 
 /* =========================================================
    ADD MESSAGE
 ========================================================= */
 
-function addMessage(content, type) {
+function addMessage(content,type){
 
-  removeWelcome();
-
-  const messageDiv =
+  const div =
     document.createElement("div");
 
-  messageDiv.className =
+  div.className =
     `message ${type}`;
 
-  /* ------------------------------------------------------
-     MARKDOWN RENDER
-  ------------------------------------------------------ */
+  if(type === "ai"){
 
-  if (type === "ai") {
+    div.innerHTML =
+      renderMarkdown(content);
 
-    messageDiv.innerHTML =
-      marked.parse(content || "");
+    enhanceCodeBlocks(div);
 
     Prism.highlightAll();
 
-  } else {
+  }else{
 
-    messageDiv.textContent =
-      content;
+    div.textContent = content;
+
   }
 
-  chatContainer.appendChild(
-    messageDiv
-  );
+  chatContainer.appendChild(div);
 
-  scrollToBottom();
+  scrollBottom();
 
-  return messageDiv;
+  return div;
+
 }
 
 /* =========================================================
-   LOADING MESSAGE
+   MARKDOWN
 ========================================================= */
 
-function addLoadingMessage() {
+function renderMarkdown(text){
 
-  removeWelcome();
+  return marked.parse(text || "");
 
-  const loading =
+}
+
+/* =========================================================
+   CODE BLOCK ENHANCER
+========================================================= */
+
+function enhanceCodeBlocks(container){
+
+  const blocks =
+    container.querySelectorAll("pre");
+
+  blocks.forEach(pre => {
+
+    const wrapper =
+      document.createElement("div");
+
+    wrapper.className =
+      "code-toolbar";
+
+    /* COPY */
+
+    const copyBtn =
+      document.createElement("button");
+
+    copyBtn.innerHTML =
+      '<i class="fa-solid fa-copy"></i> Copy';
+
+    copyBtn.onclick = () => {
+
+      navigator.clipboard.writeText(
+        pre.innerText
+      );
+
+      showToast(
+        "Code copied"
+      );
+
+    };
+
+    wrapper.appendChild(copyBtn);
+
+    /* HTML PREVIEW */
+
+    if(
+      pre.innerText.includes("<html")
+    ){
+
+      const previewBtn =
+        document.createElement("button");
+
+      previewBtn.innerHTML =
+        '<i class="fa-solid fa-eye"></i> Preview';
+
+      previewBtn.onclick = () => {
+
+        openPreview(
+          pre.innerText
+        );
+
+      };
+
+      wrapper.appendChild(
+        previewBtn
+      );
+
+    }
+
+    pre.parentNode.insertBefore(
+      wrapper,
+      pre.nextSibling
+    );
+
+  });
+
+}
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+function openPreview(html){
+
+  previewModal.classList.add(
+    "active"
+  );
+
+  previewFrame.srcdoc = html;
+
+}
+
+function closePreview(){
+
+  previewModal.classList.remove(
+    "active"
+  );
+
+  previewFrame.srcdoc = "";
+
+}
+
+/* =========================================================
+   LOADER
+========================================================= */
+
+function addLoader(){
+
+  const div =
     document.createElement("div");
 
-  loading.className =
+  div.className =
     "message ai";
 
-  loading.innerHTML =
-    `
-    <div class="typing">
-      Thinking<span>.</span><span>.</span><span>.</span>
-    </div>
-    `;
+  div.innerHTML =
+`
+<div class="typing">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+`;
 
-  chatContainer.appendChild(
-    loading
-  );
+  chatContainer.appendChild(div);
 
-  scrollToBottom();
+  scrollBottom();
 
-  return loading;
+  return div;
+
 }
 
 /* =========================================================
-   REMOVE WELCOME
+   FILE HANDLER
 ========================================================= */
 
-function removeWelcome() {
+function handleFiles(e){
 
-  const welcome =
-    document.querySelector(".welcome");
+  const files =
+    Array.from(e.target.files);
 
-  if (welcome) {
-    welcome.remove();
+  uploadedFiles =
+    [...uploadedFiles,...files];
+
+  renderFilePreview();
+
+}
+
+/* =========================================================
+   FILE PREVIEW
+========================================================= */
+
+function renderFilePreview(){
+
+  filePreviewContainer.innerHTML = "";
+
+  uploadedFiles.forEach(file => {
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "file-preview";
+
+    div.innerHTML =
+`
+<i class="fa-solid fa-file"></i>
+
+<div class="file-preview-name">
+  ${file.name}
+</div>
+`;
+
+    filePreviewContainer.appendChild(
+      div
+    );
+
+  });
+
+}
+
+/* =========================================================
+   MAGIC COMMANDS
+========================================================= */
+
+async function handleMagicCommands(prompt){
+
+  const lower =
+    prompt.toLowerCase();
+
+  /* GOOGLE */
+
+  if(
+    lower.startsWith("google ") ||
+    lower.startsWith("search google ")
+  ){
+
+    const query =
+      prompt.replace(
+        /google|search google/gi,
+        ""
+      );
+
+    window.open(
+      `https://www.google.com/search?q=${encodeURIComponent(query)}`,
+      "_blank"
+    );
+
+    return true;
+
   }
+
+  /* YOUTUBE */
+
+  if(
+    lower.startsWith("youtube ") ||
+    lower.startsWith("search youtube ")
+  ){
+
+    const query =
+      prompt.replace(
+        /youtube|search youtube/gi,
+        ""
+      );
+
+    window.open(
+      `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`,
+      "_blank"
+    );
+
+    return true;
+
+  }
+
+  /* BING */
+
+  if(
+    lower.startsWith("bing ")
+  ){
+
+    const query =
+      prompt.replace(
+        /bing/gi,
+        ""
+      );
+
+    window.open(
+      `https://www.bing.com/search?q=${encodeURIComponent(query)}`,
+      "_blank"
+    );
+
+    return true;
+
+  }
+
+  /* OPEN PORTFOLIO */
+
+  if(
+    lower.includes("open portfolio")
+  ){
+
+    window.open(
+      "https://akshat-881236.github.io/Portfolio-881236/",
+      "_blank"
+    );
+
+    return true;
+
+  }
+
+  /* FEEDBACK */
+
+  if(
+    lower.includes("feedback")
+  ){
+
+    window.open(
+      "https://akshat-881236.github.io/Portfolio-881236/feedback.htm",
+      "_blank"
+    );
+
+    return true;
+
+  }
+
+  return false;
+
+}
+
+/* =========================================================
+   QUICK BUTTONS
+========================================================= */
+
+function initQuickButtons(){
+
+  document
+    .querySelectorAll(".quick-btn")
+    .forEach(btn => {
+
+      btn.addEventListener(
+        "click",
+        () => {
+
+          promptInput.value =
+            btn.innerText;
+
+          sendMessage();
+
+        }
+      );
+
+    });
+
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+function openSidebar(){
+
+  sidebar.classList.add(
+    "active"
+  );
+
+  overlay.classList.add(
+    "active"
+  );
+
+}
+
+function closeSidebar(){
+
+  sidebar.classList.remove(
+    "active"
+  );
+
+  overlay.classList.remove(
+    "active"
+  );
+
+}
+
+/* =========================================================
+   SWIPE
+========================================================= */
+
+function initSwipe(){
+
+  let startX = 0;
+
+  document.addEventListener(
+    "touchstart",
+    e => {
+
+      startX =
+        e.touches[0].clientX;
+
+    }
+  );
+
+  document.addEventListener(
+    "touchmove",
+    e => {
+
+      const currentX =
+        e.touches[0].clientX;
+
+      if(
+        startX < 40 &&
+        currentX > 120
+      ){
+
+        openSidebar();
+
+      }
+
+      if(
+        currentX < 40
+      ){
+
+        closeSidebar();
+
+      }
+
+    }
+  );
+
 }
 
 /* =========================================================
    SCROLL
 ========================================================= */
 
-function scrollToBottom() {
+function scrollBottom(){
 
   chatContainer.scrollTop =
     chatContainer.scrollHeight;
+
 }
 
 /* =========================================================
-   DYNAMIC SEO
+   WELCOME
 ========================================================= */
 
-function updateDynamicSEO(prompt) {
+function removeWelcome(){
 
-  /* ------------------------------------------------------
-     TITLE
-  ------------------------------------------------------ */
-
-  document.title =
-    `${prompt.slice(0, 60)} | ANH AI Assistant`;
-
-  /* ------------------------------------------------------
-     META DESCRIPTION
-  ------------------------------------------------------ */
-
-  let metaDescription =
-    document.querySelector(
-      'meta[name="description"]'
+  const welcome =
+    document.getElementById(
+      "welcomeScreen"
     );
 
-  if (metaDescription) {
-
-    metaDescription.setAttribute(
-      "content",
-      `AI discussion about ${prompt}`
-    );
+  if(welcome){
+    welcome.remove();
   }
+
 }
 
 /* =========================================================
-   LOCAL STORAGE CHAT SAVE
+   TOAST
 ========================================================= */
 
-function saveChatHistory() {
+function showToast(message){
+
+  toast.innerText =
+    message;
+
+  toast.classList.add(
+    "active"
+  );
+
+  setTimeout(() => {
+
+    toast.classList.remove(
+      "active"
+    );
+
+  },2500);
+
+}
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+function saveChatHistory(){
 
   localStorage.setItem(
-    "anh_ai_chat_history",
+    "anh_ai_history",
     JSON.stringify(messages)
   );
+
+  renderHistorySidebar();
+
 }
 
 /* =========================================================
-   LOAD CHAT HISTORY
+   LOAD HISTORY
 ========================================================= */
 
-function loadChatHistory() {
+function loadChatHistory(){
 
   const saved =
     localStorage.getItem(
-      "anh_ai_chat_history"
+      "anh_ai_history"
     );
 
-  if (!saved) return;
+  if(!saved) return;
 
-  try {
+  try{
 
     messages =
       JSON.parse(saved);
 
-    for (const msg of messages) {
+    messages.forEach(msg => {
 
       addMessage(
         msg.content,
@@ -375,28 +949,246 @@ function loadChatHistory() {
           ? "user"
           : "ai"
       );
-    }
 
-  } catch (error) {
+    });
+
+    renderHistorySidebar();
+
+  }
+
+  catch(error){
 
     console.error(error);
+
   }
+
 }
 
 /* =========================================================
-   AUTO SAVE
+   SIDEBAR HISTORY
 ========================================================= */
 
-setInterval(
-  saveChatHistory,
-  3000
-);
+function renderHistorySidebar(){
+
+  historyList.innerHTML = "";
+
+  const reversed =
+    [...messages].reverse();
+
+  reversed.forEach(msg => {
+
+    if(msg.role !== "user") return;
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "history-item";
+
+    div.innerHTML =
+`
+<div class="history-item-title">
+  ${msg.content.slice(0,80)}
+</div>
+
+<div class="history-item-date">
+  ${new Date().toLocaleString()}
+</div>
+`;
+
+    historyList.appendChild(div);
+
+  });
+
+}
+
+/* =========================================================
+   SEARCH HISTORY
+========================================================= */
+
+function searchHistory(){
+
+  const query =
+    historySearch.value
+    .toLowerCase();
+
+  const items =
+    document.querySelectorAll(
+      ".history-item"
+    );
+
+  items.forEach(item => {
+
+    item.style.display =
+      item.innerText
+      .toLowerCase()
+      .includes(query)
+      ? "block"
+      : "none";
+
+  });
+
+}
+
+/* =========================================================
+   INDEXED DB
+========================================================= */
+
+function initIndexedDB(){
+
+  const request =
+    indexedDB.open(
+      "ANH_AI_DB",
+      1
+    );
+
+  request.onupgradeneeded =
+    e => {
+
+      db =
+        e.target.result;
+
+      db.createObjectStore(
+        "responses",
+        {
+          keyPath:"id",
+          autoIncrement:true
+        }
+      );
+
+    };
+
+  request.onsuccess =
+    e => {
+
+      db =
+        e.target.result;
+
+    };
+
+}
+
+/* =========================================================
+   STORE OFFLINE
+========================================================= */
+
+function storeOfflineMessage(
+  prompt,
+  response
+){
+
+  if(!db) return;
+
+  const tx =
+    db.transaction(
+      ["responses"],
+      "readwrite"
+    );
+
+  const store =
+    tx.objectStore(
+      "responses"
+    );
+
+  store.add({
+    prompt,
+    response,
+    date:Date.now()
+  });
+
+}
+
+/* =========================================================
+   SEARCH OFFLINE
+========================================================= */
+
+function searchOfflineDB(prompt){
+
+  return new Promise(resolve => {
+
+    if(!db){
+      resolve(null);
+      return;
+    }
+
+    const tx =
+      db.transaction(
+        ["responses"],
+        "readonly"
+      );
+
+    const store =
+      tx.objectStore(
+        "responses"
+      );
+
+    const request =
+      store.getAll();
+
+    request.onsuccess =
+      () => {
+
+        const data =
+          request.result;
+
+        const found =
+          data.find(item =>
+            item.prompt
+            .toLowerCase()
+            .includes(
+              prompt.toLowerCase()
+            )
+          );
+
+        resolve(
+          found
+            ? found.response
+            : null
+        );
+
+      };
+
+  });
+
+}
+
+/* =========================================================
+   ONLINE STATUS
+========================================================= */
+
+function detectOnlineStatus(){
+
+  window.addEventListener(
+    "offline",
+    () => {
+
+      showToast(
+        "Offline Mode"
+      );
+
+    }
+  );
+
+  window.addEventListener(
+    "online",
+    () => {
+
+      showToast(
+        "Back Online"
+      );
+
+    }
+  );
+
+}
 
 /* =========================================================
    SERVICE WORKER
 ========================================================= */
 
-if ("serviceWorker" in navigator) {
+if(
+  "serviceWorker" in navigator
+){
 
   window.addEventListener(
     "load",
@@ -408,14 +1200,58 @@ if ("serviceWorker" in navigator) {
 
     }
   );
+
 }
 
 /* =========================================================
-   INIT
+   IMAGE PREVIEW
 ========================================================= */
 
-loadChatHistory();
+document.addEventListener(
+  "click",
+  e => {
+
+    if(
+      e.target.tagName === "IMG"
+    ){
+
+      modalImage.src =
+        e.target.src;
+
+      imageModal.classList.add(
+        "active"
+      );
+
+    }
+
+  }
+);
+
+/* =========================================================
+   NEW CHAT
+========================================================= */
+
+document
+  .getElementById("newChatBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      messages = [];
+
+      localStorage.removeItem(
+        "anh_ai_history"
+      );
+
+      location.reload();
+
+    }
+  );
+
+/* =========================================================
+   INIT COMPLETE
+========================================================= */
 
 console.log(
-  "Akshat Network Hub AI Initialized"
+  "Akshat Network Hub AI Loaded"
 );

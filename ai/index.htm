@@ -2,227 +2,396 @@
 <html lang="en">
 <head>
 
-  <!-- =====================================================
-       BASIC META
-  ====================================================== -->
+  <!-- =========================================================
+       BASIC SEO
+  ========================================================== -->
 
   <meta charset="UTF-8" />
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
 
   <title>
-    Akshat Network Hub AI Assistant | NVIDIA AI Chatbot
+    Akshat Network Hub AI Assistant | NVIDIA NIM AI
   </title>
 
-  <meta name="description"
-        content="Official AI Assistant of Akshat Network Hub powered by NVIDIA NIM API and Cloudflare Workers. Explore projects, AI tools, coding help, frontend development, Quizzone, and educational resources." />
+  <meta
+    name="description"
+    content="Official AI Assistant of Akshat Network Hub powered by NVIDIA NIM API and Cloudflare Workers."
+  />
 
-  <meta name="keywords"
-        content="Akshat Network Hub, AI Assistant, NVIDIA NIM, Cloudflare Workers, AI Chatbot, Frontend Development, Quizzone, GitHub Pages, Open Source, JavaScript, Web Development, Educational AI" />
+  <meta
+    name="keywords"
+    content="Akshat Network Hub, AI Assistant, NVIDIA NIM, Cloudflare Workers, AI Chatbot, Frontend Development, AI Tools, GitHub Pages"
+  />
 
-  <meta name="author"
-        content="Akshat Prasad" />
+  <meta
+    name="author"
+    content="Akshat Prasad"
+  />
 
-  <meta name="robots"
-        content="index, follow, max-image-preview:large" />
+  <meta
+    name="robots"
+    content="index, follow"
+  />
 
-  <meta name="theme-color"
-        content="#0f172a" />
+  <meta
+    name="theme-color"
+    content="#020617"
+  />
 
-  <meta name="application-name"
-        content="Akshat AI Assistant" />
-
-  <!-- =====================================================
+  <!-- =========================================================
        CANONICAL
-  ====================================================== -->
+  ========================================================== -->
 
-  <link rel="canonical"
-        href="https://akshat-881236.github.io/AkshatNetworkHub/ai/" />
+  <link
+    rel="canonical"
+    href="https://akshat-881236.github.io/AkshatNetworkHub/ai/"
+  />
 
-  <!-- =====================================================
+  <!-- =========================================================
        OPEN GRAPH
-  ====================================================== -->
+  ========================================================== -->
 
-  <meta property="og:type"
-        content="website" />
+  <meta property="og:type" content="website" />
 
-  <meta property="og:title"
-        content="Akshat Network Hub AI Assistant" />
+  <meta
+    property="og:title"
+    content="Akshat Network Hub AI Assistant"
+  />
 
-  <meta property="og:description"
-        content="AI powered educational assistant built with NVIDIA NIM and Cloudflare Workers." />
+  <meta
+    property="og:description"
+    content="AI assistant powered by NVIDIA NIM + Cloudflare Workers."
+  />
 
-  <meta property="og:url"
-        content="https://akshat-881236.github.io/AkshatNetworkHub/ai/" />
+  <meta
+    property="og:url"
+    content="https://akshat-881236.github.io/AkshatNetworkHub/ai/"
+  />
 
-  <meta property="og:site_name"
-        content="Akshat Network Hub" />
+  <meta
+    property="og:image"
+    content="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-512.png"
+  />
 
-  <meta property="og:image"
-        content="https://akshat-881236.github.io/AkshatNetworkHub/assets/ai-banner.png" />
+  <!-- =========================================================
+       TWITTER
+  ========================================================== -->
 
-  <!-- =====================================================
-       TWITTER / X SEO
-  ====================================================== -->
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  />
 
-  <meta name="twitter:card"
-        content="summary_large_image" />
+  <meta
+    name="twitter:title"
+    content="Akshat Network Hub AI Assistant"
+  />
 
-  <meta name="twitter:title"
-        content="Akshat Network Hub AI Assistant" />
+  <meta
+    name="twitter:description"
+    content="Advanced AI assistant built using NVIDIA NIM."
+  />
 
-  <meta name="twitter:description"
-        content="AI chatbot powered by NVIDIA NIM and Cloudflare Workers." />
+  <meta
+    name="twitter:image"
+    content="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-512.png"
+  />
 
-  <meta name="twitter:image"
-        content="https://akshat-881236.github.io/AkshatNetworkHub/assets/ai-banner.png" />
-
-  <!-- =====================================================
-       PWA
-  ====================================================== -->
-
-  <link rel="manifest"
-        href="./manifest.json" />
-
-  <meta name="apple-mobile-web-app-capable"
-        content="yes" />
-
-  <meta name="apple-mobile-web-app-status-bar-style"
-        content="black-translucent" />
-
-  <meta name="apple-mobile-web-app-title"
-        content="ANH AI" />
-
-  <!-- =====================================================
+  <!-- =========================================================
        ICONS
-  ====================================================== -->
+  ========================================================== -->
 
-  <link rel="icon"
-        type="image/png"
-        href="./assets/logo.png" />
+  <link
+    rel="icon"
+    href="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png"
+  />
 
-  <link rel="apple-touch-icon"
-        href="./assets/logo.png" />
+  <link
+    rel="apple-touch-icon"
+    href="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png"
+  />
 
-  <!-- =====================================================
+  <!-- =========================================================
+       PWA
+  ========================================================== -->
+
+  <link
+    rel="manifest"
+    href="./manifest.json"
+  />
+
+  <meta
+    name="mobile-web-app-capable"
+    content="yes"
+  />
+
+  <meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+  />
+
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+  />
+
+  <!-- =========================================================
        FONTS
-  ====================================================== -->
+  ========================================================== -->
 
-  <link rel="preconnect"
-        href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
 
-  <link rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin />
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 
-  <!-- =====================================================
-       MARKDOWN + CODE HIGHLIGHT
-  ====================================================== -->
+  <!-- =========================================================
+       MARKDOWN
+  ========================================================== -->
 
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-  <!-- =====================================================
-       STRUCTURED DATA SEO
-  ====================================================== -->
+  <!-- =========================================================
+       PRISM
+  ========================================================== -->
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+  />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+
+  <!-- =========================================================
+       ICONS
+  ========================================================== -->
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <!-- =========================================================
+       CSS
+  ========================================================== -->
+
+  <link rel="stylesheet" href="/AkshatNetworkHub/ai/style.css" />
+
+  <!-- =========================================================
+       STRUCTURED DATA
+  ========================================================== -->
 
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Akshat Network Hub AI Assistant",
-    "applicationCategory": "AIApplication",
-    "operatingSystem": "Web",
-    "creator": {
-      "@type": "Person",
-      "name": "Akshat Prasad"
+    "@context":"https://schema.org",
+    "@type":"SoftwareApplication",
+    "name":"Akshat Network Hub AI Assistant",
+    "applicationCategory":"AIApplication",
+    "operatingSystem":"Web",
+    "creator":{
+      "@type":"Person",
+      "name":"Akshat Prasad"
     },
-    "description": "Educational AI Assistant powered by NVIDIA NIM and Cloudflare Workers.",
-    "url": "https://akshat-881236.github.io/AkshatNetworkHub/ai/",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
+    "url":"https://akshat-881236.github.io/AkshatNetworkHub/ai/",
+    "description":"AI Assistant powered by NVIDIA NIM API and Cloudflare Workers."
   }
   </script>
-<link rel="stylesheet" href="/AkshatNetworkHub/ai/style.css" />
+
 </head>
 
 <body>
 
+  <!-- =========================================================
+       MOBILE SIDEBAR OVERLAY
+  ========================================================== -->
+
+  <div id="overlay"></div>
+
+  <!-- =========================================================
+       APP
+  ========================================================== -->
+
   <div class="app">
 
-    <!-- =====================================================
+    <!-- =========================================================
          SIDEBAR
-    ====================================================== -->
+    ========================================================== -->
 
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
 
-      <div class="logo">
-        <img src="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png"
-             alt="Akshat Network Hub Logo">
+      <!-- TOP -->
 
-        <div>
-          <h1>ANH AI</h1>
-          <small>AI Assistant</small>
+      <div class="sidebar-top">
+
+        <div class="logo">
+
+          <img
+            src="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png"
+            alt="ANH Logo"
+          />
+
+          <div>
+
+            <h1>ANH AI</h1>
+
+            <p>NVIDIA AI Assistant</p>
+
+          </div>
+
         </div>
+
+        <button id="closeSidebarBtn">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
       </div>
 
-      <nav class="nav-links">
+      <!-- NEW CHAT -->
 
-        <a href="https://akshat-881236.github.io/AkshatNetworkHub/"
-           target="_blank">
-           Akshat Network Hub
+      <button class="new-chat-btn" id="newChatBtn">
+
+        <i class="fa-solid fa-plus"></i>
+
+        New Chat
+
+      </button>
+
+      <!-- SEARCH -->
+
+      <div class="sidebar-search">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+          type="text"
+          placeholder="Search History..."
+          id="historySearch"
+        />
+
+      </div>
+
+      <!-- HISTORY -->
+
+      <div class="history-list" id="historyList">
+
+      </div>
+
+      <!-- LINKS -->
+
+      <div class="sidebar-links">
+
+        <a
+          href="https://akshat-881236.github.io/AkshatNetworkHub/"
+          target="_blank"
+        >
+          <i class="fa-solid fa-globe"></i>
+          Hub
         </a>
 
-        <a href="https://akshat-881236.github.io/Quizzone/"
-           target="_blank">
-           Quizzone
+        <a
+          href="https://akshat-881236.github.io/Quizzone/"
+          target="_blank"
+        >
+          <i class="fa-solid fa-brain"></i>
+          Quizzone
         </a>
 
-        <a href="https://akshat-881236.github.io/Portfolio-881236/"
-           target="_blank">
-           Portfolio
+        <a
+          href="https://github.com/Akshat-881236"
+          target="_blank"
+        >
+          <i class="fa-brands fa-github"></i>
+          GitHub
         </a>
 
-        <a href="https://github.com/Akshat-881236"
-           target="_blank">
-           GitHub
+        <a
+          href="https://akshat-881236.github.io/Portfolio-881236/"
+          target="_blank"
+        >
+          <i class="fa-solid fa-user"></i>
+          Portfolio
         </a>
 
-      </nav>
+      </div>
 
     </aside>
 
-    <!-- =====================================================
+    <!-- =========================================================
          MAIN
-    ====================================================== -->
+    ========================================================== -->
 
     <main class="main">
 
+      <!-- =====================================================
+           TOPBAR
+      ====================================================== -->
+
       <header class="topbar">
 
-        <h2>
-          Akshat Network Hub AI Assistant
-        </h2>
+        <!-- LEFT -->
 
-        <div class="status">
-          <div class="dot"></div>
-          Online
+        <div class="topbar-left">
+
+          <button id="menuBtn">
+
+            <i class="fa-solid fa-bars"></i>
+
+          </button>
+
+          <h2>
+            Akshat Network Hub AI Assistant
+          </h2>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div class="topbar-right">
+
+          <div class="status">
+
+            <span class="status-dot"></span>
+
+            Online
+
+          </div>
+
         </div>
 
       </header>
 
-      <!-- CHAT -->
+      <!-- =====================================================
+           CHAT
+      ====================================================== -->
 
-      <section class="chat-container"
-               id="chatContainer">
+      <section
+        class="chat-container"
+        id="chatContainer"
+      >
 
-        <div class="welcome">
+        <!-- WELCOME -->
+
+        <div class="welcome" id="welcomeScreen">
+
+          <div class="welcome-logo">
+
+            <img
+              src="https://akshat-881236.github.io/TrackerJS/Assets/AKNH/icon-192.png"
+              alt="ANH AI"
+            />
+
+          </div>
 
           <h1>
             Akshat AI Assistant
@@ -232,24 +401,101 @@
             Powered by NVIDIA NIM + Cloudflare Workers
           </p>
 
+          <!-- QUICK ACTIONS -->
+
+          <div class="quick-actions">
+
+            <button class="quick-btn">
+              Explain JavaScript Closures
+            </button>
+
+            <button class="quick-btn">
+              Build Responsive Navbar
+            </button>
+
+            <button class="quick-btn">
+              Generate HTML Landing Page
+            </button>
+
+            <button class="quick-btn">
+              Search Google for Cloudflare Workers
+            </button>
+
+          </div>
+
         </div>
 
       </section>
 
-      <!-- INPUT -->
+      <!-- =====================================================
+           FILE PREVIEW
+      ====================================================== -->
+
+      <div
+        class="file-preview-container"
+        id="filePreviewContainer"
+      >
+
+      </div>
+
+      <!-- =====================================================
+           INPUT AREA
+      ====================================================== -->
 
       <footer class="input-area">
+
+        <!-- TOOLS -->
+
+        <div class="input-tools">
+
+          <label class="tool-btn">
+
+            <i class="fa-solid fa-paperclip"></i>
+
+            <input
+              type="file"
+              id="fileInput"
+              multiple
+              hidden
+            />
+
+          </label>
+
+          <button
+            class="tool-btn"
+            id="voiceBtn"
+          >
+
+            <i class="fa-solid fa-microphone"></i>
+
+          </button>
+
+        </div>
+
+        <!-- INPUT WRAPPER -->
 
         <div class="input-wrapper">
 
           <textarea
             id="promptInput"
-            placeholder="Ask anything about coding, AI, projects, frontend development..."
+            placeholder="Ask anything..."
+            rows="1"
           ></textarea>
 
           <button id="sendBtn">
-            ➤
+
+            <i class="fa-solid fa-paper-plane"></i>
+
           </button>
+
+        </div>
+
+        <!-- FOOTER TEXT -->
+
+        <div class="footer-note">
+
+          AI responses may contain inaccuracies.
+          Verify important information.
 
         </div>
 
@@ -259,23 +505,60 @@
 
   </div>
 
-  <!-- =====================================================
-       MARKDOWN
-  ====================================================== -->
+  <!-- =========================================================
+       IMAGE MODAL
+  ========================================================== -->
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <div
+    class="image-modal"
+    id="imageModal"
+  >
 
-  <!-- =====================================================
-       PRISM
-  ====================================================== -->
+    <img id="modalImage" />
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  </div>
 
-  <!-- =====================================================
+  <!-- =========================================================
+       HTML PREVIEW MODAL
+  ========================================================== -->
+
+  <div
+    class="preview-modal"
+    id="previewModal"
+  >
+
+    <div class="preview-header">
+
+      <h3>
+        HTML Preview
+      </h3>
+
+      <button id="closePreviewBtn">
+
+        <i class="fa-solid fa-xmark"></i>
+
+      </button>
+
+    </div>
+
+    <iframe id="previewFrame"></iframe>
+
+  </div>
+
+  <!-- =========================================================
+       TOAST
+  ========================================================== -->
+
+  <div
+    class="toast"
+    id="toast"
+  ></div>
+
+  <!-- =========================================================
        APP JS
-  ====================================================== -->
+  ========================================================== -->
 
-  <script src="/AkshatNetworkHub/ai/app.js"></script>
+  <script src="./app.js"></script>
 
 </body>
 </html>
