@@ -217,10 +217,7 @@ async function sendMessage(){
   const prompt =
     promptInput.value.trim();
 
-  if(
-    !prompt &&
-    uploadedFiles.length === 0
-  ) return;
+  if(!prompt) return;
 
   removeWelcome();
 
@@ -228,18 +225,16 @@ async function sendMessage(){
 
   addMessage(prompt, "user");
 
-  /* MEMORY */
+  /* SAVE MEMORY */
 
   messages.push({
     role:"user",
     content:prompt
   });
 
-  /* COMMANDS */
+  /* MAGIC COMMANDS */
 
-  if(
-    await handleMagicCommands(prompt)
-  ){
+  if(await handleMagicCommands(prompt)){
 
     promptInput.value = "";
 
@@ -254,51 +249,69 @@ async function sendMessage(){
 
   try{
 
-    /* FORM DATA */
-
-    const formData =
-      new FormData();
-
-    formData.append(
-      "message",
-      prompt
-    );
-
-    formData.append(
-      "messages",
-      JSON.stringify(messages)
-    );
-
-    /* FILES */
-
-    uploadedFiles.forEach(file => {
-
-      formData.append(
-        "files",
-        file
-      );
-
-    });
-
-    /* API */
+    /* REQUEST */
 
     const response =
-      await fetch(
-        API_URL,
-        {
-          method:"POST",
-          body:formData
-        }
-      );
+      await fetch(API_URL, {
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:JSON.stringify({
+
+          prompt: prompt,
+
+          messages: messages,
+
+          model:
+            "meta/llama-3.1-70b-instruct",
+
+          temperature:0.7,
+
+          max_tokens:2048
+
+        })
+
+      });
+
+    /* DEBUG */
+
+    console.log(
+      "RAW RESPONSE:",
+      response
+    );
 
     /* JSON */
 
     const data =
       await response.json();
 
+    console.log(
+      "AI JSON:",
+      data
+    );
+
+    /* REMOVE LOADER */
+
     loader.remove();
 
-    /* RESPONSE */
+    /* ERROR */
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error ||
+        JSON.stringify(data) ||
+        "Worker Error"
+      );
+
+    }
+
+    /* PARSE */
 
     let aiMessage =
       extractAIResponse(data);
@@ -311,10 +324,11 @@ async function sendMessage(){
 `⚠️ AI response unavailable.
 
 Possible Issues:
-- NVIDIA API Key
-- Worker Error
-- CORS
-- API Timeout`;
+
+• NVIDIA API Key
+• Worker Error
+• CORS
+• API Timeout`;
 
     }
 
@@ -345,29 +359,47 @@ Possible Issues:
 
   catch(error){
 
-    console.error(error);
+    console.error(
+      "SEND ERROR:",
+      error
+    );
 
     loader.remove();
 
+    /* OFFLINE SEARCH */
+
     const offline =
-      await searchOfflineDB(prompt);
+      await searchOfflineDB(
+        prompt
+      );
 
     if(offline){
 
       addMessage(
-        "📦 Offline Result:\n\n" +
-        offline,
+`📦 Offline Cached Result
+
+${offline}`,
         "ai"
       );
 
-    }else{
+    }
+
+    else{
 
       addMessage(
 `❌ AI Error
 
 ${error.message}
 
-Offline response unavailable.`,
+Backend failed to generate AI response.
+
+Check:
+
+• NVIDIA API Key
+• Cloudflare Worker Logs
+• Worker Route
+• CORS Origin
+• Request JSON`,
         "ai"
       );
 
@@ -379,11 +411,13 @@ Offline response unavailable.`,
 
   promptInput.value = "";
 
-  promptInput.style.height = "60px";
+  promptInput.style.height =
+    "60px";
 
   uploadedFiles = [];
 
-  filePreviewContainer.innerHTML = "";
+  filePreviewContainer.innerHTML =
+    "";
 
 }
 
@@ -393,23 +427,44 @@ Offline response unavailable.`,
 
 function extractAIResponse(data){
 
-  if(
-    typeof data === "string"
-  ){
+  console.log(
+    "FULL AI RESPONSE:",
+    data
+  );
+
+  /* STRING */
+
+  if(typeof data === "string"){
+
     return data;
+
   }
 
-  if(
-    data.response
-  ){
+  /* YOUR WORKER FORMAT */
+
+  if(data.reply){
+
+    return data.reply;
+
+  }
+
+  /* ALT FORMAT */
+
+  if(data.response){
+
     return data.response;
+
   }
 
-  if(
-    data.message
-  ){
+  /* ALT FORMAT */
+
+  if(data.message){
+
     return data.message;
+
   }
+
+  /* OPENAI/NVIDIA FORMAT */
 
   if(
     data.choices &&
@@ -417,6 +472,21 @@ function extractAIResponse(data){
   ){
 
     return data
+      .choices[0]
+      .message
+      .content;
+
+  }
+
+  /* NESTED */
+
+  if(
+    data.response &&
+    data.response.choices
+  ){
+
+    return data
+      .response
       .choices[0]
       .message
       .content;
