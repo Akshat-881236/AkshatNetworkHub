@@ -8,7 +8,7 @@
 ========================================================= */
 
 const API_URL =
-  "https://akshatai-backend.akshatpsd2005.workers.dev/";
+  "https://akshatai-backend.akshatpsd2005.workers.dev/api/chat";
 
 /* =========================================================
    DOM
