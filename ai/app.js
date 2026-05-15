@@ -808,11 +808,11 @@ async function handleMagicCommands(prompt){
   /* OPEN PORTFOLIO */
 
   if(
-    lower.includes("open portfolio")
+    lower.includes("open portfolio") || lower.includes("my portfolio") || lower.includes("show portfolio") || lower.includes("Akshat portfolio") || lower.includes("Akshat Prasad portfolio")
   ){
 
     window.open(
-      "https://akshat-881236.github.io/Portfolio-881236/",
+      "https://akshat-145609.github.io/MyPortfolioSite/",
       "_blank"
     );
 
@@ -823,11 +823,11 @@ async function handleMagicCommands(prompt){
   /* FEEDBACK */
 
   if(
-    lower.includes("feedback")
+    lower.includes("feedback") || lower.includes("report issue") || lower.includes("suggestion") || lower.includes("contact support") || lower.includes("contact us") || lower.includes("contact me") || lower.includes("support") || lower.includes("help") || lower.includes("bug") || lower.includes("issue") || lower.includes("problem") || lower.includes("error") || lower.includes("fix") || lower.includes("improve") || lower.includes("feature request") || lower.includes("request feature") || lower.includes("I want to provide feedback") || lower.includes("I want to report an issue") || lower.includes("I have a suggestion") || lower.includes("I need help") || lower.includes("I found a bug") || lower.includes("I want to request a feature")
   ){
 
     window.open(
-      "https://akshat-881236.github.io/Portfolio-881236/feedback.htm",
+      "https://akshat-881236.github.io/Portfolio-881236/feedback.htm?title=Akshat%20Network%20Hub%20AI%20Assistant%20|%20NVIDIA%20NIM%20AI&description=Official%20AI%20Assistant%20of%20Akshat%20Network%20Hub%20powered%20by%20NVIDIA%20NIM%20API%20and%20Cloudflare%20Workers.&url=https://akshat-881236.github.io/AkshatNetworkHub/ai/index.htm",
       "_blank"
     );
 
@@ -835,6 +835,92 @@ async function handleMagicCommands(prompt){
 
   }
 
+  /* Commands related to the app itself can be handled here */
+
+  if(
+
+    lower === "clear history" ||
+    lower === "delete history" ||
+    lower === "reset chat" ||
+    lower === "new chat"
+
+  ){
+
+    clearChat();
+
+    return true;
+
+  }
+
+    if(
+
+      lower === "help" ||
+      lower === "commands" ||
+      lower === "magic commands"
+    ){
+
+      addMessage(
+`✨ Magic Commands:
+• google [query] - Search Google
+• youtube [query] - Search YouTube
+• bing [query] - Search Bing
+• open portfolio - Open my portfolio website
+• feedback - Provide feedback or report an issue
+• clear history - Clear chat history
+• help - Show this message`,
+        "ai"
+      );
+      return true;
+
+    }
+
+    // Arithmetic & Bodmas commands
+
+    if(
+      lower.includes("what is") || lower.includes("calculate") || lower.includes("solve")
+    ){
+
+      const expression =
+        prompt.replace(
+          /what is|calculate|solve/gi,
+          ""
+        );
+
+      try{
+
+        const result =
+          eval(expression);
+
+        addMessage(
+          `The answer is: ${result}`,
+          "ai"
+        );
+
+      }
+
+      catch(error){
+
+        addMessage(
+          "Sorry, I couldn't calculate that.",
+          "ai"
+        );
+
+      }
+
+      return true;
+
+    }
+  
+    if ( lower.includes("who are you") || lower.includes("what can you do") || lower.includes("introduce yourself") || lower.includes("your capabilities") || lower.includes("help me") || lower.includes("how can you assist me") ) {
+
+      addMessage(
+        `Hello! I am the Akshat Network Hub AI Assistant, powered by NVIDIA's NIM API and Cloudflare Workers. I can assist you with a variety of tasks including answering questions, providing information, performing calculations, searching the web, and more. Just type your request and I'll do my best to help!`,
+        "ai"
+      );
+
+     return true;
+
+  }
   return false;
 
 }
