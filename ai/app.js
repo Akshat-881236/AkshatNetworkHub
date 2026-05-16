@@ -216,6 +216,10 @@ function handleEnterSend(e){
    FAST STREAMING
 ========================================================= */
 
+/* =========================================================
+   ULTRA FAST STREAMING SEND MESSAGE
+========================================================= */
+
 async function sendMessage(){
 
   const prompt =
@@ -225,14 +229,49 @@ async function sendMessage(){
 
   removeWelcome();
 
-  addMessage(prompt, "user");
+  /* =====================================================
+     USER MESSAGE
+  ===================================================== */
+
+  addMessage(
+    prompt,
+    "user"
+  );
 
   messages.push({
+
     role:"user",
+
     content:prompt
+
   });
 
+  /* =====================================================
+     MAGIC COMMANDS
+  ===================================================== */
+
+  if(
+    await handleMagicCommands(prompt)
+  ){
+
+    promptInput.value = "";
+
+    return;
+
+  }
+
+  /* =====================================================
+     RESET INPUT
+  ===================================================== */
+
   promptInput.value = "";
+
+  promptInput.style.height =
+    "60px";
+
+  /* =====================================================
+     AI CONTAINER
+  ===================================================== */
 
   const aiDiv =
     document.createElement("div");
@@ -240,16 +279,16 @@ async function sendMessage(){
   aiDiv.className =
     "message ai";
 
-  /* RAW TEXT CONTAINER */
+  /* RAW STREAM CONTAINER */
 
-  const streamContainer =
+  const streamText =
     document.createElement("div");
 
-  streamContainer.className =
-    "stream-container";
+  streamText.className =
+    "streaming-text";
 
   aiDiv.appendChild(
-    streamContainer
+    streamText
   );
 
   chatContainer.appendChild(
@@ -258,9 +297,21 @@ async function sendMessage(){
 
   scrollBottom();
 
+  /* =====================================================
+     RESPONSE BUFFER
+  ===================================================== */
+
   let fullResponse = "";
 
+  /* STREAM BUFFER */
+
+  let pendingChunk = "";
+
   try{
+
+    /* ===================================================
+       API REQUEST
+    =================================================== */
 
     const response =
       await fetch(API_URL, {
@@ -274,32 +325,44 @@ async function sendMessage(){
 
         body:JSON.stringify({
 
-          message: prompt,
+          message:prompt,
 
-          messages: messages,
+          messages:messages,
 
-          stream: true,
+          stream:true,
 
           model:
-            "meta/llama-3.1-70b-instruct",
+            "meta/llama-3.1-8b-instruct",
 
           temperature:0.7,
 
-          max_tokens:2048
+          max_tokens:1024,
+
+          top_p:0.9
 
         })
 
       });
 
+    /* ===================================================
+       RESPONSE ERROR
+    =================================================== */
+
     if(!response.ok){
 
+      const errText =
+        await response.text();
+
       throw new Error(
-        "Streaming Failed"
+        errText ||
+        "Streaming failed"
       );
 
     }
 
-    /* READER */
+    /* ===================================================
+       STREAM READER
+    =================================================== */
 
     const reader =
       response.body.getReader();
@@ -307,18 +370,22 @@ async function sendMessage(){
     const decoder =
       new TextDecoder();
 
+    /* ===================================================
+       STREAM LOOP
+    =================================================== */
+
     while(true){
 
       const {
-        done,
-        value
+        value,
+        done
       } = await reader.read();
 
       if(done) break;
 
       /* FAST DECODE */
 
-      const chunk =
+      pendingChunk +=
         decoder.decode(
           value,
           {
@@ -326,12 +393,19 @@ async function sendMessage(){
           }
         );
 
-      /* SSE SPLIT */
+      /* SPLIT SSE */
 
       const lines =
-        chunk.split("\n");
+        pendingChunk.split("\n");
+
+      /* KEEP LAST INCOMPLETE */
+
+      pendingChunk =
+        lines.pop() || "";
 
       for(const line of lines){
+
+        /* ONLY SSE DATA */
 
         if(
           !line.startsWith("data:")
@@ -343,7 +417,7 @@ async function sendMessage(){
             ""
           ).trim();
 
-        /* DONE */
+        /* END STREAM */
 
         if(
           jsonStr === "[DONE]"
@@ -358,18 +432,26 @@ async function sendMessage(){
           const json =
             JSON.parse(jsonStr);
 
+          /* TOKEN */
+
           const token =
+
             json
             ?.choices?.[0]
-            ?.delta?.content;
+            ?.delta
+            ?.content ||
+
+            "";
 
           if(token){
 
             fullResponse += token;
 
-            /* FAST RAW APPEND */
+            /* ===========================================
+               ULTRA FAST RAW APPEND
+            =========================================== */
 
-            streamContainer.textContent =
+            streamText.textContent =
               fullResponse;
 
             scrollBottom();
@@ -381,7 +463,7 @@ async function sendMessage(){
         catch(err){
 
           console.warn(
-            "Chunk Parse Error",
+            "Chunk Parse Error:",
             err
           );
 
@@ -391,14 +473,34 @@ async function sendMessage(){
 
     }
 
-    /* FINAL MARKDOWN RENDER */
+    /* ===================================================
+       FINAL MARKDOWN RENDER
+    =================================================== */
 
-    streamContainer.innerHTML =
+    streamText.innerHTML =
       marked.parse(
         fullResponse
       );
 
-    Prism.highlightAll();
+    /* ===================================================
+       CODE HIGHLIGHT
+    =================================================== */
+
+    Prism.highlightAllUnder(
+      aiDiv
+    );
+
+    /* ===================================================
+       CODE BLOCK FEATURES
+    =================================================== */
+
+    enhanceCodeBlocks(
+      aiDiv
+    );
+
+    /* ===================================================
+       SAVE MEMORY
+    =================================================== */
 
     messages.push({
 
@@ -417,16 +519,65 @@ async function sendMessage(){
 
   }
 
+  /* =====================================================
+     ERROR
+  ===================================================== */
+
   catch(error){
 
-    console.error(error);
+    console.error(
+      "STREAM ERROR:",
+      error
+    );
 
-    streamContainer.innerHTML =
+    /* OFFLINE CACHE */
+
+    const offline =
+      await searchOfflineDB(
+        prompt
+      );
+
+    if(offline){
+
+      streamText.innerHTML =
 `
-❌ Streaming Error
+<div class="offline-result">
 
-${error.message}
+📦 Offline Cached Result
+
+</div>
+
+${marked.parse(offline)}
 `;
+
+    }
+
+    else{
+
+      streamText.innerHTML =
+`
+<div class="error-box">
+
+<h3>
+❌ AI Streaming Error
+</h3>
+
+<p>
+${error.message}
+</p>
+
+<ul>
+<li>Check Worker Logs</li>
+<li>Verify NVIDIA API Key</li>
+<li>Check CORS Origin</li>
+<li>Verify SSE Streaming</li>
+<li>Check Internet Connection</li>
+</ul>
+
+</div>
+`;
+
+    }
 
   }
 
