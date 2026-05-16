@@ -225,14 +225,10 @@ async function sendMessage(){
 
   addMessage(prompt, "user");
 
-  /* MEMORY */
-
   messages.push({
-    role: "user",
-    content: prompt
+    role:"user",
+    content:prompt
   });
-
-  /* MAGIC COMMANDS */
 
   if(await handleMagicCommands(prompt)){
 
@@ -242,193 +238,192 @@ async function sendMessage(){
 
   }
 
-  /* LOADER */
+  /* AI CONTAINER */
 
-  const loader =
-    addLoader();
+  const aiDiv =
+    document.createElement("div");
+
+  aiDiv.className =
+    "message ai";
+
+  aiDiv.innerHTML =
+    `
+    <div class="streaming-text"></div>
+    `;
+
+  chatContainer.appendChild(aiDiv);
+
+  scrollBottom();
+
+  const streamText =
+    aiDiv.querySelector(
+      ".streaming-text"
+    );
+
+  let fullResponse = "";
 
   try{
-
-    /* API REQUEST */
 
     const response =
       await fetch(API_URL, {
 
-        method: "POST",
+        method:"POST",
 
-        headers: {
+        headers:{
           "Content-Type":
             "application/json"
         },
 
-        body: JSON.stringify({
+        body:JSON.stringify({
 
-          /* IMPORTANT */
           message: prompt,
 
           messages: messages,
 
-          stream: false,
+          stream: true,
 
           model:
             "meta/llama-3.1-70b-instruct",
 
-          temperature: 0.7,
+          temperature:0.7,
 
-          max_tokens: 2048,
+          max_tokens:2048,
 
-          top_p: 0.9
+          top_p:0.9
 
         })
 
       });
 
-    /* DEBUG */
-
-    console.log(
-      "RAW RESPONSE:",
-      response
-    );
-
-    /* PARSE JSON */
-
-    const data =
-      await response.json();
-
-    console.log(
-      "AI JSON:",
-      data
-    );
-
-    /* REMOVE LOADER */
-
-    loader.remove();
-
-    /* HANDLE HTTP ERRORS */
-
     if(!response.ok){
 
       throw new Error(
-
-        data.error ||
-
-        data.details ||
-
-        JSON.stringify(data) ||
-
-        "Worker Error"
-
+        "Streaming request failed"
       );
 
     }
 
-    /* EXTRACT AI RESPONSE */
+    /* STREAM READER */
 
-    let aiMessage =
-      extractAIResponse(data);
+    const reader =
+      response.body.getReader();
 
-    /* FALLBACK */
+    const decoder =
+      new TextDecoder();
 
-    if(!aiMessage){
+    while(true){
 
-      aiMessage =
-`⚠️ AI response unavailable.
+      const {
+        value,
+        done
+      } = await reader.read();
 
-Possible Issues:
+      if(done) break;
 
-• NVIDIA API Key
-• Worker Error
-• CORS
-• API Timeout`;
+      const chunk =
+        decoder.decode(value);
+
+      /* SSE LINES */
+
+      const lines =
+        chunk.split("\n");
+
+      for(const line of lines){
+
+        if(
+          line.startsWith("data:")
+        ){
+
+          const data =
+            line.replace(
+              "data:",
+              ""
+            ).trim();
+
+          /* END */
+
+          if(data === "[DONE]"){
+
+            break;
+
+          }
+
+          try{
+
+            const json =
+              JSON.parse(data);
+
+            const token =
+              json
+              ?.choices?.[0]
+              ?.delta
+              ?.content || "";
+
+            if(token){
+
+              fullResponse += token;
+
+              streamText.innerHTML =
+                marked.parse(
+                  fullResponse
+                );
+
+              Prism.highlightAll();
+
+              scrollBottom();
+
+            }
+
+          }
+
+          catch(err){
+
+            console.warn(
+              "Stream parse error:",
+              err
+            );
+
+          }
+
+        }
+
+      }
 
     }
 
-    /* SAVE MEMORY */
+    /* SAVE */
 
     messages.push({
-      role: "assistant",
-      content: aiMessage
+      role:"assistant",
+      content:fullResponse
     });
-
-    /* RENDER */
-
-    addMessage(
-      aiMessage,
-      "ai"
-    );
-
-    /* SAVE */
 
     saveChatHistory();
 
     storeOfflineMessage(
       prompt,
-      aiMessage
+      fullResponse
     );
 
   }
 
   catch(error){
 
-    console.error(
-      "SEND ERROR:",
-      error
-    );
+    console.error(error);
 
-    loader.remove();
-
-    /* OFFLINE CACHE */
-
-    const offline =
-      await searchOfflineDB(
-        prompt
-      );
-
-    if(offline){
-
-      addMessage(
-`📦 Offline Cached Result
-
-${offline}`,
-        "ai"
-      );
-
-    }
-
-    else{
-
-      addMessage(
-`❌ AI Error
+    aiDiv.innerHTML =
+`
+❌ Streaming Error
 
 ${error.message}
-
-Backend failed to generate AI response.
-
-Check:
-
-• NVIDIA API Key
-• Cloudflare Worker Logs
-• Worker Route
-• CORS Origin
-• Request JSON`,
-        "ai"
-      );
-
-    }
+`;
 
   }
-
-  /* RESET */
 
   promptInput.value = "";
 
   promptInput.style.height =
     "60px";
-
-  uploadedFiles = [];
-
-  filePreviewContainer.innerHTML =
-    "";
 
 }
 
