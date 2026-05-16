@@ -1360,3 +1360,39 @@ body::before{
   }
 
 }
+
+/* STREAMING */
+
+.streaming-text{
+
+  animation:
+    fadeStream 0.2s linear;
+
+}
+
+.streaming-cursor::after{
+
+  content:"▋";
+
+  animation:
+    blink 1s infinite;
+
+}
+
+@keyframes blink{
+
+  50%{
+    opacity:0;
+  }
+
+}
+
+.stream-container{
+
+  white-space:pre-wrap;
+
+  word-wrap:break-word;
+
+  line-height:1.7;
+
+}

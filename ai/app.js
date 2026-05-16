@@ -212,6 +212,10 @@ function handleEnterSend(e){
    SEND MESSAGE
 ========================================================= */
 
+/* =========================================================
+   FAST STREAMING
+========================================================= */
+
 async function sendMessage(){
 
   const prompt =
@@ -221,8 +225,6 @@ async function sendMessage(){
 
   removeWelcome();
 
-  /* USER MESSAGE */
-
   addMessage(prompt, "user");
 
   messages.push({
@@ -230,15 +232,7 @@ async function sendMessage(){
     content:prompt
   });
 
-  if(await handleMagicCommands(prompt)){
-
-    promptInput.value = "";
-
-    return;
-
-  }
-
-  /* AI CONTAINER */
+  promptInput.value = "";
 
   const aiDiv =
     document.createElement("div");
@@ -246,19 +240,23 @@ async function sendMessage(){
   aiDiv.className =
     "message ai";
 
-  aiDiv.innerHTML =
-    `
-    <div class="streaming-text"></div>
-    `;
+  /* RAW TEXT CONTAINER */
 
-  chatContainer.appendChild(aiDiv);
+  const streamContainer =
+    document.createElement("div");
+
+  streamContainer.className =
+    "stream-container";
+
+  aiDiv.appendChild(
+    streamContainer
+  );
+
+  chatContainer.appendChild(
+    aiDiv
+  );
 
   scrollBottom();
-
-  const streamText =
-    aiDiv.querySelector(
-      ".streaming-text"
-    );
 
   let fullResponse = "";
 
@@ -287,9 +285,7 @@ async function sendMessage(){
 
           temperature:0.7,
 
-          max_tokens:2048,
-
-          top_p:0.9
+          max_tokens:2048
 
         })
 
@@ -298,12 +294,12 @@ async function sendMessage(){
     if(!response.ok){
 
       throw new Error(
-        "Streaming request failed"
+        "Streaming Failed"
       );
 
     }
 
-    /* STREAM READER */
+    /* READER */
 
     const reader =
       response.body.getReader();
@@ -314,16 +310,23 @@ async function sendMessage(){
     while(true){
 
       const {
-        value,
-        done
+        done,
+        value
       } = await reader.read();
 
       if(done) break;
 
-      const chunk =
-        decoder.decode(value);
+      /* FAST DECODE */
 
-      /* SSE LINES */
+      const chunk =
+        decoder.decode(
+          value,
+          {
+            stream:true
+          }
+        );
+
+      /* SSE SPLIT */
 
       const lines =
         chunk.split("\n");
@@ -331,59 +334,56 @@ async function sendMessage(){
       for(const line of lines){
 
         if(
-          line.startsWith("data:")
+          !line.startsWith("data:")
+        ) continue;
+
+        const jsonStr =
+          line.replace(
+            "data:",
+            ""
+          ).trim();
+
+        /* DONE */
+
+        if(
+          jsonStr === "[DONE]"
         ){
 
-          const data =
-            line.replace(
-              "data:",
-              ""
-            ).trim();
+          continue;
 
-          /* END */
+        }
 
-          if(data === "[DONE]"){
+        try{
 
-            break;
+          const json =
+            JSON.parse(jsonStr);
 
-          }
+          const token =
+            json
+            ?.choices?.[0]
+            ?.delta?.content;
 
-          try{
+          if(token){
 
-            const json =
-              JSON.parse(data);
+            fullResponse += token;
 
-            const token =
-              json
-              ?.choices?.[0]
-              ?.delta
-              ?.content || "";
+            /* FAST RAW APPEND */
 
-            if(token){
+            streamContainer.textContent =
+              fullResponse;
 
-              fullResponse += token;
-
-              streamText.innerHTML =
-                marked.parse(
-                  fullResponse
-                );
-
-              Prism.highlightAll();
-
-              scrollBottom();
-
-            }
+            scrollBottom();
 
           }
 
-          catch(err){
+        }
 
-            console.warn(
-              "Stream parse error:",
-              err
-            );
+        catch(err){
 
-          }
+          console.warn(
+            "Chunk Parse Error",
+            err
+          );
 
         }
 
@@ -391,11 +391,21 @@ async function sendMessage(){
 
     }
 
-    /* SAVE */
+    /* FINAL MARKDOWN RENDER */
+
+    streamContainer.innerHTML =
+      marked.parse(
+        fullResponse
+      );
+
+    Prism.highlightAll();
 
     messages.push({
+
       role:"assistant",
+
       content:fullResponse
+
     });
 
     saveChatHistory();
@@ -411,7 +421,7 @@ async function sendMessage(){
 
     console.error(error);
 
-    aiDiv.innerHTML =
+    streamContainer.innerHTML =
 `
 ❌ Streaming Error
 
@@ -419,11 +429,6 @@ ${error.message}
 `;
 
   }
-
-  promptInput.value = "";
-
-  promptInput.style.height =
-    "60px";
 
 }
 
