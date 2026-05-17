@@ -369,7 +369,7 @@ async function sendMessage(){
 
           temperature:0.7,
 
-          max_tokens:1850,
+          max_tokens:1024,
 
           top_p:0.9
 
