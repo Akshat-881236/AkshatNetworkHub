@@ -1,6 +1,7 @@
 /* =========================================================
    AKSHAT NETWORK HUB AI
-   ADVANCED APP.JS
+   ULTIMATE ADVANCED APP.JS
+   VERSION : FIREFOX OPTIMIZED + STREAMING + SEO META
 ========================================================= */
 
 /* =========================================================
@@ -9,6 +10,11 @@
 
 const API_URL =
   "https://akshatai-backend.akshatpsd2005.workers.dev/api/chat";
+
+const MAX_RESPONSE_CHARS = 10000;
+
+const STREAM_MODEL =
+  "meta/llama-3.1-70b-instruct";
 
 /* =========================================================
    DOM
@@ -22,14 +28,6 @@ const promptInput =
 
 const sendBtn =
   document.getElementById("sendBtn");
-
-const fileInput =
-  document.getElementById("fileInput");
-
-const filePreviewContainer =
-  document.getElementById(
-    "filePreviewContainer"
-  );
 
 const historyList =
   document.getElementById("historyList");
@@ -87,9 +85,9 @@ const historySearch =
 
 let messages = [];
 
-let uploadedFiles = [];
-
 let db;
+
+let isGenerating = false;
 
 /* =========================================================
    INIT
@@ -105,11 +103,16 @@ window.addEventListener(
 
     initEvents();
 
-    initSwipe();
-
     initQuickButtons();
 
+    initSwipe();
+
     detectOnlineStatus();
+
+    injectRuntimeMeta(
+      "Akshat Network Hub AI",
+      "AI Assistant powered by NVIDIA NIM"
+    );
 
   }
 );
@@ -120,58 +123,55 @@ window.addEventListener(
 
 function initEvents(){
 
-  sendBtn.addEventListener(
+  sendBtn?.addEventListener(
     "click",
     sendMessage
   );
 
-  promptInput.addEventListener(
+  promptInput?.addEventListener(
     "keydown",
     handleEnterSend
   );
 
-  promptInput.addEventListener(
+  promptInput?.addEventListener(
     "input",
     autoResize
   );
 
-  fileInput.addEventListener(
-    "change",
-    handleFiles
-  );
-
-  menuBtn.addEventListener(
+  menuBtn?.addEventListener(
     "click",
     openSidebar
   );
 
-  closeSidebarBtn.addEventListener(
+  closeSidebarBtn?.addEventListener(
     "click",
     closeSidebar
   );
 
-  overlay.addEventListener(
+  overlay?.addEventListener(
     "click",
     closeSidebar
   );
 
-  closePreviewBtn.addEventListener(
+  closePreviewBtn?.addEventListener(
     "click",
     closePreview
   );
 
-  imageModal.addEventListener(
+  historySearch?.addEventListener(
+    "input",
+    searchHistory
+  );
+
+  imageModal?.addEventListener(
     "click",
     () => {
+
       imageModal.classList.remove(
         "active"
       );
-    }
-  );
 
-  historySearch.addEventListener(
-    "input",
-    searchHistory
+    }
   );
 
 }
@@ -182,10 +182,12 @@ function initEvents(){
 
 function autoResize(){
 
-  promptInput.style.height = "auto";
+  promptInput.style.height =
+    "auto";
 
   promptInput.style.height =
-    promptInput.scrollHeight + "px";
+    promptInput.scrollHeight +
+    "px";
 
 }
 
@@ -214,26 +216,22 @@ function handleEnterSend(e){
 
 function initQuickButtons(){
 
-  /* EVENT DELEGATION */
-
   document.addEventListener(
     "click",
     async (e) => {
 
       const btn =
-        e.target.closest(".quick-btn");
+        e.target.closest(
+          ".quick-btn"
+        );
 
       if(!btn) return;
-
-      /* GET PROMPT */
 
       const prompt =
 
         btn.dataset.prompt ||
 
-        btn.getAttribute(
-          "data-message"
-        ) ||
+        btn.dataset.message ||
 
         btn.innerText ||
 
@@ -241,27 +239,12 @@ function initQuickButtons(){
 
       if(!prompt.trim()) return;
 
-      /* SET INPUT */
-
       promptInput.value =
         prompt.trim();
 
-      /* AUTO HEIGHT */
+      autoResize();
 
-      promptInput.style.height =
-        "auto";
-
-      promptInput.style.height =
-        promptInput.scrollHeight +
-        "px";
-
-      /* SMALL DELAY */
-
-      await new Promise(resolve =>
-        setTimeout(resolve, 50)
-      );
-
-      /* SEND */
+      await delay(50);
 
       sendMessage();
 
@@ -271,26 +254,23 @@ function initQuickButtons(){
 }
 
 /* =========================================================
-   ULTRA FAST STREAMING SEND MESSAGE
+   MAIN SEND MESSAGE
 ========================================================= */
 
 async function sendMessage(){
 
+  if(isGenerating) return;
+
   const prompt =
     promptInput.value.trim();
 
-  if(
-  !prompt ||
-  prompt.length < 1
-){
-  return;
-}
+  if(!prompt) return;
+
+  isGenerating = true;
 
   removeWelcome();
 
-  /* =====================================================
-     USER MESSAGE
-  ===================================================== */
+  /* USER MESSAGE */
 
   addMessage(
     prompt,
@@ -305,40 +285,45 @@ async function sendMessage(){
 
   });
 
-  /* =====================================================
-     MAGIC COMMANDS
-  ===================================================== */
+  /* META */
+
+  injectRuntimeMeta(
+    prompt,
+    "Akshat Network Hub AI Chat"
+  );
+
+  injectBreadcrumbs(prompt);
+
+  /* MAGIC COMMANDS */
 
   if(
-    await handleMagicCommands(prompt)
+    await handleMagicCommands(
+      prompt
+    )
   ){
 
     promptInput.value = "";
+
+    isGenerating = false;
 
     return;
 
   }
 
-  /* =====================================================
-     RESET INPUT
-  ===================================================== */
+  /* RESET INPUT */
 
   promptInput.value = "";
 
   promptInput.style.height =
     "60px";
 
-  /* =====================================================
-     AI CONTAINER
-  ===================================================== */
+  /* AI CONTAINER */
 
   const aiDiv =
     document.createElement("div");
 
   aiDiv.className =
     "message ai";
-
-  /* RAW STREAM CONTAINER */
 
   const streamText =
     document.createElement("div");
@@ -356,21 +341,11 @@ async function sendMessage(){
 
   scrollBottom();
 
-  /* =====================================================
-     RESPONSE BUFFER
-  ===================================================== */
-
   let fullResponse = "";
-
-  /* STREAM BUFFER */
 
   let pendingChunk = "";
 
   try{
-
-    /* ===================================================
-       API REQUEST
-    =================================================== */
 
     const response =
       await fetch(API_URL, {
@@ -390,22 +365,17 @@ async function sendMessage(){
 
           stream:true,
 
-          model:
-            "meta/llama-3.1-8b-instruct",
+          model:STREAM_MODEL,
 
           temperature:0.7,
 
-          max_tokens:1024,
+          max_tokens:1850,
 
           top_p:0.9
 
         })
 
       });
-
-    /* ===================================================
-       RESPONSE ERROR
-    =================================================== */
 
     if(!response.ok){
 
@@ -414,24 +384,16 @@ async function sendMessage(){
 
       throw new Error(
         errText ||
-        "Streaming failed"
+        "Streaming Failed"
       );
 
     }
-
-    /* ===================================================
-       STREAM READER
-    =================================================== */
 
     const reader =
       response.body.getReader();
 
     const decoder =
       new TextDecoder();
-
-    /* ===================================================
-       STREAM LOOP
-    =================================================== */
 
     while(true){
 
@@ -442,8 +404,6 @@ async function sendMessage(){
 
       if(done) break;
 
-      /* FAST DECODE */
-
       pendingChunk +=
         decoder.decode(
           value,
@@ -452,19 +412,13 @@ async function sendMessage(){
           }
         );
 
-      /* SPLIT SSE */
-
       const lines =
         pendingChunk.split("\n");
-
-      /* KEEP LAST INCOMPLETE */
 
       pendingChunk =
         lines.pop() || "";
 
       for(const line of lines){
-
-        /* ONLY SSE DATA */
 
         if(
           !line.startsWith("data:")
@@ -475,8 +429,6 @@ async function sendMessage(){
             "data:",
             ""
           ).trim();
-
-        /* END STREAM */
 
         if(
           jsonStr === "[DONE]"
@@ -491,8 +443,6 @@ async function sendMessage(){
           const json =
             JSON.parse(jsonStr);
 
-          /* TOKEN */
-
           const token =
 
             json
@@ -506,9 +456,20 @@ async function sendMessage(){
 
             fullResponse += token;
 
-            /* ===========================================
-               ULTRA FAST RAW APPEND
-            =========================================== */
+            if(
+              fullResponse.length >
+              MAX_RESPONSE_CHARS
+            ){
+
+              fullResponse =
+                fullResponse.slice(
+                  0,
+                  MAX_RESPONSE_CHARS
+                );
+
+            }
+
+            /* FAST STREAM */
 
             streamText.textContent =
               fullResponse;
@@ -522,7 +483,7 @@ async function sendMessage(){
         catch(err){
 
           console.warn(
-            "Chunk Parse Error:",
+            "Chunk Error:",
             err
           );
 
@@ -532,34 +493,25 @@ async function sendMessage(){
 
     }
 
-    /* ===================================================
-       FINAL MARKDOWN RENDER
-    =================================================== */
+    /* FINAL FORMAT */
 
-    streamText.innerHTML =
-      marked.parse(
+    fullResponse =
+      normalizeMarkdown(
         fullResponse
       );
 
-    /* ===================================================
-       CODE HIGHLIGHT
-    =================================================== */
+    streamText.innerHTML =
+      renderMarkdown(
+        fullResponse
+      );
 
     Prism.highlightAllUnder(
       aiDiv
     );
 
-    /* ===================================================
-       CODE BLOCK FEATURES
-    =================================================== */
-
     enhanceCodeBlocks(
       aiDiv
     );
-
-    /* ===================================================
-       SAVE MEMORY
-    =================================================== */
 
     messages.push({
 
@@ -576,11 +528,12 @@ async function sendMessage(){
       fullResponse
     );
 
-  }
+    injectRuntimeMeta(
+      prompt,
+      fullResponse.slice(0,150)
+    );
 
-  /* =====================================================
-     ERROR
-  ===================================================== */
+  }
 
   catch(error){
 
@@ -588,8 +541,6 @@ async function sendMessage(){
       "STREAM ERROR:",
       error
     );
-
-    /* OFFLINE CACHE */
 
     const offline =
       await searchOfflineDB(
@@ -606,7 +557,7 @@ async function sendMessage(){
 
 </div>
 
-${marked.parse(offline)}
+${renderMarkdown(offline)}
 `;
 
     }
@@ -626,11 +577,11 @@ ${error.message}
 </p>
 
 <ul>
-<li>Check Worker Logs</li>
-<li>Verify NVIDIA API Key</li>
-<li>Check CORS Origin</li>
-<li>Verify SSE Streaming</li>
-<li>Check Internet Connection</li>
+<li>Check NVIDIA API Key</li>
+<li>Check Cloudflare Logs</li>
+<li>Check CORS</li>
+<li>Check SSE Streaming</li>
+<li>Verify Backend Route</li>
 </ul>
 
 </div>
@@ -640,83 +591,35 @@ ${error.message}
 
   }
 
+  isGenerating = false;
+
 }
 
 /* =========================================================
-   AI RESPONSE PARSER
+   MARKDOWN NORMALIZER
 ========================================================= */
 
-function extractAIResponse(data){
+function normalizeMarkdown(text){
 
-  console.log(
-    "FULL AI RESPONSE:",
-    data
-  );
+  if(!text) return "";
 
-  /* DIRECT STRING */
-
-  if(typeof data === "string"){
-
-    return data;
-
-  }
-
-  /* YOUR WORKER FORMAT */
+  /* AUTO CODE BLOCK */
 
   if(
-
-    data.response &&
-
-    data.response.choices &&
-
-    data.response.choices[0] &&
-
-    data.response.choices[0].message
-
+    text.includes("function ") &&
+    !text.includes("```")
   ){
 
-    return data
-      .response
-      .choices[0]
-      .message
-      .content;
+    text =
+`
+\`\`\`javascript
+${text}
+\`\`\`
+`;
 
   }
 
-  /* DIRECT NVIDIA FORMAT */
-
-  if(
-
-    data.choices &&
-
-    data.choices[0] &&
-
-    data.choices[0].message
-
-  ){
-
-    return data
-      .choices[0]
-      .message
-      .content;
-
-  }
-
-  /* SIMPLE FORMAT */
-
-  if(data.reply){
-
-    return data.reply;
-
-  }
-
-  if(data.message){
-
-    return data.message;
-
-  }
-
-  return null;
+  return text;
 
 }
 
@@ -739,11 +642,20 @@ function addMessage(content,type){
 
     enhanceCodeBlocks(div);
 
-    Prism.highlightAll();
+    Prism.highlightAllUnder(
+      div
+    );
 
-  }else{
+  }
 
-    div.textContent = content;
+  else{
+
+    div.innerHTML =
+`
+<div class="user-text">
+${escapeHTML(content)}
+</div>
+`;
 
   }
 
@@ -756,39 +668,61 @@ function addMessage(content,type){
 }
 
 /* =========================================================
-   MARKDOWN
+   MARKDOWN RENDER
 ========================================================= */
 
 function renderMarkdown(text){
+
+  marked.setOptions({
+
+    breaks:true,
+
+    gfm:true
+
+  });
 
   return marked.parse(text || "");
 
 }
 
 /* =========================================================
-   CODE BLOCK ENHANCER
+   CODE BLOCKS
 ========================================================= */
 
 function enhanceCodeBlocks(container){
 
   const blocks =
-    container.querySelectorAll("pre");
+    container.querySelectorAll(
+      "pre"
+    );
 
   blocks.forEach(pre => {
 
-    const wrapper =
+    if(
+      pre.dataset.enhanced
+    ) return;
+
+    pre.dataset.enhanced =
+      "true";
+
+    const toolbar =
       document.createElement("div");
 
-    wrapper.className =
+    toolbar.className =
       "code-toolbar";
 
     /* COPY */
 
     const copyBtn =
-      document.createElement("button");
+      document.createElement(
+        "button"
+      );
 
     copyBtn.innerHTML =
-      '<i class="fa-solid fa-copy"></i> Copy';
+      `
+<i class="fa-solid fa-copy"></i>
+Copy
+`;
 
     copyBtn.onclick = () => {
 
@@ -802,19 +736,28 @@ function enhanceCodeBlocks(container){
 
     };
 
-    wrapper.appendChild(copyBtn);
+    toolbar.appendChild(
+      copyBtn
+    );
 
-    /* HTML PREVIEW */
+    /* PREVIEW */
 
     if(
-      pre.innerText.includes("<html")
+      pre.innerText.includes(
+        "<html"
+      )
     ){
 
       const previewBtn =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
 
       previewBtn.innerHTML =
-        '<i class="fa-solid fa-eye"></i> Preview';
+`
+<i class="fa-solid fa-eye"></i>
+Preview
+`;
 
       previewBtn.onclick = () => {
 
@@ -824,117 +767,15 @@ function enhanceCodeBlocks(container){
 
       };
 
-      wrapper.appendChild(
+      toolbar.appendChild(
         previewBtn
       );
 
     }
 
     pre.parentNode.insertBefore(
-      wrapper,
-      pre.nextSibling
-    );
-
-  });
-
-}
-
-/* =========================================================
-   PREVIEW
-========================================================= */
-
-function openPreview(html){
-
-  previewModal.classList.add(
-    "active"
-  );
-
-  previewFrame.srcdoc = html;
-
-}
-
-function closePreview(){
-
-  previewModal.classList.remove(
-    "active"
-  );
-
-  previewFrame.srcdoc = "";
-
-}
-
-/* =========================================================
-   LOADER
-========================================================= */
-
-function addLoader(){
-
-  const div =
-    document.createElement("div");
-
-  div.className =
-    "message ai";
-
-  div.innerHTML =
-`
-<div class="typing">
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
-`;
-
-  chatContainer.appendChild(div);
-
-  scrollBottom();
-
-  return div;
-
-}
-
-/* =========================================================
-   FILE HANDLER
-========================================================= */
-
-function handleFiles(e){
-
-  const files =
-    Array.from(e.target.files);
-
-  uploadedFiles =
-    [...uploadedFiles,...files];
-
-  renderFilePreview();
-
-}
-
-/* =========================================================
-   FILE PREVIEW
-========================================================= */
-
-function renderFilePreview(){
-
-  filePreviewContainer.innerHTML = "";
-
-  uploadedFiles.forEach(file => {
-
-    const div =
-      document.createElement("div");
-
-    div.className =
-      "file-preview";
-
-    div.innerHTML =
-`
-<i class="fa-solid fa-file"></i>
-
-<div class="file-preview-name">
-  ${file.name}
-</div>
-`;
-
-    filePreviewContainer.appendChild(
-      div
+      toolbar,
+      pre
     );
 
   });
@@ -953,13 +794,14 @@ async function handleMagicCommands(prompt){
   /* GOOGLE */
 
   if(
-    lower.startsWith("google ") ||
-    lower.startsWith("search google ")
+    lower.startsWith(
+      "google "
+    )
   ){
 
     const query =
       prompt.replace(
-        /google|search google/gi,
+        /google/gi,
         ""
       );
 
@@ -975,13 +817,14 @@ async function handleMagicCommands(prompt){
   /* YOUTUBE */
 
   if(
-    lower.startsWith("youtube ") ||
-    lower.startsWith("search youtube ")
+    lower.startsWith(
+      "youtube "
+    )
   ){
 
     const query =
       prompt.replace(
-        /youtube|search youtube/gi,
+        /youtube/gi,
         ""
       );
 
@@ -994,31 +837,12 @@ async function handleMagicCommands(prompt){
 
   }
 
-  /* BING */
+  /* PORTFOLIO */
 
   if(
-    lower.startsWith("bing ")
-  ){
-
-    const query =
-      prompt.replace(
-        /bing/gi,
-        ""
-      );
-
-    window.open(
-      `https://www.bing.com/search?q=${encodeURIComponent(query)}`,
-      "_blank"
-    );
-
-    return true;
-
-  }
-
-  /* OPEN PORTFOLIO */
-
-  if(
-    lower.includes("open portfolio") || lower.includes("my portfolio") || lower.includes("show portfolio") || lower.includes("Akshat portfolio") || lower.includes("Akshat Prasad portfolio")
+    lower.includes(
+      "portfolio"
+    )
   ){
 
     window.open(
@@ -1033,7 +857,9 @@ async function handleMagicCommands(prompt){
   /* FEEDBACK */
 
   if(
-    lower.includes("feedback") || lower.includes("report issue") || lower.includes("suggestion") || lower.includes("contact support") || lower.includes("contact us") || lower.includes("contact me") || lower.includes("support") || lower.includes("help") || lower.includes("bug") || lower.includes("issue") || lower.includes("problem") || lower.includes("error") || lower.includes("fix") || lower.includes("improve") || lower.includes("feature request") || lower.includes("request feature") || lower.includes("I want to provide feedback") || lower.includes("I want to report an issue") || lower.includes("I have a suggestion") || lower.includes("I need help") || lower.includes("I found a bug") || lower.includes("I want to request a feature")
+    lower.includes(
+      "feedback"
+    )
   ){
 
     window.open(
@@ -1045,15 +871,11 @@ async function handleMagicCommands(prompt){
 
   }
 
-  /* Commands related to the app itself can be handled here */
+  /* CLEAR */
 
   if(
-
     lower === "clear history" ||
-    lower === "delete history" ||
-    lower === "reset chat" ||
     lower === "new chat"
-
   ){
 
     clearChat();
@@ -1062,212 +884,212 @@ async function handleMagicCommands(prompt){
 
   }
 
-    if(
-
-      lower === "help" ||
-      lower === "commands" ||
-      lower === "magic commands"
-    ){
-
-      addMessage(
-`✨ Magic Commands:
-• google [query] - Search Google
-• youtube [query] - Search YouTube
-• bing [query] - Search Bing
-• open portfolio - Open my portfolio website
-• feedback - Provide feedback or report an issue
-• clear history - Clear chat history
-• help - Show this message`,
-        "ai"
-      );
-      return true;
-
-    }
-
-    if ( lower.includes("who are you") || lower.includes("what can you do") || lower.includes("introduce yourself") || lower.includes("your capabilities") || lower.includes("help me") || lower.includes("how can you assist me") ) {
-
-      addMessage(
-        `Hello! I am the Akshat Network Hub AI Assistant, powered by NVIDIA's NIM API and Cloudflare Workers. I can assist you with a variety of tasks including answering questions, providing information, performing calculations, searching the web, and more. Just type your request and I'll do my best to help!`,
-        "ai"
-      );
-
-     return true;
-
-  }
   return false;
 
 }
 
 /* =========================================================
-   QUICK BUTTONS
+   CLEAR CHAT
 ========================================================= */
 
-function initQuickButtons(){
+function clearChat(){
 
-  document
-    .querySelectorAll(".quick-btn")
-    .forEach(btn => {
+  messages = [];
 
-      btn.addEventListener(
-        "click",
-        () => {
+  localStorage.removeItem(
+    "anh_ai_history"
+  );
 
-          promptInput.value =
-            btn.innerText;
+  chatContainer.innerHTML = "";
 
-          sendMessage();
+  location.reload();
+
+}
+
+/* =========================================================
+   META TAGS
+========================================================= */
+
+function injectRuntimeMeta(
+  title,
+  description
+){
+
+  document.title =
+    title;
+
+  setMeta(
+    "description",
+    description
+  );
+
+  setMeta(
+    "keywords",
+    `
+Akshat Network Hub,
+AI Assistant,
+NVIDIA NIM,
+Cloudflare Worker,
+JavaScript AI Chatbot
+`
+  );
+
+}
+
+/* =========================================================
+   META HELPER
+========================================================= */
+
+function setMeta(name,content){
+
+  let tag =
+    document.querySelector(
+      `meta[name="${name}"]`
+    );
+
+  if(!tag){
+
+    tag =
+      document.createElement(
+        "meta"
+      );
+
+    tag.setAttribute(
+      "name",
+      name
+    );
+
+    document.head.appendChild(
+      tag
+    );
+
+  }
+
+  tag.setAttribute(
+    "content",
+    content
+  );
+
+}
+
+/* =========================================================
+   BREADCRUMBS
+========================================================= */
+
+function injectBreadcrumbs(prompt){
+
+  let script =
+    document.getElementById(
+      "dynamic-breadcrumbs"
+    );
+
+  if(script){
+
+    script.remove();
+
+  }
+
+  script =
+    document.createElement(
+      "script"
+    );
+
+  script.id =
+    "dynamic-breadcrumbs";
+
+  script.type =
+    "application/ld+json";
+
+  script.textContent =
+    JSON.stringify({
+
+      "@context":
+        "https://schema.org",
+
+      "@type":
+        "BreadcrumbList",
+
+      itemListElement:[
+
+        {
+
+          "@type":
+            "ListItem",
+
+          position:1,
+
+          name:
+            "Home",
+
+          item:
+            location.origin
+
+        },
+
+        {
+
+          "@type":
+            "ListItem",
+
+          position:2,
+
+          name:
+            prompt
 
         }
-      );
+
+      ]
 
     });
 
+  document.head.appendChild(
+    script
+  );
+
 }
 
 /* =========================================================
-   SIDEBAR
+   PREVIEW
 ========================================================= */
 
-function openSidebar(){
+function openPreview(html){
 
-  sidebar.classList.add(
+  previewModal.classList.add(
     "active"
   );
 
-  overlay.classList.add(
+  previewFrame.srcdoc =
+    html;
+
+}
+
+function closePreview(){
+
+  previewModal.classList.remove(
     "active"
   );
 
-}
-
-function closeSidebar(){
-
-  sidebar.classList.remove(
-    "active"
-  );
-
-  overlay.classList.remove(
-    "active"
-  );
+  previewFrame.srcdoc = "";
 
 }
 
 /* =========================================================
-   SWIPE
-========================================================= */
-
-function initSwipe(){
-
-  let startX = 0;
-
-  document.addEventListener(
-    "touchstart",
-    e => {
-
-      startX =
-        e.touches[0].clientX;
-
-    }
-  );
-
-  document.addEventListener(
-    "touchmove",
-    e => {
-
-      const currentX =
-        e.touches[0].clientX;
-
-      if(
-        startX < 40 &&
-        currentX > 120
-      ){
-
-        openSidebar();
-
-      }
-
-      if(
-        currentX < 40
-      ){
-
-        closeSidebar();
-
-      }
-
-    }
-  );
-
-}
-
-/* =========================================================
-   SCROLL
-========================================================= */
-
-function scrollBottom(){
-
-  chatContainer.scrollTop =
-    chatContainer.scrollHeight;
-
-}
-
-/* =========================================================
-   WELCOME
-========================================================= */
-
-function removeWelcome(){
-
-  const welcome =
-    document.getElementById(
-      "welcomeScreen"
-    );
-
-  if(welcome){
-    welcome.remove();
-  }
-
-}
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-function showToast(message){
-
-  toast.innerText =
-    message;
-
-  toast.classList.add(
-    "active"
-  );
-
-  setTimeout(() => {
-
-    toast.classList.remove(
-      "active"
-    );
-
-  },2500);
-
-}
-
-/* =========================================================
-   LOCAL STORAGE
+   STORAGE
 ========================================================= */
 
 function saveChatHistory(){
 
   localStorage.setItem(
+
     "anh_ai_history",
+
     JSON.stringify(messages)
+
   );
 
   renderHistorySidebar();
 
 }
-
-/* =========================================================
-   LOAD HISTORY
-========================================================= */
 
 function loadChatHistory(){
 
@@ -1286,10 +1108,13 @@ function loadChatHistory(){
     messages.forEach(msg => {
 
       addMessage(
+
         msg.content,
+
         msg.role === "user"
           ? "user"
           : "ai"
+
       );
 
     });
@@ -1307,22 +1132,28 @@ function loadChatHistory(){
 }
 
 /* =========================================================
-   SIDEBAR HISTORY
+   HISTORY
 ========================================================= */
 
 function renderHistorySidebar(){
 
-  historyList.innerHTML = "";
+  if(!historyList) return;
 
-  const reversed =
-    [...messages].reverse();
+  historyList.innerHTML =
+    "";
 
-  reversed.forEach(msg => {
+  [...messages]
+  .reverse()
+  .forEach(msg => {
 
-    if(msg.role !== "user") return;
+    if(
+      msg.role !== "user"
+    ) return;
 
     const div =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     div.className =
       "history-item";
@@ -1330,15 +1161,17 @@ function renderHistorySidebar(){
     div.innerHTML =
 `
 <div class="history-item-title">
-  ${msg.content.slice(0,80)}
+${escapeHTML(msg.content.slice(0,80))}
 </div>
 
 <div class="history-item-date">
-  ${new Date().toLocaleString()}
+${new Date().toLocaleString()}
 </div>
 `;
 
-    historyList.appendChild(div);
+    historyList.appendChild(
+      div
+    );
 
   });
 
@@ -1354,18 +1187,20 @@ function searchHistory(){
     historySearch.value
     .toLowerCase();
 
-  const items =
-    document.querySelectorAll(
-      ".history-item"
-    );
-
-  items.forEach(item => {
+  document
+  .querySelectorAll(
+    ".history-item"
+  )
+  .forEach(item => {
 
     item.style.display =
+
       item.innerText
       .toLowerCase()
       .includes(query)
+
       ? "block"
+
       : "none";
 
   });
@@ -1385,7 +1220,7 @@ function initIndexedDB(){
     );
 
   request.onupgradeneeded =
-    e => {
+    (e) => {
 
       db =
         e.target.result;
@@ -1393,15 +1228,18 @@ function initIndexedDB(){
       db.createObjectStore(
         "responses",
         {
+
           keyPath:"id",
+
           autoIncrement:true
+
         }
       );
 
     };
 
   request.onsuccess =
-    e => {
+    (e) => {
 
       db =
         e.target.result;
@@ -1427,15 +1265,16 @@ function storeOfflineMessage(
       "readwrite"
     );
 
-  const store =
-    tx.objectStore(
-      "responses"
-    );
+  tx.objectStore(
+    "responses"
+  ).add({
 
-  store.add({
     prompt,
+
     response,
+
     date:Date.now()
+
   });
 
 }
@@ -1449,8 +1288,11 @@ function searchOfflineDB(prompt){
   return new Promise(resolve => {
 
     if(!db){
+
       resolve(null);
+
       return;
+
     }
 
     const tx =
@@ -1470,16 +1312,15 @@ function searchOfflineDB(prompt){
     request.onsuccess =
       () => {
 
-        const data =
-          request.result;
-
         const found =
-          data.find(item =>
-            item.prompt
-            .toLowerCase()
-            .includes(
-              prompt.toLowerCase()
-            )
+          request.result.find(
+            item =>
+
+              item.prompt
+              .toLowerCase()
+              .includes(
+                prompt.toLowerCase()
+              )
           );
 
         resolve(
@@ -1491,6 +1332,79 @@ function searchOfflineDB(prompt){
       };
 
   });
+
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+function openSidebar(){
+
+  sidebar?.classList.add(
+    "active"
+  );
+
+  overlay?.classList.add(
+    "active"
+  );
+
+}
+
+function closeSidebar(){
+
+  sidebar?.classList.remove(
+    "active"
+  );
+
+  overlay?.classList.remove(
+    "active"
+  );
+
+}
+
+/* =========================================================
+   SWIPE
+========================================================= */
+
+function initSwipe(){
+
+  let startX = 0;
+
+  document.addEventListener(
+    "touchstart",
+    (e) => {
+
+      startX =
+        e.touches[0].clientX;
+
+    }
+  );
+
+  document.addEventListener(
+    "touchmove",
+    (e) => {
+
+      const currentX =
+        e.touches[0].clientX;
+
+      if(
+        startX < 40 &&
+        currentX > 120
+      ){
+
+        openSidebar();
+
+      }
+
+      if(currentX < 40){
+
+        closeSidebar();
+
+      }
+
+    }
+  );
 
 }
 
@@ -1525,6 +1439,82 @@ function detectOnlineStatus(){
 }
 
 /* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message){
+
+  if(!toast) return;
+
+  toast.innerText =
+    message;
+
+  toast.classList.add(
+    "active"
+  );
+
+  setTimeout(() => {
+
+    toast.classList.remove(
+      "active"
+    );
+
+  },2500);
+
+}
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+function removeWelcome(){
+
+  const welcome =
+    document.getElementById(
+      "welcomeScreen"
+    );
+
+  if(welcome){
+
+    welcome.remove();
+
+  }
+
+}
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+function scrollBottom(){
+
+  chatContainer.scrollTop =
+    chatContainer.scrollHeight;
+
+}
+
+/* =========================================================
+   UTILITIES
+========================================================= */
+
+function delay(ms){
+
+  return new Promise(resolve =>
+    setTimeout(resolve,ms)
+  );
+
+}
+
+function escapeHTML(text){
+
+  return text
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;");
+
+}
+
+/* =========================================================
    SERVICE WORKER
 ========================================================= */
 
@@ -1551,7 +1541,7 @@ if(
 
 document.addEventListener(
   "click",
-  e => {
+  (e) => {
 
     if(
       e.target.tagName === "IMG"
@@ -1574,21 +1564,13 @@ document.addEventListener(
 ========================================================= */
 
 document
-  .getElementById("newChatBtn")
-  .addEventListener(
-    "click",
-    () => {
-
-      messages = [];
-
-      localStorage.removeItem(
-        "anh_ai_history"
-      );
-
-      location.reload();
-
-    }
-  );
+?.getElementById(
+  "newChatBtn"
+)
+?.addEventListener(
+  "click",
+  clearChat
+);
 
 /* =========================================================
    INIT COMPLETE
