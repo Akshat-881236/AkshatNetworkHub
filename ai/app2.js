@@ -1,7 +1,6 @@
 /* =========================================================
    AKSHAT NETWORK HUB AI
-   ULTIMATE ADVANCED APP.JS
-   VERSION : FIREFOX OPTIMIZED + STREAMING + SEO META
+   ADVANCED APP.JS
 ========================================================= */
 
 /* =========================================================
@@ -10,11 +9,6 @@
 
 const API_URL =
   "https://akshatai-backend.akshatpsd2005.workers.dev/api/chat";
-
-const MAX_RESPONSE_CHARS = 10000;
-
-const STREAM_MODEL =
-  "meta/llama-3.1-8b-instruct";
 
 /* =========================================================
    DOM
@@ -28,6 +22,14 @@ const promptInput =
 
 const sendBtn =
   document.getElementById("sendBtn");
+
+const fileInput =
+  document.getElementById("fileInput");
+
+const filePreviewContainer =
+  document.getElementById(
+    "filePreviewContainer"
+  );
 
 const historyList =
   document.getElementById("historyList");
@@ -85,9 +87,9 @@ const historySearch =
 
 let messages = [];
 
-let db;
+let uploadedFiles = [];
 
-let isGenerating = false;
+let db;
 
 /* =========================================================
    INIT
@@ -103,16 +105,11 @@ window.addEventListener(
 
     initEvents();
 
-    initQuickButtons();
-
     initSwipe();
 
-    detectOnlineStatus();
+    initQuickButtons();
 
-    injectRuntimeMeta(
-      "Akshat Network Hub AI",
-      "AI Assistant powered by NVIDIA NIM"
-    );
+    detectOnlineStatus();
 
   }
 );
@@ -123,58 +120,370 @@ window.addEventListener(
 
 function initEvents(){
 
-  sendBtn?.addEventListener(
+  sendBtn.addEventListener(
     "click",
     sendMessage
   );
 
-  promptInput?.addEventListener(
+  promptInput.addEventListener(
     "keydown",
     handleEnterSend
   );
 
-  promptInput?.addEventListener(
+  promptInput.addEventListener(
     "input",
     autoResize
   );
 
-  menuBtn?.addEventListener(
+  fileInput.addEventListener(
+    "change",
+    handleFiles
+  );
+
+  menuBtn.addEventListener(
     "click",
     openSidebar
   );
 
-  closeSidebarBtn?.addEventListener(
+  closeSidebarBtn.addEventListener(
     "click",
     closeSidebar
   );
 
-  overlay?.addEventListener(
+  overlay.addEventListener(
     "click",
     closeSidebar
   );
 
-  closePreviewBtn?.addEventListener(
+  closePreviewBtn.addEventListener(
     "click",
     closePreview
   );
 
-  historySearch?.addEventListener(
+  imageModal.addEventListener(
+    "click",
+    () => {
+      imageModal.classList.remove(
+        "active"
+      );
+    }
+  );
+
+  historySearch.addEventListener(
     "input",
     searchHistory
   );
 
-  imageModal?.addEventListener(
-    "click",
+}
+
+/* =========================================================
+   SIDEBAR TOGGLE + HAND GESTURE SUPPORT
+   ADD BELOW YOUR EXISTING JS
+========================================================= */
+
+/* =========================================================
+   SIDEBAR STATE
+========================================================= */
+
+let sidebarOpen = false;
+
+/* =========================================================
+   SAFE OPEN SIDEBAR
+========================================================= */
+
+function openSidebar(){
+
+  if(!sidebar) return;
+
+  sidebar.classList.add("active");
+
+  if(overlay){
+    overlay.classList.add("active");
+  }
+
+  document.body.style.overflow = "hidden";
+
+  sidebarOpen = true;
+
+}
+
+/* =========================================================
+   SAFE CLOSE SIDEBAR
+========================================================= */
+
+function closeSidebar(){
+
+  if(!sidebar) return;
+
+  sidebar.classList.remove("active");
+
+  if(overlay){
+    overlay.classList.remove("active");
+  }
+
+  document.body.style.overflow = "";
+
+  sidebarOpen = false;
+
+}
+
+/* =========================================================
+   MENU BUTTON TOGGLE
+========================================================= */
+
+function initSidebarToggle(){
+
+  /* MENU BUTTON */
+
+  if(menuBtn){
+
+    menuBtn.addEventListener(
+      "click",
+      (e) => {
+
+        e.preventDefault();
+
+        e.stopPropagation();
+
+        if(sidebarOpen){
+
+          closeSidebar();
+
+        }else{
+
+          openSidebar();
+
+        }
+
+      }
+    );
+
+  }
+
+  /* CLOSE BUTTON */
+
+  if(closeSidebarBtn){
+
+    closeSidebarBtn.addEventListener(
+      "click",
+      closeSidebar
+    );
+
+  }
+
+  /* OVERLAY */
+
+  if(overlay){
+
+    overlay.addEventListener(
+      "click",
+      closeSidebar
+    );
+
+  }
+
+}
+
+/* =========================================================
+   ADVANCED HAND GESTURE SWIPE
+========================================================= */
+
+function initSidebarGestures(){
+
+  let startX = 0;
+
+  let startY = 0;
+
+  let currentX = 0;
+
+  let isDragging = false;
+
+  const EDGE_AREA = 35;
+
+  const OPEN_THRESHOLD = 90;
+
+  const CLOSE_THRESHOLD = 70;
+
+  /* TOUCH START */
+
+  document.addEventListener(
+    "touchstart",
+    (e) => {
+
+      const touch =
+        e.touches[0];
+
+      startX =
+        touch.clientX;
+
+      startY =
+        touch.clientY;
+
+      currentX =
+        startX;
+
+      /* OPEN FROM LEFT EDGE */
+
+      if(
+        startX <= EDGE_AREA ||
+        sidebarOpen
+      ){
+
+        isDragging = true;
+
+      }
+
+    },
+    { passive:true }
+  );
+
+  /* TOUCH MOVE */
+
+  document.addEventListener(
+    "touchmove",
+    (e) => {
+
+      if(!isDragging) return;
+
+      const touch =
+        e.touches[0];
+
+      currentX =
+        touch.clientX;
+
+      const deltaX =
+        currentX - startX;
+
+      const deltaY =
+        touch.clientY - startY;
+
+      /* IGNORE VERTICAL SCROLL */
+
+      if(
+        Math.abs(deltaY) >
+        Math.abs(deltaX)
+      ){
+
+        return;
+
+      }
+
+      /* SWIPE OPEN */
+
+      if(
+        !sidebarOpen &&
+        startX <= EDGE_AREA &&
+        deltaX > OPEN_THRESHOLD
+      ){
+
+        openSidebar();
+
+        isDragging = false;
+
+      }
+
+      /* SWIPE CLOSE */
+
+      if(
+        sidebarOpen &&
+        deltaX < -CLOSE_THRESHOLD
+      ){
+
+        closeSidebar();
+
+        isDragging = false;
+
+      }
+
+    },
+    { passive:true }
+  );
+
+  /* TOUCH END */
+
+  document.addEventListener(
+    "touchend",
     () => {
 
-      imageModal.classList.remove(
-        "active"
-      );
+      isDragging = false;
 
-    }
+    },
+    { passive:true }
   );
 
 }
+
+/* =========================================================
+   ESC KEY CLOSE
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  (e) => {
+
+    if(
+      e.key === "Escape" &&
+      sidebarOpen
+    ){
+
+      closeSidebar();
+
+    }
+
+  }
+);
+
+/* =========================================================
+   CLICK OUTSIDE CLOSE
+========================================================= */
+
+document.addEventListener(
+  "click",
+  (e) => {
+
+    if(
+      sidebarOpen &&
+      !sidebar.contains(e.target) &&
+      !menuBtn.contains(e.target)
+    ){
+
+      closeSidebar();
+
+    }
+
+  }
+);
+
+/* =========================================================
+   AUTO INIT
+========================================================= */
+
+window.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    initSidebarToggle();
+
+    initSidebarGestures();
+
+  }
+);
+
+/* =========================================================
+   OPTIONAL: PREVENT DOUBLE FUNCTIONS
+========================================================= */
+
+/*
+REMOVE OLD FUNCTIONS:
+
+- openSidebar()
+- closeSidebar()
+- initSwipe()
+
+FROM YOUR OLD FILE
+
+SO THEY DON'T CONFLICT
+*/
 
 /* =========================================================
    AUTO RESIZE
@@ -182,12 +491,10 @@ function initEvents(){
 
 function autoResize(){
 
-  promptInput.style.height =
-    "auto";
+  promptInput.style.height = "auto";
 
   promptInput.style.height =
-    promptInput.scrollHeight +
-    "px";
+    promptInput.scrollHeight + "px";
 
 }
 
@@ -216,22 +523,26 @@ function handleEnterSend(e){
 
 function initQuickButtons(){
 
+  /* EVENT DELEGATION */
+
   document.addEventListener(
     "click",
     async (e) => {
 
       const btn =
-        e.target.closest(
-          ".quick-btn"
-        );
+        e.target.closest(".quick-btn");
 
       if(!btn) return;
+
+      /* GET PROMPT */
 
       const prompt =
 
         btn.dataset.prompt ||
 
-        btn.dataset.message ||
+        btn.getAttribute(
+          "data-message"
+        ) ||
 
         btn.innerText ||
 
@@ -239,12 +550,27 @@ function initQuickButtons(){
 
       if(!prompt.trim()) return;
 
+      /* SET INPUT */
+
       promptInput.value =
         prompt.trim();
 
-      autoResize();
+      /* AUTO HEIGHT */
 
-      await delay(50);
+      promptInput.style.height =
+        "auto";
+
+      promptInput.style.height =
+        promptInput.scrollHeight +
+        "px";
+
+      /* SMALL DELAY */
+
+      await new Promise(resolve =>
+        setTimeout(resolve, 50)
+      );
+
+      /* SEND */
 
       sendMessage();
 
@@ -254,23 +580,26 @@ function initQuickButtons(){
 }
 
 /* =========================================================
-   MAIN SEND MESSAGE
+   ULTRA FAST STREAMING SEND MESSAGE
 ========================================================= */
 
 async function sendMessage(){
 
-  if(isGenerating) return;
-
   const prompt =
     promptInput.value.trim();
 
-  if(!prompt) return;
-
-  isGenerating = true;
+  if(
+  !prompt ||
+  prompt.length < 1
+){
+  return;
+}
 
   removeWelcome();
 
-  /* USER MESSAGE */
+  /* =====================================================
+     USER MESSAGE
+  ===================================================== */
 
   addMessage(
     prompt,
@@ -285,45 +614,40 @@ async function sendMessage(){
 
   });
 
-  /* META */
-
-  injectRuntimeMeta(
-    prompt,
-    "Akshat Network Hub AI Chat"
-  );
-
-  injectBreadcrumbs(prompt);
-
-  /* MAGIC COMMANDS */
+  /* =====================================================
+     MAGIC COMMANDS
+  ===================================================== */
 
   if(
-    await handleMagicCommands(
-      prompt
-    )
+    await handleMagicCommands(prompt)
   ){
 
     promptInput.value = "";
-
-    isGenerating = false;
 
     return;
 
   }
 
-  /* RESET INPUT */
+  /* =====================================================
+     RESET INPUT
+  ===================================================== */
 
   promptInput.value = "";
 
   promptInput.style.height =
     "60px";
 
-  /* AI CONTAINER */
+  /* =====================================================
+     AI CONTAINER
+  ===================================================== */
 
   const aiDiv =
     document.createElement("div");
 
   aiDiv.className =
     "message ai";
+
+  /* RAW STREAM CONTAINER */
 
   const streamText =
     document.createElement("div");
@@ -341,11 +665,21 @@ async function sendMessage(){
 
   scrollBottom();
 
+  /* =====================================================
+     RESPONSE BUFFER
+  ===================================================== */
+
   let fullResponse = "";
+
+  /* STREAM BUFFER */
 
   let pendingChunk = "";
 
   try{
+
+    /* ===================================================
+       API REQUEST
+    =================================================== */
 
     const response =
       await fetch(API_URL, {
@@ -378,6 +712,10 @@ async function sendMessage(){
 
       });
 
+    /* ===================================================
+       RESPONSE ERROR
+    =================================================== */
+
     if(!response.ok){
 
       const errText =
@@ -385,16 +723,24 @@ async function sendMessage(){
 
       throw new Error(
         errText ||
-        "Streaming Failed"
+        "Streaming failed"
       );
 
     }
+
+    /* ===================================================
+       STREAM READER
+    =================================================== */
 
     const reader =
       response.body.getReader();
 
     const decoder =
       new TextDecoder();
+
+    /* ===================================================
+       STREAM LOOP
+    =================================================== */
 
     while(true){
 
@@ -405,6 +751,8 @@ async function sendMessage(){
 
       if(done) break;
 
+      /* FAST DECODE */
+
       pendingChunk +=
         decoder.decode(
           value,
@@ -413,13 +761,19 @@ async function sendMessage(){
           }
         );
 
+      /* SPLIT SSE */
+
       const lines =
         pendingChunk.split("\n");
+
+      /* KEEP LAST INCOMPLETE */
 
       pendingChunk =
         lines.pop() || "";
 
       for(const line of lines){
+
+        /* ONLY SSE DATA */
 
         if(
           !line.startsWith("data:")
@@ -430,6 +784,8 @@ async function sendMessage(){
             "data:",
             ""
           ).trim();
+
+        /* END STREAM */
 
         if(
           jsonStr === "[DONE]"
@@ -444,6 +800,8 @@ async function sendMessage(){
           const json =
             JSON.parse(jsonStr);
 
+          /* TOKEN */
+
           const token =
 
             json
@@ -455,42 +813,25 @@ async function sendMessage(){
 
           if(token){
 
-  fullResponse += token;
+            fullResponse += token;
 
-  if(
-    fullResponse.length > 10000
-  ){
+            /* ===========================================
+               ULTRA FAST RAW APPEND
+            =========================================== */
 
-    fullResponse =
-      fullResponse.slice(
-        0,
-        10000
-      );
+            streamText.textContent =
+              fullResponse;
 
-  }
+            scrollBottom();
 
-  streamText.append(
-    document.createTextNode(token)
-  );
-
-  if(
-    fullResponse.length % 300 === 0
-  ){
-
-    requestAnimationFrame(
-      scrollBottom
-    );
-
-  }
-
-}
+          }
 
         }
 
         catch(err){
 
           console.warn(
-            "Chunk Error:",
+            "Chunk Parse Error:",
             err
           );
 
@@ -500,42 +841,34 @@ async function sendMessage(){
 
     }
 
-    /* FINAL FORMAT */
+    /* ===================================================
+       FINAL MARKDOWN RENDER
+    =================================================== */
 
-    fullResponse =
-      normalizeMarkdown(
+    streamText.innerHTML =
+      marked.parse(
         fullResponse
       );
 
-    const renderedHTML =
-  renderMarkdown(fullResponse);
+    /* ===================================================
+       CODE HIGHLIGHT
+    =================================================== */
 
-requestIdleCallback(() => {
+    Prism.highlightAllUnder(
+      aiDiv
+    );
 
-  streamText.innerHTML =
-    renderedHTML;
-
-  Prism.highlightAllUnder(
-    aiDiv
-  );
-
-  enhanceCodeBlocks(
-    aiDiv
-  );
-
-});
-
-    requestIdleCallback(() => {
-
-  Prism.highlightAllUnder(
-    aiDiv
-  );
-
-});
+    /* ===================================================
+       CODE BLOCK FEATURES
+    =================================================== */
 
     enhanceCodeBlocks(
       aiDiv
     );
+
+    /* ===================================================
+       SAVE MEMORY
+    =================================================== */
 
     messages.push({
 
@@ -552,12 +885,11 @@ requestIdleCallback(() => {
       fullResponse
     );
 
-    injectRuntimeMeta(
-      prompt,
-      fullResponse.slice(0,150)
-    );
-
   }
+
+  /* =====================================================
+     ERROR
+  ===================================================== */
 
   catch(error){
 
@@ -565,6 +897,8 @@ requestIdleCallback(() => {
       "STREAM ERROR:",
       error
     );
+
+    /* OFFLINE CACHE */
 
     const offline =
       await searchOfflineDB(
@@ -581,7 +915,7 @@ requestIdleCallback(() => {
 
 </div>
 
-${renderMarkdown(offline)}
+${marked.parse(offline)}
 `;
 
     }
@@ -601,11 +935,11 @@ ${error.message}
 </p>
 
 <ul>
-<li>Check NVIDIA API Key</li>
-<li>Check Cloudflare Logs</li>
-<li>Check CORS</li>
-<li>Check SSE Streaming</li>
-<li>Verify Backend Route</li>
+<li>Check Worker Logs</li>
+<li>Verify NVIDIA API Key</li>
+<li>Check CORS Origin</li>
+<li>Verify SSE Streaming</li>
+<li>Check Internet Connection</li>
 </ul>
 
 </div>
@@ -615,35 +949,83 @@ ${error.message}
 
   }
 
-  isGenerating = false;
-
 }
 
 /* =========================================================
-   MARKDOWN NORMALIZER
+   AI RESPONSE PARSER
 ========================================================= */
 
-function normalizeMarkdown(text){
+function extractAIResponse(data){
 
-  if(!text) return "";
+  console.log(
+    "FULL AI RESPONSE:",
+    data
+  );
 
-  /* AUTO CODE BLOCK */
+  /* DIRECT STRING */
 
-  if(
-    text.includes("function ") &&
-    !text.includes("```")
-  ){
+  if(typeof data === "string"){
 
-    text =
-`
-\`\`\`javascript
-${text}
-\`\`\`
-`;
+    return data;
 
   }
 
-  return text;
+  /* YOUR WORKER FORMAT */
+
+  if(
+
+    data.response &&
+
+    data.response.choices &&
+
+    data.response.choices[0] &&
+
+    data.response.choices[0].message
+
+  ){
+
+    return data
+      .response
+      .choices[0]
+      .message
+      .content;
+
+  }
+
+  /* DIRECT NVIDIA FORMAT */
+
+  if(
+
+    data.choices &&
+
+    data.choices[0] &&
+
+    data.choices[0].message
+
+  ){
+
+    return data
+      .choices[0]
+      .message
+      .content;
+
+  }
+
+  /* SIMPLE FORMAT */
+
+  if(data.reply){
+
+    return data.reply;
+
+  }
+
+  if(data.message){
+
+    return data.message;
+
+  }
+
+  return null;
 
 }
 
@@ -666,91 +1048,56 @@ function addMessage(content,type){
 
     enhanceCodeBlocks(div);
 
-    Prism.highlightAllUnder(
-      div
-    );
+    Prism.highlightAll();
 
-  }
+  }else{
 
-  else{
-
-    div.innerHTML =
-`
-<div class="user-text">
-${escapeHTML(content)}
-</div>
-`;
+    div.textContent = content;
 
   }
 
   chatContainer.appendChild(div);
 
- if(
-  fullResponse.length % 300 === 0
-){
   scrollBottom();
-}
 
   return div;
 
 }
 
 /* =========================================================
-   MARKDOWN RENDER
+   MARKDOWN
 ========================================================= */
 
 function renderMarkdown(text){
-
-  marked.setOptions({
-
-    breaks:true,
-
-    gfm:true
-
-  });
 
   return marked.parse(text || "");
 
 }
 
 /* =========================================================
-   CODE BLOCKS
+   CODE BLOCK ENHANCER
 ========================================================= */
 
 function enhanceCodeBlocks(container){
 
   const blocks =
-    container.querySelectorAll(
-      "pre"
-    );
+    container.querySelectorAll("pre");
 
   blocks.forEach(pre => {
 
-    if(
-      pre.dataset.enhanced
-    ) return;
-
-    pre.dataset.enhanced =
-      "true";
-
-    const toolbar =
+    const wrapper =
       document.createElement("div");
 
-    toolbar.className =
+    wrapper.className =
       "code-toolbar";
 
     /* COPY */
 
     const copyBtn =
-      document.createElement(
-        "button"
-      );
+      document.createElement("button");
 
     copyBtn.innerHTML =
-      `
-<i class="fa-solid fa-copy"></i>
-Copy
-`;
+      '<i class="fa-solid fa-copy"></i> Copy';
 
     copyBtn.onclick = () => {
 
@@ -764,28 +1111,19 @@ Copy
 
     };
 
-    toolbar.appendChild(
-      copyBtn
-    );
+    wrapper.appendChild(copyBtn);
 
-    /* PREVIEW */
+    /* HTML PREVIEW */
 
     if(
-      pre.innerText.includes(
-        "<html"
-      )
+      pre.innerText.includes("<html")
     ){
 
       const previewBtn =
-        document.createElement(
-          "button"
-        );
+        document.createElement("button");
 
       previewBtn.innerHTML =
-`
-<i class="fa-solid fa-eye"></i>
-Preview
-`;
+        '<i class="fa-solid fa-eye"></i> Preview';
 
       previewBtn.onclick = () => {
 
@@ -795,15 +1133,117 @@ Preview
 
       };
 
-      toolbar.appendChild(
+      wrapper.appendChild(
         previewBtn
       );
 
     }
 
     pre.parentNode.insertBefore(
-      toolbar,
-      pre
+      wrapper,
+      pre.nextSibling
+    );
+
+  });
+
+}
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+function openPreview(html){
+
+  previewModal.classList.add(
+    "active"
+  );
+
+  previewFrame.srcdoc = html;
+
+}
+
+function closePreview(){
+
+  previewModal.classList.remove(
+    "active"
+  );
+
+  previewFrame.srcdoc = "";
+
+}
+
+/* =========================================================
+   LOADER
+========================================================= */
+
+function addLoader(){
+
+  const div =
+    document.createElement("div");
+
+  div.className =
+    "message ai";
+
+  div.innerHTML =
+`
+<div class="typing">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+`;
+
+  chatContainer.appendChild(div);
+
+  scrollBottom();
+
+  return div;
+
+}
+
+/* =========================================================
+   FILE HANDLER
+========================================================= */
+
+function handleFiles(e){
+
+  const files =
+    Array.from(e.target.files);
+
+  uploadedFiles =
+    [...uploadedFiles,...files];
+
+  renderFilePreview();
+
+}
+
+/* =========================================================
+   FILE PREVIEW
+========================================================= */
+
+function renderFilePreview(){
+
+  filePreviewContainer.innerHTML = "";
+
+  uploadedFiles.forEach(file => {
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "file-preview";
+
+    div.innerHTML =
+`
+<i class="fa-solid fa-file"></i>
+
+<div class="file-preview-name">
+  ${file.name}
+</div>
+`;
+
+    filePreviewContainer.appendChild(
+      div
     );
 
   });
@@ -822,14 +1262,13 @@ async function handleMagicCommands(prompt){
   /* GOOGLE */
 
   if(
-    lower.startsWith(
-      "google "
-    )
+    lower.startsWith("google ") ||
+    lower.startsWith("search google ")
   ){
 
     const query =
       prompt.replace(
-        /google/gi,
+        /google|search google/gi,
         ""
       );
 
@@ -845,14 +1284,13 @@ async function handleMagicCommands(prompt){
   /* YOUTUBE */
 
   if(
-    lower.startsWith(
-      "youtube "
-    )
+    lower.startsWith("youtube ") ||
+    lower.startsWith("search youtube ")
   ){
 
     const query =
       prompt.replace(
-        /youtube/gi,
+        /youtube|search youtube/gi,
         ""
       );
 
@@ -865,12 +1303,31 @@ async function handleMagicCommands(prompt){
 
   }
 
-  /* PORTFOLIO */
+  /* BING */
 
   if(
-    lower.includes(
-      "portfolio"
-    )
+    lower.startsWith("bing ")
+  ){
+
+    const query =
+      prompt.replace(
+        /bing/gi,
+        ""
+      );
+
+    window.open(
+      `https://www.bing.com/search?q=${encodeURIComponent(query)}`,
+      "_blank"
+    );
+
+    return true;
+
+  }
+
+  /* OPEN PORTFOLIO */
+
+  if(
+    lower.includes("open portfolio") || lower.includes("my portfolio") || lower.includes("show portfolio") || lower.includes("Akshat portfolio") || lower.includes("Akshat Prasad portfolio")
   ){
 
     window.open(
@@ -885,9 +1342,7 @@ async function handleMagicCommands(prompt){
   /* FEEDBACK */
 
   if(
-    lower.includes(
-      "feedback"
-    )
+    lower.includes("feedback") || lower.includes("report issue") || lower.includes("suggestion") || lower.includes("contact support") || lower.includes("contact us") || lower.includes("contact me") || lower.includes("support") || lower.includes("help") || lower.includes("bug") || lower.includes("issue") || lower.includes("problem") || lower.includes("error") || lower.includes("fix") || lower.includes("improve") || lower.includes("feature request") || lower.includes("request feature") || lower.includes("I want to provide feedback") || lower.includes("I want to report an issue") || lower.includes("I have a suggestion") || lower.includes("I need help") || lower.includes("I found a bug") || lower.includes("I want to request a feature")
   ){
 
     window.open(
@@ -899,11 +1354,15 @@ async function handleMagicCommands(prompt){
 
   }
 
-  /* CLEAR */
+  /* Commands related to the app itself can be handled here */
 
   if(
+
     lower === "clear history" ||
+    lower === "delete history" ||
+    lower === "reset chat" ||
     lower === "new chat"
+
   ){
 
     clearChat();
@@ -912,212 +1371,212 @@ async function handleMagicCommands(prompt){
 
   }
 
+    if(
+
+      lower === "help" ||
+      lower === "commands" ||
+      lower === "magic commands"
+    ){
+
+      addMessage(
+`✨ Magic Commands:
+• google [query] - Search Google
+• youtube [query] - Search YouTube
+• bing [query] - Search Bing
+• open portfolio - Open my portfolio website
+• feedback - Provide feedback or report an issue
+• clear history - Clear chat history
+• help - Show this message`,
+        "ai"
+      );
+      return true;
+
+    }
+
+    if ( lower.includes("who are you") || lower.includes("what can you do") || lower.includes("introduce yourself") || lower.includes("your capabilities") || lower.includes("help me") || lower.includes("how can you assist me") ) {
+
+      addMessage(
+        `Hello! I am the Akshat Network Hub AI Assistant, powered by NVIDIA's NIM API and Cloudflare Workers. I can assist you with a variety of tasks including answering questions, providing information, performing calculations, searching the web, and more. Just type your request and I'll do my best to help!`,
+        "ai"
+      );
+
+     return true;
+
+  }
   return false;
 
 }
 
 /* =========================================================
-   CLEAR CHAT
+   QUICK BUTTONS
 ========================================================= */
 
-function clearChat(){
+function initQuickButtons(){
 
-  messages = [];
+  document
+    .querySelectorAll(".quick-btn")
+    .forEach(btn => {
 
-  localStorage.removeItem(
-    "anh_ai_history"
-  );
+      btn.addEventListener(
+        "click",
+        () => {
 
-  chatContainer.innerHTML = "";
+          promptInput.value =
+            btn.innerText;
 
-  location.reload();
-
-}
-
-/* =========================================================
-   META TAGS
-========================================================= */
-
-function injectRuntimeMeta(
-  title,
-  description
-){
-
-  document.title =
-    title;
-
-  setMeta(
-    "description",
-    description
-  );
-
-  setMeta(
-    "keywords",
-    `
-Akshat Network Hub,
-AI Assistant,
-NVIDIA NIM,
-Cloudflare Worker,
-JavaScript AI Chatbot
-`
-  );
-
-}
-
-/* =========================================================
-   META HELPER
-========================================================= */
-
-function setMeta(name,content){
-
-  let tag =
-    document.querySelector(
-      `meta[name="${name}"]`
-    );
-
-  if(!tag){
-
-    tag =
-      document.createElement(
-        "meta"
-      );
-
-    tag.setAttribute(
-      "name",
-      name
-    );
-
-    document.head.appendChild(
-      tag
-    );
-
-  }
-
-  tag.setAttribute(
-    "content",
-    content
-  );
-
-}
-
-/* =========================================================
-   BREADCRUMBS
-========================================================= */
-
-function injectBreadcrumbs(prompt){
-
-  let script =
-    document.getElementById(
-      "dynamic-breadcrumbs"
-    );
-
-  if(script){
-
-    script.remove();
-
-  }
-
-  script =
-    document.createElement(
-      "script"
-    );
-
-  script.id =
-    "dynamic-breadcrumbs";
-
-  script.type =
-    "application/ld+json";
-
-  script.textContent =
-    JSON.stringify({
-
-      "@context":
-        "https://schema.org",
-
-      "@type":
-        "BreadcrumbList",
-
-      itemListElement:[
-
-        {
-
-          "@type":
-            "ListItem",
-
-          position:1,
-
-          name:
-            "Home",
-
-          item:
-            location.origin
-
-        },
-
-        {
-
-          "@type":
-            "ListItem",
-
-          position:2,
-
-          name:
-            prompt
+          sendMessage();
 
         }
-
-      ]
+      );
 
     });
 
-  document.head.appendChild(
-    script
-  );
-
 }
 
 /* =========================================================
-   PREVIEW
+   SIDEBAR
 ========================================================= */
 
-function openPreview(html){
+function openSidebar(){
 
-  previewModal.classList.add(
+  sidebar.classList.add(
     "active"
   );
 
-  previewFrame.srcdoc =
-    html;
+  overlay.classList.add(
+    "active"
+  );
 
 }
 
-function closePreview(){
+function closeSidebar(){
 
-  previewModal.classList.remove(
+  sidebar.classList.remove(
     "active"
   );
 
-  previewFrame.srcdoc = "";
+  overlay.classList.remove(
+    "active"
+  );
 
 }
 
 /* =========================================================
-   STORAGE
+   SWIPE
+========================================================= */
+
+function initSwipe(){
+
+  let startX = 0;
+
+  document.addEventListener(
+    "touchstart",
+    e => {
+
+      startX =
+        e.touches[0].clientX;
+
+    }
+  );
+
+  document.addEventListener(
+    "touchmove",
+    e => {
+
+      const currentX =
+        e.touches[0].clientX;
+
+      if(
+        startX < 40 &&
+        currentX > 120
+      ){
+
+        openSidebar();
+
+      }
+
+      if(
+        currentX < 40
+      ){
+
+        closeSidebar();
+
+      }
+
+    }
+  );
+
+}
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+function scrollBottom(){
+
+  chatContainer.scrollTop =
+    chatContainer.scrollHeight;
+
+}
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+function removeWelcome(){
+
+  const welcome =
+    document.getElementById(
+      "welcomeScreen"
+    );
+
+  if(welcome){
+    welcome.remove();
+  }
+
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message){
+
+  toast.innerText =
+    message;
+
+  toast.classList.add(
+    "active"
+  );
+
+  setTimeout(() => {
+
+    toast.classList.remove(
+      "active"
+    );
+
+  },2500);
+
+}
+
+/* =========================================================
+   LOCAL STORAGE
 ========================================================= */
 
 function saveChatHistory(){
 
   localStorage.setItem(
-
     "anh_ai_history",
-
     JSON.stringify(messages)
-
   );
 
   renderHistorySidebar();
 
 }
+
+/* =========================================================
+   LOAD HISTORY
+========================================================= */
 
 function loadChatHistory(){
 
@@ -1136,13 +1595,10 @@ function loadChatHistory(){
     messages.forEach(msg => {
 
       addMessage(
-
         msg.content,
-
         msg.role === "user"
           ? "user"
           : "ai"
-
       );
 
     });
@@ -1160,28 +1616,22 @@ function loadChatHistory(){
 }
 
 /* =========================================================
-   HISTORY
+   SIDEBAR HISTORY
 ========================================================= */
 
 function renderHistorySidebar(){
 
-  if(!historyList) return;
+  historyList.innerHTML = "";
 
-  historyList.innerHTML =
-    "";
+  const reversed =
+    [...messages].reverse();
 
-  [...messages]
-  .reverse()
-  .forEach(msg => {
+  reversed.forEach(msg => {
 
-    if(
-      msg.role !== "user"
-    ) return;
+    if(msg.role !== "user") return;
 
     const div =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
     div.className =
       "history-item";
@@ -1189,17 +1639,15 @@ function renderHistorySidebar(){
     div.innerHTML =
 `
 <div class="history-item-title">
-${escapeHTML(msg.content.slice(0,80))}
+  ${msg.content.slice(0,80)}
 </div>
 
 <div class="history-item-date">
-${new Date().toLocaleString()}
+  ${new Date().toLocaleString()}
 </div>
 `;
 
-    historyList.appendChild(
-      div
-    );
+    historyList.appendChild(div);
 
   });
 
@@ -1215,20 +1663,18 @@ function searchHistory(){
     historySearch.value
     .toLowerCase();
 
-  document
-  .querySelectorAll(
-    ".history-item"
-  )
-  .forEach(item => {
+  const items =
+    document.querySelectorAll(
+      ".history-item"
+    );
+
+  items.forEach(item => {
 
     item.style.display =
-
       item.innerText
       .toLowerCase()
       .includes(query)
-
       ? "block"
-
       : "none";
 
   });
@@ -1248,7 +1694,7 @@ function initIndexedDB(){
     );
 
   request.onupgradeneeded =
-    (e) => {
+    e => {
 
       db =
         e.target.result;
@@ -1256,18 +1702,15 @@ function initIndexedDB(){
       db.createObjectStore(
         "responses",
         {
-
           keyPath:"id",
-
           autoIncrement:true
-
         }
       );
 
     };
 
   request.onsuccess =
-    (e) => {
+    e => {
 
       db =
         e.target.result;
@@ -1293,16 +1736,15 @@ function storeOfflineMessage(
       "readwrite"
     );
 
-  tx.objectStore(
-    "responses"
-  ).add({
+  const store =
+    tx.objectStore(
+      "responses"
+    );
 
+  store.add({
     prompt,
-
     response,
-
     date:Date.now()
-
   });
 
 }
@@ -1316,11 +1758,8 @@ function searchOfflineDB(prompt){
   return new Promise(resolve => {
 
     if(!db){
-
       resolve(null);
-
       return;
-
     }
 
     const tx =
@@ -1340,15 +1779,16 @@ function searchOfflineDB(prompt){
     request.onsuccess =
       () => {
 
-        const found =
-          request.result.find(
-            item =>
+        const data =
+          request.result;
 
-              item.prompt
-              .toLowerCase()
-              .includes(
-                prompt.toLowerCase()
-              )
+        const found =
+          data.find(item =>
+            item.prompt
+            .toLowerCase()
+            .includes(
+              prompt.toLowerCase()
+            )
           );
 
         resolve(
@@ -1360,79 +1800,6 @@ function searchOfflineDB(prompt){
       };
 
   });
-
-}
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-function openSidebar(){
-
-  sidebar?.classList.add(
-    "active"
-  );
-
-  overlay?.classList.add(
-    "active"
-  );
-
-}
-
-function closeSidebar(){
-
-  sidebar?.classList.remove(
-    "active"
-  );
-
-  overlay?.classList.remove(
-    "active"
-  );
-
-}
-
-/* =========================================================
-   SWIPE
-========================================================= */
-
-function initSwipe(){
-
-  let startX = 0;
-
-  document.addEventListener(
-    "touchstart",
-    (e) => {
-
-      startX =
-        e.touches[0].clientX;
-
-    }
-  );
-
-  document.addEventListener(
-    "touchmove",
-    (e) => {
-
-      const currentX =
-        e.touches[0].clientX;
-
-      if(
-        startX < 40 &&
-        currentX > 120
-      ){
-
-        openSidebar();
-
-      }
-
-      if(currentX < 40){
-
-        closeSidebar();
-
-      }
-
-    }
-  );
 
 }
 
@@ -1467,82 +1834,6 @@ function detectOnlineStatus(){
 }
 
 /* =========================================================
-   TOAST
-========================================================= */
-
-function showToast(message){
-
-  if(!toast) return;
-
-  toast.innerText =
-    message;
-
-  toast.classList.add(
-    "active"
-  );
-
-  setTimeout(() => {
-
-    toast.classList.remove(
-      "active"
-    );
-
-  },2500);
-
-}
-
-/* =========================================================
-   WELCOME
-========================================================= */
-
-function removeWelcome(){
-
-  const welcome =
-    document.getElementById(
-      "welcomeScreen"
-    );
-
-  if(welcome){
-
-    welcome.remove();
-
-  }
-
-}
-
-/* =========================================================
-   SCROLL
-========================================================= */
-
-function scrollBottom(){
-
-  chatContainer.scrollTop =
-    chatContainer.scrollHeight;
-
-}
-
-/* =========================================================
-   UTILITIES
-========================================================= */
-
-function delay(ms){
-
-  return new Promise(resolve =>
-    setTimeout(resolve,ms)
-  );
-
-}
-
-function escapeHTML(text){
-
-  return text
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;");
-
-}
-
-/* =========================================================
    SERVICE WORKER
 ========================================================= */
 
@@ -1569,7 +1860,7 @@ if(
 
 document.addEventListener(
   "click",
-  (e) => {
+  e => {
 
     if(
       e.target.tagName === "IMG"
@@ -1592,13 +1883,21 @@ document.addEventListener(
 ========================================================= */
 
 document
-?.getElementById(
-  "newChatBtn"
-)
-?.addEventListener(
-  "click",
-  clearChat
-);
+  .getElementById("newChatBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      messages = [];
+
+      localStorage.removeItem(
+        "anh_ai_history"
+      );
+
+      location.reload();
+
+    }
+  );
 
 /* =========================================================
    INIT COMPLETE
