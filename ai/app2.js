@@ -14,7 +14,7 @@ const API_URL =
 const MAX_RESPONSE_CHARS = 10000;
 
 const STREAM_MODEL =
-  "meta/llama-3.1-70b-instruct";
+  "meta/llama-3.1-8b-instruct";
 
 /* =========================================================
    DOM
@@ -455,29 +455,35 @@ async function sendMessage(){
 
           if(token){
 
-            fullResponse += token;
+  fullResponse += token;
 
-            /* LIMIT */
+  if(
+    fullResponse.length > 10000
+  ){
 
-            if(
-              fullResponse.length > 10000
-            ){
+    fullResponse =
+      fullResponse.slice(
+        0,
+        10000
+      );
 
-              fullResponse =
-                fullResponse.slice(
-                  0,
-                  10000
-                );
+  }
 
-            }
+  streamText.append(
+    document.createTextNode(token)
+  );
 
-            /* ULTRA FAST APPEND */
+  if(
+    fullResponse.length % 300 === 0
+  ){
 
-            streamText.append(
-              document.createTextNode(token)
-            );
+    requestAnimationFrame(
+      scrollBottom
+    );
 
-          }
+  }
+
+}
 
         }
 
