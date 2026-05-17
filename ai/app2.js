@@ -365,7 +365,8 @@ async function sendMessage(){
 
           stream:true,
 
-          model:STREAM_MODEL,
+          model:
+            "meta/llama-3.1-8b-instruct",
 
           temperature:0.7,
 
@@ -456,25 +457,25 @@ async function sendMessage(){
 
             fullResponse += token;
 
+            /* LIMIT */
+
             if(
-              fullResponse.length >
-              MAX_RESPONSE_CHARS
+              fullResponse.length > 10000
             ){
 
               fullResponse =
                 fullResponse.slice(
                   0,
-                  MAX_RESPONSE_CHARS
+                  10000
                 );
 
             }
 
-            /* FAST STREAM */
+            /* ULTRA FAST APPEND */
 
-            streamText.textContent =
-              fullResponse;
-
-            scrollBottom();
+            streamText.append(
+              document.createTextNode(token)
+            );
 
           }
 
@@ -500,14 +501,31 @@ async function sendMessage(){
         fullResponse
       );
 
-    streamText.innerHTML =
-      renderMarkdown(
-        fullResponse
-      );
+    const renderedHTML =
+  renderMarkdown(fullResponse);
 
-    Prism.highlightAllUnder(
-      aiDiv
-    );
+requestIdleCallback(() => {
+
+  streamText.innerHTML =
+    renderedHTML;
+
+  Prism.highlightAllUnder(
+    aiDiv
+  );
+
+  enhanceCodeBlocks(
+    aiDiv
+  );
+
+});
+
+    requestIdleCallback(() => {
+
+  Prism.highlightAllUnder(
+    aiDiv
+  );
+
+});
 
     enhanceCodeBlocks(
       aiDiv
@@ -661,7 +679,11 @@ ${escapeHTML(content)}
 
   chatContainer.appendChild(div);
 
+ if(
+  fullResponse.length % 300 === 0
+){
   scrollBottom();
+}
 
   return div;
 
