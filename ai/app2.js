@@ -1405,6 +1405,61 @@ async function handleMagicCommands(prompt){
   }
   return false;
 
+  if (lower.includes("free cache") || lower.includes("clear cache") || lower.includes("delete cache") || lower.includes("reset cache")) {
+
+    if(!db) return;
+    if(confirm("Are you sure you want to clear the offline cache? This cannot be undone.")){
+
+      const tx =
+        db.transaction(
+          ["responses"],
+          "readwrite"
+        );
+      const store =
+        tx.objectStore(
+          "responses"
+        );
+      store.clear();
+      showToast(
+        "Offline cache cleared"
+      );
+    }
+
+    return true;
+
+    if (lower.includes("show cache") || lower.includes("view cache") || lower.includes("display cache")) {
+
+      if(!db) return;
+      const tx =
+        db.transaction(
+          ["responses"],
+          "readonly"
+        );
+      const store =
+        tx.objectStore(
+          "responses"
+        );
+      store.getAll().then(responses => {
+        console.log(responses);
+      });
+    }
+
+    return true;
+
+  }
+
+  if (lower.includes("show local storage") || lower.includes("view local storage") || lower.includes("display local storage")) {
+
+    const localData = JSON.stringify(localStorage, null, 2);
+    addMessage(
+      `Here is the current local storage data:\n\n\`\`\`json\n${localData}\n\`\`\``,
+      "ai"
+    );
+    return true;
+
+    
+  }
+
 }
 
 /* =========================================================
@@ -1855,30 +1910,6 @@ if(
 }
 
 /* =========================================================
-   IMAGE PREVIEW
-========================================================= */
-
-document.addEventListener(
-  "click",
-  e => {
-
-    if(
-      e.target.tagName === "IMG"
-    ){
-
-      modalImage.src =
-        e.target.src;
-
-      imageModal.classList.add(
-        "active"
-      );
-
-    }
-
-  }
-);
-
-/* =========================================================
    NEW CHAT
 ========================================================= */
 
@@ -1898,6 +1929,76 @@ document
 
     }
   );
+
+/* =========================================================
+    CLEAR HISTORY & FREE UP MEMORY
+========================================================= */
+function clearChat(){
+
+  messages = [];
+  localStorage.removeItem("anh_ai_history");
+  chatContainer.innerHTML = "";
+  renderHistorySidebar();
+  showToast(
+    "Chat history cleared"
+  );
+}
+
+/* =========================================================
+   CLEAR OFFLINE CACHE
+========================================================= */
+
+document
+  .getElementById("clearCacheBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      if(!db) return;
+
+      const tx =
+        db.transaction(
+          ["responses"],
+          "readwrite"
+        );
+
+      const store =
+        tx.objectStore(
+          "responses"
+        );
+
+      store.clear();
+
+    }
+  );
+
+/* =========================================================
+    CLOSE HTML PREVIEW ON ESC & BUTTON CLICK closePreviewBtn
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  e => {
+    // SUPPORT BOTH ESC KEY AND CLOSE BUTTON
+
+    if(
+      e.key === "Escape" ||
+      e.target.id === "closePreviewBtn"
+    ){
+
+      closePreview();
+    }
+  }
+);
+
+function closePreview(){
+
+  previewModal.classList.remove(
+    "active"
+  );
+  previewFrame.srcdoc = "";
+
+}
 
 /* =========================================================
    INIT COMPLETE
