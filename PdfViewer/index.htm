@@ -848,34 +848,86 @@ async function loadPDF(){
 
   try{
 
+    /* LOADER UI */
+
+    document.getElementById(
+      "pageInfo"
+    ).textContent =
+    "Loading PDF...";
+
     const loadingTask =
 
     pdfjsLib.getDocument({
 
-      url:pdfURL,
+      url: pdfURL,
 
-      disableAutoFetch:false,
+      /* IMPORTANT FIXES */
 
-      disableStream:false,
+      disableAutoFetch:true,
 
-      disableRange:false,
+      disableStream:true,
 
-      enableXfa:true,
+      disableRange:true,
+
+      enableXfa:false,
+
+      useWorkerFetch:false,
+
+      isEvalSupported:true,
 
       cMapPacked:true
     });
 
+    /* PROGRESS */
+
+    loadingTask.onProgress =
+
+    function(progress){
+
+      if(progress.total){
+
+        const percent = Math.round(
+
+          (progress.loaded /
+          progress.total) * 100
+        );
+
+        document.getElementById(
+          "pageInfo"
+        ).textContent =
+
+        `Loading ${percent}%`;
+      }
+    };
+
     pdfDoc =
     await loadingTask.promise;
+
+    document.getElementById(
+      "pageInfo"
+    ).textContent =
+
+    `Loaded ${pdfDoc.numPages} pages`;
 
     renderPage();
 
   }catch(error){
 
-    console.log(error);
+    console.error(
+      "PDF LOAD ERROR:",
+      error
+    );
 
     alert(
-      "Failed to load PDF"
+
+      "Failed to load PDF.\n\n" +
+
+      "Possible reasons:\n" +
+
+      "- CORS blocked\n" +
+      "- Broken PDF\n" +
+      "- Firebase headers issue\n" +
+      "- PDF too large"
     );
   }
 }
