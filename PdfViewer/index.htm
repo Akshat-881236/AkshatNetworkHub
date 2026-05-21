@@ -613,6 +613,24 @@
       id="bookPage"
     >
 
+    <div class="controls">
+
+  <button onclick="prevBookSpread()">
+    Prev Spread
+  </button>
+
+  <span id="bookPageInfo">
+
+    Pages 1 - 2
+
+  </span>
+
+  <button onclick="nextBookSpread()">
+    Next Spread
+  </button>
+
+</div>
+
       <div class="book-grid">
 
         <div class="book-card">
@@ -801,6 +819,9 @@
     let currentPage =
     initialPage;
 
+    let currentBookPage =
+    currentPage;
+
     let scale =
     initialZoom / 100;
 
@@ -988,68 +1009,75 @@
        BOOK MODE
     ========================================== */
 
-    async function renderBookMode(){
+   async function renderBookMode(){
 
-      renderBookPage(
-        currentPage,
-        "leftBookCanvas"
-      );
+  if(!pdfDoc){
 
-      renderBookPage(
-        currentPage + 1,
-        "rightBookCanvas"
-      );
+    return;
+  }
+
+  renderBookPage(
+
+    currentBookPage,
+
+    "leftBookCanvas"
+  );
+
+  renderBookPage(
+
+    currentBookPage + 1,
+
+    "rightBookCanvas"
+  );
+
+  document.getElementById(
+    "bookPageInfo"
+  ).textContent =
+
+  `Pages ${currentBookPage}
+   -
+   ${Math.min(
+
+      currentBookPage + 1,
+
+      pdfDoc.numPages
+   )}`;
+}
+
+/* =========================================
+   BOOK NAVIGATION
+========================================= */
+
+function nextBookSpread(){
+
+  if(
+
+    currentBookPage + 2
+    <=
+    pdfDoc.numPages
+
+  ){
+
+    currentBookPage += 2;
+
+    renderBookMode();
+  }
+}
+
+function prevBookSpread(){
+
+  if(currentBookPage > 1){
+
+    currentBookPage -= 2;
+
+    if(currentBookPage < 1){
+
+      currentBookPage = 1;
     }
 
-    async function renderBookPage(
-      pageNumber,
-      canvasId
-    ){
-
-      if(
-
-        !pdfDoc ||
-
-        pageNumber >
-        pdfDoc.numPages
-
-      ){
-
-        return;
-      }
-
-      const page =
-      await pdfDoc.getPage(
-        pageNumber
-      );
-
-      const viewport =
-      page.getViewport({
-
-        scale:.8
-      });
-
-      const canvas =
-      document.getElementById(
-        canvasId
-      );
-
-      const ctx =
-      canvas.getContext("2d");
-
-      canvas.width =
-      viewport.width;
-
-      canvas.height =
-      viewport.height;
-
-      await page.render({
-
-        canvasContext:ctx,
-
-        viewport
-      }).promise;
-    }
+    renderBookMode();
+  }
+}
 
     /* =========================================
        DOWNLOAD
@@ -1151,7 +1179,95 @@
           );
         }
       );
+
+      /* =========================================
+   BOOK SHORTCUTS
+========================================= */
+
+document.addEventListener(
+  "keydown",
+  (e)=>{
+
+    const bookActive =
+
+    document
+    .getElementById(
+      "bookPage"
+    )
+    .classList.contains(
+      "active"
+    );
+
+    if(!bookActive){
+
+      return;
+    }
+
+    if(e.key === "ArrowRight"){
+
+      nextBookSpread();
+    }
+
+    if(e.key === "ArrowLeft"){
+
+      prevBookSpread();
+    }
+  }
+);
     });
+
+    /* =========================================
+   MOBILE SWIPE
+========================================= */
+
+let touchStartX = 0;
+
+let touchEndX = 0;
+
+const bookPage =
+document.getElementById(
+  "bookPage"
+);
+
+bookPage.addEventListener(
+  "touchstart",
+  (e)=>{
+
+    touchStartX =
+    e.changedTouches[0].screenX;
+  }
+);
+
+bookPage.addEventListener(
+  "touchend",
+  (e)=>{
+
+    touchEndX =
+    e.changedTouches[0].screenX;
+
+    handleBookSwipe();
+  }
+);
+
+function handleBookSwipe(){
+
+  const diff =
+  touchStartX - touchEndX;
+
+  // LEFT SWIPE
+
+  if(diff > 50){
+
+    nextBookSpread();
+  }
+
+  // RIGHT SWIPE
+
+  if(diff < -50){
+
+    prevBookSpread();
+  }
+}
 
     /* =========================================
        RESTORE STATE
