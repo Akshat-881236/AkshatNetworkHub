@@ -1,1989 +1,1230 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <!-- Meta Tags - SEO Optimization -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-    <!-- Primary Meta Tags -->
-    <title>Advanced PDF Viewer & Analyzer Tool - View, Edit & Extract PDF Data</title>
-    <meta name="description" content="Advanced PDF Viewer and Analyzer Tool - View PDFs, edit source code with live preview, extract metadata, find URLs, and enjoy book mode reading. Fast, secure, and mobile-responsive.">
-    <meta name="keywords" content="PDF viewer, PDF analyzer, PDF editor, PDF metadata, URL extractor, book mode, SPA, responsive design">
-    <meta name="author" content="Akshat-881236">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="English">
-    
-    <!-- Open Graph Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://akshat-881236.github.io/AkshatNetworkHub/PdfViewer/index.htm">
-    <meta property="og:title" content="Advanced PDF Viewer & Analyzer Tool - View, Edit & Extract PDF Data">
-    <meta property="og:description" content="Advanced PDF Viewer and Analyzer Tool - View PDFs, edit source code with live preview, extract metadata, find URLs, and enjoy book mode reading. Fast, secure, and mobile-responsive.">
-    <meta property="og:image" content="https://akshat-881236.github.io//AkshatNetworkHub/PdfViewer/ANH_PdfViewer.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:site_name" content="Advanced PDF Viewer & Analyzer Tool - View, Edit & Extract PDF Data">
-    <meta property="og:locale" content="en_US">
-    
-    <!-- Twitter Card Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://akshat-881236.github.io/AkshatNetworkHub/PdfViewer/index.htm">
-    <meta name="twitter:title" content="Advanced PDF Viewer & Analyzer Tool - View, Edit & Extract PDF Data">
-    <meta name="twitter:description" content="Advanced PDF Viewer and Analyzer Tool - View PDFs, edit source code with live preview, extract metadata, find URLs, and enjoy book mode reading. Fast, secure, and mobile-responsive.">
-    <meta name="twitter:image" content="https://akshat-881236.github.io//AkshatNetworkHub/PdfViewer/ANH_PdfViewer.png">
-    <meta name="twitter:creator" content="@Akshat881236">
-    
-    <!-- Schema.org - Person -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Akshat-881236",
-        "url": "https://akshat-881236.github.io/AkshatNetworkHub/PdfViewer/index.htm",
-        "logo": "https://akshat-881236.github.io//AkshatNetworkHub/PdfViewer/ANH_PdfViewer.png",
-        "sameAs": [
-            "https://github.com/Akshat-881236",
-            "https://akshat-881236.github.io/AkshatNetworkHub/PdfViewer/index.htm",
-            "https://www.linkedin.com/in/akshat-network-hub/",
-            "https://medium.com/@its.akshatnetworkhub23/"
-        ]
+
+  <!-- =========================================
+       META
+  ========================================== -->
+ <link rel="icon" href="/AkshatNetworkHub/PdfViewer/ANH_PdfViewer.png" type="image/png">
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
+  >
+
+  <title>
+    DPGNotes Smart PDF Reader
+  </title>
+
+  <meta
+    name="description"
+    content="Fast mobile-first educational PDF reader powered by PDF.js with Book Mode, Share, Download and responsive rendering."
+  >
+
+  <meta
+    name="keywords"
+    content="DPGNotes, PDF Reader, PDF.js, Educational PDF Viewer, Mobile PDF Viewer, Notes Reader, Book Mode"
+  >
+
+  <meta
+    name="robots"
+    content="index, follow"
+  >
+
+  <meta
+    name="theme-color"
+    content="#0f172a"
+  >
+
+  <!-- OPEN GRAPH -->
+
+  <meta
+    property="og:type"
+    content="website"
+  >
+
+  <meta
+    property="og:title"
+    content="DPGNotes Smart PDF Reader"
+  >
+
+  <meta
+    property="og:description"
+    content="Fast educational PDF reading experience optimized for mobile-first learning."
+  >
+
+  <!-- CANONICAL -->
+
+  <link
+    rel="canonical"
+    href="https://akshat-881236.github.io/AkshatNetworkHub/PdfViewer/index.htm"
+  >
+
+  <!-- JSON LD -->
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"DPGNotes Smart PDF Reader",
+    "applicationCategory":"EducationalApplication",
+    "operatingSystem":"Any",
+    "description":"Mobile-first educational PDF reader powered by PDF.js"
+  }
+  </script>
+
+  <!-- PDF JS -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  </script>
+
+  <!-- =========================================
+       STYLE
+  ========================================== -->
+
+  <style>
+
+    /* =========================================
+       RESET
+    ========================================== */
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
-    </script>
-    
-    <!-- Schema.org - Organization -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Advanced PDF Viewer & Analyzer Tool - View, Edit & Extract PDF Data",
-        "description": "Advanced PDF Viewer and Analyzer Tool - View PDFs, edit source code with live preview, extract metadata, find URLs, and enjoy book mode reading. Fast, secure, and mobile-responsive.",
-        "url": "https://akshat-881236.github.io/AkshatNetworkHub/PdfViewer/index.htm",
-        "logo": "https://akshat-881236.github.io/AkshatNetworkHub/PdfViewer/ANH_PdfViewer.png",
-        "sameAs": [
-            "https://akshat-881236.github.io/AkshatNetworkHub/PdfViewer/index.htm",
-            "https://www.linkedin.com/in/akshat-network-hub/",
-            "https://medium.com/@its.akshatnetworkhub23/",
-            "https://github.com/Akshat-881236"
-        ]
+
+    :root{
+
+      --bg:#020617;
+
+      --surface:#0f172a;
+
+      --surface-2:#111827;
+
+      --primary:#2563eb;
+
+      --text:#f8fafc;
+
+      --muted:#94a3b8;
+
+      --border:#1e293b;
     }
-    </script>
-    
-    <!-- Schema.org - WebApplication -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Advanced PDF Viewer & Analyzer Tool - View, Edit & Extract PDF Data",
-        "description": "Advanced PDF Viewer and Analyzer Tool - View PDFs, edit source code with live preview, extract metadata, find URLs, and enjoy book mode reading. Fast, secure, and mobile-responsive.",
-        "url": "https://akshat-881236.github.io/AkshatNetworkHub/PdfViewer/index.htm",
-        "logo": "https://akshat-881236.github.io//AkshatNetworkHub/PdfViewer/ANH_PdfViewer.png",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Any",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        }
+
+    body{
+
+      font-family:
+      Inter,
+      system-ui,
+      sans-serif;
+
+      background:
+      var(--bg);
+
+      color:
+      var(--text);
+
+      overflow-x:hidden;
     }
-    </script>
-    
-    <!-- Link Relations -->
-    <link rel="canonical" href="https://akshat-881236.github.io/AkshatNetworkHub/PdfViewer/index.htm">
-    <link rel="me" href="https://github.com/Akshat-881236">
-    <link rel="me" href="https://medium.com/@its.akshatnetworkhub23/">
-    <link rel="alternate" hreflang="en" href="https://akshat-881236.github.io/AkshatNetworkHub/PdfViewer/index.htm">
-    
-    <!-- Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="https://akshat-881236.github.io//AkshatNetworkHub/PdfViewer/ANH_PdfViewer.png">
-    <link rel="apple-touch-icon" href="https://akshat-881236.github.io//AkshatNetworkHub/PdfViewer/ANH_PdfViewer.png">
-    <link rel="shortcut icon" href="https://akshat-881236.github.io//AkshatNetworkHub/PdfViewer/ANH_PdfViewer.png">
-    
-    <!-- Preconnect & DNS Prefetch -->
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-    
-    <!-- Styles -->
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-color: #FF6B6B;
-            --secondary-color: #4ECDC4;
-            --accent-color: #FFE66D;
-            --dark-bg: #2C3E50;
-            --light-bg: #ECF0F1;
-            --text-dark: #2C3E50;
-            --text-light: #7F8C8D;
-            --border-color: #BDC3C7;
-            --success-color: #27AE60;
-            --error-color: #E74C3C;
-            --warning-color: #F39C12;
-            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
-            --transition: all 0.3s ease;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--light-bg);
-            color: var(--text-dark);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* ========== HEADER STYLES ========== */
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 1rem;
-            box-shadow: var(--shadow-lg);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            color: white;
-        }
-
-        .logo::before {
-            content: '📄';
-            font-size: 2rem;
-        }
-
-        .header-right {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .file-input-wrapper input[type="file"] {
-            position: absolute;
-            left: -9999px;
-        }
-
-        .btn {
-            padding: 0.6rem 1.2rem;
-            border: none;
-            border-radius: 0.4rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: var(--text-dark);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .btn-secondary {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .file-label {
-            cursor: pointer;
-        }
-
-        .url-input-section {
-            display: flex;
-            gap: 0.5rem;
-            flex: 1;
-            max-width: 400px;
-        }
-
-        .url-input-section input {
-            flex: 1;
-            padding: 0.6rem;
-            border: none;
-            border-radius: 0.4rem;
-            font-size: 0.9rem;
-        }
-
-        .url-input-section button {
-            padding: 0.6rem 1rem;
-        }
-
-        /* ========== MAIN CONTAINER ========== */
-        main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1rem;
-        }
-
-        /* ========== TABS NAVIGATION ========== */
-        .tabs-container {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            background: white;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            box-shadow: var(--shadow);
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .tabs-container::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .tabs-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .tabs-container::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 3px;
-        }
-
-        .tabs-container::-webkit-scrollbar-thumb:hover {
-            background: var(--text-light);
-        }
-
-        .tab-btn {
-            padding: 0.7rem 1.2rem;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--text-light);
-            border-bottom: 3px solid transparent;
-            transition: var(--transition);
-            white-space: nowrap;
-            font-size: 0.95rem;
-        }
-
-        .tab-btn:hover {
-            color: var(--primary-color);
-        }
-
-        .tab-btn.active {
-            color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
-        }
-
-        /* ========== CONTENT AREAS ========== */
-        .content-wrapper {
-            background: white;
-            border-radius: 0.5rem;
-            box-shadow: var(--shadow);
-            padding: 1.5rem;
-            display: none;
-        }
-
-        .content-wrapper.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ========== UPLOAD AREA ========== */
-        .upload-container {
-            text-align: center;
-            padding: 3rem 1rem;
-        }
-
-        .upload-box {
-            border: 3px dashed var(--primary-color);
-            border-radius: 0.5rem;
-            padding: 3rem 2rem;
-            cursor: pointer;
-            transition: var(--transition);
-            background-color: rgba(255, 107, 107, 0.05);
-        }
-
-        .upload-box:hover {
-            background-color: rgba(255, 107, 107, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .upload-box.drag-over {
-            background-color: rgba(255, 107, 107, 0.15);
-            border-color: var(--secondary-color);
-        }
-
-        .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .upload-text h3 {
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .upload-text p {
-            color: var(--text-light);
-            margin-bottom: 0.5rem;
-        }
-
-        /* ========== PDF VIEWER ========== */
-        .pdf-viewer-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        .pdf-canvas-wrapper {
-            background: #f5f5f5;
-            border-radius: 0.4rem;
-            overflow-y: auto;
-            max-height: 600px;
-            border: 1px solid var(--border-color);
-        }
-
-        .pdf-canvas {
-            display: block;
-            margin: 1rem auto;
-            max-width: 100%;
-            height: auto;
-            box-shadow: var(--shadow);
-            border-radius: 0.2rem;
-        }
-
-        .pdf-controls {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            background: #f9f9f9;
-            border-radius: 0.4rem;
-        }
-
-        .page-nav {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .page-nav button {
-            padding: 0.5rem 0.8rem;
-            font-size: 0.9rem;
-        }
-
-        .page-info {
-            font-weight: 600;
-            color: var(--text-dark);
-            min-width: 150px;
-            text-align: center;
-        }
-
-        .zoom-controls {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .zoom-controls input[type="range"] {
-            width: 120px;
-            cursor: pointer;
-        }
-
-        /* ========== SOURCE CODE EDITOR ========== */
-        .editor-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .editor-panel {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .editor-panel h3 {
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-            font-size: 1rem;
-        }
-
-        .editor-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .code-editor {
-            flex: 1;
-            padding: 1rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            border: 1px solid var(--border-color);
-            border-radius: 0.4rem;
-            background: #1e1e1e;
-            color: #d4d4d4;
-            resize: none;
-            line-height: 1.5;
-            tab-size: 4;
-        }
-
-        .code-editor:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
-        }
-
-        .preview-area {
-            border: 1px solid var(--border-color);
-            border-radius: 0.4rem;
-            overflow: auto;
-            max-height: 500px;
-            background: white;
-        }
-
-        .preview-pdf {
-            display: block;
-            max-width: 100%;
-            height: auto;
-        }
-
-        /* ========== METADATA TABLE ========== */
-        .metadata-container {
-            overflow-x: auto;
-        }
-
-        .metadata-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-        }
-
-        .metadata-table th {
-            background: var(--primary-color);
-            color: white;
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-        }
-
-        .metadata-table td {
-            padding: 0.8rem 1rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .metadata-table tbody tr:hover {
-            background: rgba(255, 107, 107, 0.05);
-        }
-
-        .metadata-table tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-
-        .metadata-label {
-            font-weight: 600;
-            color: var(--primary-color);
-            min-width: 150px;
-        }
-
-        .metadata-value {
-            word-break: break-all;
-            color: var(--text-dark);
-        }
-
-        /* ========== URLs LIST ========== */
-        .urls-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1rem;
-        }
-
-        .url-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1.2rem;
-            border-radius: 0.5rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-
-        .url-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .url-card h4 {
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            word-break: break-word;
-        }
-
-        .url-card p {
-            font-size: 0.85rem;
-            opacity: 0.9;
-            margin-bottom: 0.8rem;
-            word-break: break-all;
-        }
-
-        .url-card a {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.4rem 0.8rem;
-            border-radius: 0.3rem;
-            color: white;
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .url-card a:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .no-urls {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-light);
-        }
-
-        /* ========== BOOK MODE ========== */
-        .book-mode-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .book-page {
-            background: white;
-            padding: 2rem;
-            border-radius: 0.5rem;
-            box-shadow: var(--shadow-lg);
-            min-height: 400px;
-        }
-
-        .book-page h2 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 0.5rem;
-        }
-
-        .book-page-number {
-            text-align: center;
-            color: var(--text-light);
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        .book-controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .book-controls button {
-            padding: 0.8rem 1.5rem;
-        }
-
-        /* ========== ALERTS & NOTIFICATIONS ========== */
-        .alert {
-            padding: 1rem;
-            border-radius: 0.4rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .alert-warning {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
-        }
-
-        .alert-info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-
-        .alert-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: var(--transition);
-            margin-left: auto;
-        }
-
-        .alert-close:hover {
-            opacity: 1;
-        }
-
-        /* ========== LOADER ========== */
-        .loader {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 107, 107, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .loading-container {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        /* ========== MOBILE RESPONSIVENESS ========== */
-        @media (max-width: 1024px) {
-            .editor-container {
-                grid-template-columns: 1fr;
-            }
-
-            .book-mode-container {
-                grid-template-columns: 1fr;
-            }
-
-            .header-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .url-input-section {
-                max-width: 100%;
-            }
-
-            .tabs-container {
-                overflow-x: auto;
-            }
-
-            .urls-container {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-
-            .pdf-controls {
-                flex-direction: column;
-            }
-
-            .page-nav {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-        }
-
-        @media (max-width: 768px) {
-            header {
-                padding: 0.75rem;
-            }
-
-            .header-container {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .logo {
-                font-size: 1.2rem;
-            }
-
-            .header-right {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .header-right > * {
-                width: 100%;
-            }
-
-            .url-input-section {
-                flex-direction: column;
-                max-width: 100%;
-            }
-
-            .url-input-section input,
-            .url-input-section button {
-                width: 100%;
-            }
-
-            main {
-                padding: 0.75rem;
-            }
-
-            .content-wrapper {
-                padding: 1rem;
-            }
-
-            .tabs-container {
-                gap: 0.25rem;
-            }
-
-            .tab-btn {
-                padding: 0.5rem 0.8rem;
-                font-size: 0.85rem;
-            }
-
-            .upload-container {
-                padding: 2rem 0.5rem;
-            }
-
-            .upload-box {
-                padding: 2rem 1rem;
-            }
-
-            .upload-icon {
-                font-size: 2.5rem;
-            }
-
-            .pdf-canvas-wrapper {
-                max-height: 400px;
-            }
-
-            .pdf-controls {
-                gap: 0.5rem;
-                padding: 0.75rem;
-            }
-
-            .page-info {
-                font-size: 0.85rem;
-                min-width: 120px;
-            }
-
-            .zoom-controls input[type="range"] {
-                width: 80px;
-            }
-
-            .code-editor {
-                font-size: 0.8rem;
-                padding: 0.75rem;
-            }
-
-            .metadata-table th,
-            .metadata-table td {
-                padding: 0.6rem;
-                font-size: 0.85rem;
-            }
-
-            .urls-container {
-                grid-template-columns: 1fr;
-            }
-
-            .url-card {
-                padding: 1rem;
-            }
-
-            .book-page {
-                padding: 1.5rem;
-                min-height: 300px;
-            }
-
-            .book-controls {
-                gap: 0.5rem;
-            }
-
-            .book-controls button {
-                padding: 0.6rem 1rem;
-                font-size: 0.9rem;
-            }
-
-            .btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.85rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            header {
-                padding: 0.5rem;
-            }
-
-            .logo {
-                font-size: 1rem;
-            }
-
-            .logo::before {
-                font-size: 1.5rem;
-            }
-
-            .btn {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.75rem;
-            }
-
-            .tabs-container {
-                gap: 0.15rem;
-                padding: 0.3rem;
-            }
-
-            .tab-btn {
-                padding: 0.4rem 0.6rem;
-                font-size: 0.7rem;
-            }
-
-            main {
-                padding: 0.5rem;
-            }
-
-            .content-wrapper {
-                padding: 0.75rem;
-            }
-
-            .upload-box {
-                padding: 1.5rem 0.75rem;
-            }
-
-            .upload-icon {
-                font-size: 2rem;
-            }
-
-            .upload-box h3 {
-                font-size: 1rem;
-            }
-
-            .pdf-canvas-wrapper {
-                max-height: 300px;
-            }
-
-            .page-nav {
-                gap: 0.25rem;
-            }
-
-            .page-nav button {
-                padding: 0.4rem 0.6rem;
-                font-size: 0.75rem;
-            }
-
-            .page-info {
-                font-size: 0.75rem;
-                min-width: 100px;
-            }
-
-            .metadata-table {
-                font-size: 0.75rem;
-            }
-
-            .metadata-table th,
-            .metadata-table td {
-                padding: 0.4rem;
-            }
-
-            .url-card {
-                padding: 0.75rem;
-            }
-
-            .url-card h4 {
-                font-size: 0.8rem;
-            }
-
-            .url-card p {
-                font-size: 0.7rem;
-            }
-
-            .book-page {
-                padding: 1rem;
-            }
-
-            .book-page h2 {
-                font-size: 1.2rem;
-            }
-
-            .alert {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .alert-close {
-                margin-left: 0;
-                margin-top: 0.5rem;
-            }
-        }
-
-        /* ========== SMARTBOARD/LARGE DISPLAY ========== */
-        @media (min-width: 1920px) {
-            main {
-                padding: 2rem;
-            }
-
-            .content-wrapper {
-                padding: 2rem;
-            }
-
-            .pdf-canvas-wrapper {
-                max-height: 800px;
-            }
-
-            .editor-container {
-                gap: 2rem;
-            }
-
-            .urls-container {
-                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            }
-
-            .tab-btn {
-                padding: 1rem 1.5rem;
-                font-size: 1.1rem;
-            }
-
-            .code-editor {
-                font-size: 1rem;
-            }
-        }
-
-        /* ========== ACCESSIBILITY ========== */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #1a1a1a;
-                color: #e0e0e0;
-            }
-
-            .content-wrapper,
-            .code-editor,
-            .preview-area,
-            .book-page {
-                background: #2d2d2d;
-                color: #e0e0e0;
-            }
-
-            .tabs-container {
-                background: #1a1a1a;
-                border-bottom: 1px solid #3a3a3a;
-            }
-
-            .tab-btn {
-                color: #999;
-            }
-
-            .tab-btn:hover,
-            .tab-btn.active {
-                color: #ff9999;
-            }
-
-            .metadata-table tbody tr:hover {
-                background: rgba(255, 107, 107, 0.15);
-            }
-
-            .metadata-table tr:nth-child(even) {
-                background: #1a1a1a;
-            }
-
-            .upload-box {
-                background-color: rgba(255, 107, 107, 0.15);
-                border-color: #ff9999;
-            }
-
-            .alert {
-                opacity: 0.9;
-            }
-        }
-
-        /* ========== PRINT STYLES ========== */
-        @media print {
-            header,
-            .tabs-container,
-            .pdf-controls,
-            .book-controls,
-            .url-input-section {
-                display: none;
-            }
-
-            .content-wrapper {
-                box-shadow: none;
-                border: 1px solid #ddd;
-                page-break-inside: avoid;
-            }
-
-            .pdf-canvas {
-                page-break-inside: avoid;
-            }
-        }
-
-        /* ========== UTILITY CLASSES ========== */
-        .hidden {
-            display: none !important;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-1 { margin-top: 0.5rem; }
-        .mt-2 { margin-top: 1rem; }
-        .mt-3 { margin-top: 1.5rem; }
-        .mb-1 { margin-bottom: 0.5rem; }
-        .mb-2 { margin-bottom: 1rem; }
-        .mb-3 { margin-bottom: 1.5rem; }
-    </style>
+
+    button{
+
+      font-family:inherit;
+    }
+
+    /* =========================================
+       HEADER
+    ========================================== */
+
+    header{
+
+      position:sticky;
+
+      top:0;
+
+      z-index:1000;
+
+      background:
+      rgba(2,6,23,.92);
+
+      backdrop-filter:
+      blur(20px);
+
+      border-bottom:
+      1px solid var(--border);
+
+      padding:1rem;
+    }
+
+    .topbar{
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:space-between;
+
+      gap:1rem;
+
+      flex-wrap:wrap;
+    }
+
+    .branding h1{
+
+      font-size:1.25rem;
+
+      font-weight:800;
+    }
+
+    .branding p{
+
+      margin-top:.25rem;
+
+      color:var(--muted);
+
+      font-size:.85rem;
+    }
+
+    /* =========================================
+       ACTIONS
+    ========================================== */
+
+    .actions{
+
+      display:flex;
+
+      gap:.7rem;
+
+      flex-wrap:wrap;
+    }
+
+    .action-btn{
+
+      border:none;
+
+      cursor:pointer;
+
+      background:
+      var(--primary);
+
+      color:white;
+
+      padding:
+      .85rem 1rem;
+
+      border-radius:16px;
+
+      font-weight:700;
+
+      transition:.2s;
+    }
+
+    .action-btn:hover{
+
+      opacity:.9;
+    }
+
+    /* =========================================
+       TABS
+    ========================================== */
+
+    .tabs{
+
+      display:flex;
+
+      gap:.7rem;
+
+      overflow:auto;
+
+      margin-top:1rem;
+
+      scrollbar-width:none;
+    }
+
+    .tabs::-webkit-scrollbar{
+
+      display:none;
+    }
+
+    .tab-btn{
+
+      border:none;
+
+      background:
+      var(--surface);
+
+      color:
+      var(--muted);
+
+      padding:
+      .9rem 1rem;
+
+      border-radius:16px;
+
+      cursor:pointer;
+
+      white-space:nowrap;
+
+      font-weight:700;
+    }
+
+    .tab-btn.active{
+
+      background:
+      var(--primary);
+
+      color:white;
+    }
+
+    /* =========================================
+       MAIN
+    ========================================== */
+
+    main{
+
+      max-width:1600px;
+
+      margin:auto;
+
+      padding:1rem;
+    }
+
+    .page{
+
+      display:none;
+    }
+
+    .page.active{
+
+      display:block;
+    }
+
+    /* =========================================
+       VIEWER
+    ========================================== */
+
+    .viewer{
+
+      background:
+      var(--surface);
+
+      border:
+      1px solid var(--border);
+
+      border-radius:24px;
+
+      padding:1rem;
+    }
+
+    .canvas-container{
+
+      overflow:auto;
+
+      text-align:center;
+    }
+
+    canvas{
+
+      background:white;
+
+      border-radius:18px;
+
+      max-width:100%;
+    }
+
+    /* =========================================
+       CONTROLS
+    ========================================== */
+
+    .controls{
+
+      margin-top:1rem;
+
+      display:flex;
+
+      justify-content:center;
+
+      align-items:center;
+
+      flex-wrap:wrap;
+
+      gap:.7rem;
+    }
+
+    .controls button{
+
+      border:none;
+
+      cursor:pointer;
+
+      background:
+      var(--primary);
+
+      color:white;
+
+      padding:
+      .8rem
+      1rem;
+
+      border-radius:14px;
+
+      font-weight:700;
+    }
+
+    .controls span{
+
+      color:var(--muted);
+
+      font-weight:600;
+    }
+
+    /* =========================================
+       DETAILS
+    ========================================== */
+
+    .details-grid{
+
+      display:grid;
+
+      grid-template-columns:
+      repeat(
+        auto-fit,
+        minmax(260px,1fr)
+      );
+
+      gap:1rem;
+    }
+
+    .detail-card{
+
+      background:
+      var(--surface);
+
+      border:
+      1px solid var(--border);
+
+      border-radius:24px;
+
+      padding:1rem;
+    }
+
+    .detail-card h3{
+
+      color:var(--primary);
+
+      margin-bottom:.8rem;
+    }
+
+    .detail-card p{
+
+      color:var(--muted);
+
+      line-height:1.7;
+    }
+
+    /* =========================================
+       BOOK MODE
+    ========================================== */
+
+    .book-grid{
+
+      display:grid;
+
+      grid-template-columns:
+      1fr 1fr;
+
+      gap:1rem;
+    }
+
+    .book-card{
+
+      background:
+      var(--surface);
+
+      border:
+      1px solid var(--border);
+
+      border-radius:24px;
+
+      padding:1rem;
+
+      overflow:auto;
+
+      text-align:center;
+    }
+
+    /* =========================================
+       MOBILE
+    ========================================== */
+
+    @media(max-width:768px){
+
+      .book-grid{
+
+        grid-template-columns:
+        1fr;
+      }
+
+      .controls{
+
+        flex-direction:column;
+      }
+
+      .action-btn{
+
+        flex:1;
+      }
+    }
+
+  </style>
+
 </head>
+
 <body>
-    <!-- HEADER -->
-    <header role="banner">
-        <div class="header-container">
-            <a href="#" class="logo" title="Advanced PDF Viewer & Analyzer Tool">
-                Advanced PDF Viewer
-            </a>
-            <div class="header-right">
-                <div class="url-input-section">
-                    <input 
-                        type="text" 
-                        id="pdfUrlInput" 
-                        placeholder="Enter PDF URL (e.g., https://example.com/file.pdf)" 
-                        aria-label="PDF URL input"
-                        autocomplete="off"
-                    >
-                    <button class="btn btn-secondary" onclick="app.loadFromUrl()" title="Load PDF from URL">
-                        Load
-                    </button>
-                </div>
-                <div class="file-input-wrapper">
-                    <input 
-                        type="file" 
-                        id="pdfUpload" 
-                        accept=".pdf" 
-                        aria-label="Upload PDF file"
-                    >
-                    <label for="pdfUpload" class="btn btn-primary file-label">
-                        📁 Upload PDF
-                    </label>
-                </div>
-            </div>
+
+  <!-- =========================================
+       HEADER
+  ========================================== -->
+
+  <header>
+
+    <div class="topbar">
+
+      <div class="branding">
+
+        <h1>
+          DPGNotes Smart PDF Reader
+        </h1>
+
+        <p>
+          Fast educational PDF reading experience
+        </p>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="action-btn"
+          onclick="downloadPDF()"
+        >
+          Download
+        </button>
+
+        <button
+          class="action-btn"
+          onclick="sharePDF()"
+        >
+          Share
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- TABS -->
+
+    <div class="tabs">
+
+      <button
+        class="tab-btn active"
+        data-page="viewerPage"
+      >
+        PDF View
+      </button>
+
+      <button
+        class="tab-btn"
+        data-page="bookPage"
+      >
+        Book Mode
+      </button>
+
+      <button
+        class="tab-btn"
+        data-page="detailsPage"
+      >
+        PDF Details
+      </button>
+
+    </div>
+
+  </header>
+
+  <!-- =========================================
+       MAIN
+  ========================================== -->
+
+  <main>
+
+    <!-- PDF VIEW -->
+
+    <section
+      class="page active"
+      id="viewerPage"
+    >
+
+      <div class="viewer">
+
+        <div class="canvas-container">
+
+          <canvas id="pdfCanvas"></canvas>
+
         </div>
-    </header>
 
-    <!-- MAIN CONTENT -->
-    <main role="main">
-        <div id="alertContainer" aria-live="polite" aria-atomic="true"></div>
+        <div class="controls">
 
-        <!-- TABS NAVIGATION -->
-        <nav class="tabs-container" role="tablist" aria-label="PDF Viewer Tabs">
-            <button 
-                class="tab-btn active" 
-                data-tab="pdf-view" 
-                role="tab" 
-                aria-selected="true" 
-                aria-controls="pdf-view"
-                title="View PDF document"
-            >
-                📄 PDF View
-            </button>
-            <button 
-                class="tab-btn" 
-                data-tab="source-code" 
-                role="tab" 
-                aria-selected="false" 
-                aria-controls="source-code"
-                title="Edit PDF source code with live preview"
-            >
-                💻 Source Code
-            </button>
-            <button 
-                class="tab-btn" 
-                data-tab="metadata" 
-                role="tab" 
-                aria-selected="false" 
-                aria-controls="metadata"
-                title="View PDF metadata"
-            >
-                ℹ️ Metadata
-            </button>
-            <button 
-                class="tab-btn" 
-                data-tab="urls" 
-                role="tab" 
-                aria-selected="false" 
-                aria-controls="urls"
-                title="Extract URLs from PDF"
-            >
-                🔗 URLs
-            </button>
-            <button 
-                class="tab-btn" 
-                data-tab="book-mode" 
-                role="tab" 
-                aria-selected="false" 
-                aria-controls="book-mode"
-                title="Read PDF in book mode"
-            >
-                📚 Book Mode
-            </button>
-        </nav>
+          <button onclick="prevPage()">
+            Prev
+          </button>
 
-        <!-- TAB 1: PDF VIEW -->
-        <article class="content-wrapper active" id="pdf-view" role="tabpanel" aria-labelledby="pdf-view-tab">
-            <div class="pdf-viewer-container">
-                <div class="pdf-canvas-wrapper">
-                    <canvas id="pdfCanvas" class="pdf-canvas"></canvas>
-                </div>
-                <div class="pdf-controls">
-                    <div class="page-nav">
-                        <button 
-                            class="btn btn-secondary" 
-                            onclick="app.previousPage()" 
-                            id="prevBtn"
-                            title="Go to previous page"
-                            aria-label="Previous page"
-                        >
-                            ⬅️ Prev
-                        </button>
-                        <span class="page-info">
-                            Page <span id="pageNum">0</span> of <span id="pageCount">0</span>
-                        </span>
-                        <button 
-                            class="btn btn-secondary" 
-                            onclick="app.nextPage()" 
-                            id="nextBtn"
-                            title="Go to next page"
-                            aria-label="Next page"
-                        >
-                            Next ➡️
-                        </button>
-                    </div>
-                    <div class="zoom-controls">
-                        <button 
-                            class="btn btn-secondary" 
-                            onclick="app.zoomOut()" 
-                            title="Zoom out"
-                            aria-label="Zoom out"
-                        >
-                            🔍-
-                        </button>
-                        <input 
-                            type="range" 
-                            id="zoomSlider" 
-                            min="50" 
-                            max="200" 
-                            value="100" 
-                            onchange="app.setZoom(this.value)"
-                            title="Adjust zoom level"
-                            aria-label="Zoom level slider"
-                        >
-                        <span id="zoomLevel">100%</span>
-                        <button 
-                            class="btn btn-secondary" 
-                            onclick="app.zoomIn()" 
-                            title="Zoom in"
-                            aria-label="Zoom in"
-                        >
-                            🔍+
-                        </button>
-                    </div>
-                </div>
-            </div>
+          <span id="pageInfo">
+            Page 1
+          </span>
+
+          <button onclick="nextPage()">
+            Next
+          </button>
+
+          <button onclick="zoomOut()">
+            -
+          </button>
+
+          <button onclick="zoomIn()">
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- BOOK MODE -->
+
+    <section
+      class="page"
+      id="bookPage"
+    >
+
+      <div class="book-grid">
+
+        <div class="book-card">
+
+          <canvas id="leftBookCanvas"></canvas>
+
+        </div>
+
+        <div class="book-card">
+
+          <canvas id="rightBookCanvas"></canvas>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- DETAILS -->
+
+    <section
+      class="page"
+      id="detailsPage"
+    >
+
+      <div class="details-grid">
+
+        <article class="detail-card">
+
+          <h3>
+            Title
+          </h3>
+
+          <p id="detailTitle">
+            -
+          </p>
+
         </article>
 
-        <!-- TAB 2: SOURCE CODE -->
-        <article class="content-wrapper" id="source-code" role="tabpanel" aria-labelledby="source-code-tab">
-            <div class="editor-container">
-                <div class="editor-panel">
-                    <h3>PDF Source Code (Base64)</h3>
-                    <div class="editor-area">
-                        <textarea 
-                            id="sourceCode" 
-                            class="code-editor" 
-                            placeholder="PDF source code will appear here. You can edit it and see changes in real-time..."
-                            aria-label="PDF source code editor"
-                        ></textarea>
-                    </div>
-                </div>
-                <div class="editor-panel">
-                    <h3>Live Preview</h3>
-                    <div class="preview-area">
-                        <canvas id="previewCanvas" class="preview-pdf"></canvas>
-                    </div>
-                </div>
-            </div>
+        <article class="detail-card">
+
+          <h3>
+            Category
+          </h3>
+
+          <p id="detailCategory">
+            -
+          </p>
+
         </article>
 
-        <!-- TAB 3: METADATA -->
-        <article class="content-wrapper" id="metadata" role="tabpanel" aria-labelledby="metadata-tab">
-            <h2>PDF Document Metadata</h2>
-            <div class="metadata-container">
-                <table class="metadata-table" role="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Property</th>
-                            <th scope="col">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody id="metadataBody">
-                        <tr>
-                            <td colspan="2" class="text-center" style="color: var(--text-light); padding: 2rem;">
-                                Load a PDF to view its metadata
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <article class="detail-card">
+
+          <h3>
+            Discipline
+          </h3>
+
+          <p id="detailDiscipline">
+            -
+          </p>
+
         </article>
 
-        <!-- TAB 4: URLs -->
-        <article class="content-wrapper" id="urls" role="tabpanel" aria-labelledby="urls-tab">
-            <h2>Extracted URLs from PDF</h2>
-            <div class="urls-container" id="urlsContainer">
-                <p class="no-urls">Load a PDF to extract URLs</p>
-            </div>
+        <article class="detail-card">
+
+          <h3>
+            Uploader
+          </h3>
+
+          <p id="detailUploader">
+            -
+          </p>
+
         </article>
 
-        <!-- TAB 5: BOOK MODE -->
-        <article class="content-wrapper" id="book-mode" role="tabpanel" aria-labelledby="book-mode-tab">
-            <h2>Book Mode Reader</h2>
-            <div class="book-mode-container">
-                <div class="book-page">
-                    <h3 id="bookLeftTitle">Left Page</h3>
-                    <div id="bookLeftContent">
-                        <p>Load a PDF to start reading in book mode</p>
-                    </div>
-                    <div class="book-page-number" id="bookLeftPageNum"></div>
-                </div>
-                <div class="book-page">
-                    <h3 id="bookRightTitle">Right Page</h3>
-                    <div id="bookRightContent">
-                        <p>Book pages will appear here</p>
-                    </div>
-                    <div class="book-page-number" id="bookRightPageNum"></div>
-                </div>
-            </div>
-            <div class="book-controls">
-                <button 
-                    class="btn btn-secondary" 
-                    onclick="app.bookPreviousSpread()" 
-                    title="Previous two pages"
-                    aria-label="Previous pages"
-                >
-                    ⬅️ Previous
-                </button>
-                <span class="page-info" id="bookPageInfo">Page 1-2 of 0</span>
-                <button 
-                    class="btn btn-secondary" 
-                    onclick="app.bookNextSpread()" 
-                    title="Next two pages"
-                    aria-label="Next pages"
-                >
-                    Next ➡️
-                </button>
-            </div>
+        <article class="detail-card">
+
+          <h3>
+            Document ID
+          </h3>
+
+          <p id="detailDocId">
+            -
+          </p>
+
         </article>
-    </main>
 
-    <!-- LOADING SCRIPT FOR PDF.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
+      </div>
 
-    <!-- APPLICATION SCRIPT -->
-    <script>
-        // Set up PDF.js worker
-        if (typeof pdfjsLib !== 'undefined') {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </section>
+
+  </main>
+
+  <!-- =========================================
+       SCRIPT
+  ========================================== -->
+
+  <script>
+
+    /* =========================================
+       PARAM ENGINE
+    ========================================== */
+
+    const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+    function safeParam(key){
+
+      try{
+
+        return params.get(key);
+
+      }catch(error){
+
+        console.log(error);
+
+        return null;
+      }
+    }
+
+    const pdfURL =
+    safeParam("pdf");
+
+    const title =
+    safeParam("title");
+
+    const category =
+    safeParam("category");
+
+    const discipline =
+    safeParam("discipline");
+
+    const uploader =
+    safeParam("uploader");
+
+    const docid =
+    safeParam("docid");
+
+    const initialPage =
+    parseInt(
+      safeParam("page")
+    ) || 1;
+
+    const initialZoom =
+    parseInt(
+      safeParam("zoom")
+    ) || 100;
+
+    /* =========================================
+       DETAILS
+    ========================================== */
+
+    document.getElementById(
+      "detailTitle"
+    ).textContent =
+    title || "-";
+
+    document.getElementById(
+      "detailCategory"
+    ).textContent =
+    category || "-";
+
+    document.getElementById(
+      "detailDiscipline"
+    ).textContent =
+    discipline || "-";
+
+    document.getElementById(
+      "detailUploader"
+    ).textContent =
+    uploader || "-";
+
+    document.getElementById(
+      "detailDocId"
+    ).textContent =
+    docid || "-";
+
+    /* =========================================
+       PDF STATE
+    ========================================== */
+
+    let pdfDoc = null;
+
+    let currentPage =
+    initialPage;
+
+    let scale =
+    initialZoom / 100;
+
+    let renderTask = null;
+
+    const canvas =
+    document.getElementById(
+      "pdfCanvas"
+    );
+
+    const context =
+    canvas.getContext("2d");
+
+    /* =========================================
+       LOAD PDF
+    ========================================== */
+
+    async function loadPDF(){
+
+      try{
+
+        const loadingTask =
+
+        pdfjsLib.getDocument({
+
+          url:pdfURL,
+
+          disableAutoFetch:false,
+
+          disableStream:false,
+
+          disableRange:false,
+
+          enableXfa:true,
+        });
+
+        pdfDoc =
+        await loadingTask.promise;
+
+        renderPage();
+
+      }catch(error){
+
+        console.log(error);
+
+        alert(
+          "Failed to load PDF"
+        );
+      }
+    }
+
+    /* =========================================
+       RENDER PAGE
+    ========================================== */
+
+    async function renderPage(){
+
+      if(!pdfDoc){
+
+        return;
+      }
+
+      if(renderTask){
+
+        try{
+
+          renderTask.cancel();
+
+        }catch(error){
+
+          console.log(error);
+        }
+      }
+
+      const page =
+      await pdfDoc.getPage(
+        currentPage
+      );
+
+      const viewport =
+      page.getViewport({
+
+        scale:
+        scale *
+        window.devicePixelRatio
+      });
+
+      canvas.width =
+      viewport.width;
+
+      canvas.height =
+      viewport.height;
+
+      canvas.style.width =
+      `${viewport.width / window.devicePixelRatio}px`;
+
+      canvas.style.height =
+      `${viewport.height / window.devicePixelRatio}px`;
+
+      renderTask =
+      page.render({
+
+        canvasContext:context,
+
+        viewport
+      });
+
+      await renderTask.promise;
+
+      document.getElementById(
+        "pageInfo"
+      ).textContent =
+
+      `Page ${currentPage}
+       of
+       ${pdfDoc.numPages}`;
+
+      localStorage.setItem(
+
+        "dpgnotes_pdf_state",
+
+        JSON.stringify({
+
+          page:
+          currentPage,
+
+          scale
+        })
+      );
+
+      renderBookMode();
+    }
+
+    /* =========================================
+       NAVIGATION
+    ========================================== */
+
+    function nextPage(){
+
+      if(
+
+        currentPage <
+        pdfDoc.numPages
+
+      ){
+
+        currentPage++;
+
+        renderPage();
+      }
+    }
+
+    function prevPage(){
+
+      if(currentPage > 1){
+
+        currentPage--;
+
+        renderPage();
+      }
+    }
+
+    /* =========================================
+       ZOOM
+    ========================================== */
+
+    function zoomIn(){
+
+      scale += .1;
+
+      renderPage();
+    }
+
+    function zoomOut(){
+
+      if(scale > .5){
+
+        scale -= .1;
+
+        renderPage();
+      }
+    }
+
+    /* =========================================
+       BOOK MODE
+    ========================================== */
+
+    async function renderBookMode(){
+
+      renderBookPage(
+        currentPage,
+        "leftBookCanvas"
+      );
+
+      renderBookPage(
+        currentPage + 1,
+        "rightBookCanvas"
+      );
+    }
+
+    async function renderBookPage(
+      pageNumber,
+      canvasId
+    ){
+
+      if(
+
+        !pdfDoc ||
+
+        pageNumber >
+        pdfDoc.numPages
+
+      ){
+
+        return;
+      }
+
+      const page =
+      await pdfDoc.getPage(
+        pageNumber
+      );
+
+      const viewport =
+      page.getViewport({
+
+        scale:.8
+      });
+
+      const canvas =
+      document.getElementById(
+        canvasId
+      );
+
+      const ctx =
+      canvas.getContext("2d");
+
+      canvas.width =
+      viewport.width;
+
+      canvas.height =
+      viewport.height;
+
+      await page.render({
+
+        canvasContext:ctx,
+
+        viewport
+      }).promise;
+    }
+
+    /* =========================================
+       DOWNLOAD
+    ========================================== */
+
+    function downloadPDF(){
+
+      window.open(
+        pdfURL,
+        "_blank"
+      );
+    }
+
+    /* =========================================
+       SHARE
+    ========================================== */
+
+    async function sharePDF(){
+
+      try{
+
+        if(navigator.share){
+
+          await navigator.share({
+
+            title:
+            title ||
+            "DPGNotes PDF",
+
+            url:
+            window.location.href
+          });
+
+        }else{
+
+          await navigator.clipboard
+          .writeText(
+
+            window.location.href
+          );
+
+          alert(
+            "Link Copied"
+          );
         }
 
-        /**
-         * Advanced PDF Viewer & Analyzer Application
-         * Complete SPA with 15+ parameter support
-         */
-        const app = {
-            // ========== STATE ==========
-            pdfDoc: null,
-            currentPage: 1,
-            totalPages: 0,
-            scale: 1,
-            urls: new Set(),
-            metadata: {},
-            currentBookPage: 1,
+      }catch(error){
 
-            // ========== PARAMETER SUPPORT ==========
-            /**
-             * Supported URL parameters (15+):
-             * ?pdf=<url> - PDF URL to load
-             * ?page=<number> - Initial page number
-             * ?zoom=<percentage> - Initial zoom level
-             * ?tab=<name> - Initial active tab
-             * ?mode=<view|edit|metadata|urls|book> - View mode
-             * ?highlight=<text> - Text to highlight
-             * ?autoplay=<true|false> - Auto-play book mode
-             * ?theme=<light|dark> - Color theme
-             * ?lang=<en|es|fr> - Language setting
-             * ?export=<true|false> - Enable export
-             * ?search=<query> - Search term
-             * ?annotation=<true|false> - Enable annotations
-             * ?comparison=<url> - PDF comparison mode
-             * ?extract=<metadata|urls|all> - Auto-extract on load
-             * ?nocache=<true> - Disable caching
-             */
-            params: {},
+        console.log(error);
+      }
+    }
 
-            // ========== INITIALIZATION ==========
-            init() {
-                this.parseParameters();
-                this.setupEventListeners();
-                this.loadFromParams();
-                this.logLoad();
-            },
+    /* =========================================
+       TAB ENGINE
+    ========================================== */
 
-            parseParameters() {
-                const urlParams = new URLSearchParams(window.location.search);
-                this.params = {
-                    pdf: urlParams.get('pdf'),
-                    page: parseInt(urlParams.get('page')) || 1,
-                    zoom: parseInt(urlParams.get('zoom')) || 100,
-                    tab: urlParams.get('tab') || 'pdf-view',
-                    mode: urlParams.get('mode') || 'view',
-                    highlight: urlParams.get('highlight'),
-                    autoplay: urlParams.get('autoplay') === 'true',
-                    theme: urlParams.get('theme') || 'light',
-                    lang: urlParams.get('lang') || 'en',
-                    export: urlParams.get('export') !== 'false',
-                    search: urlParams.get('search'),
-                    annotation: urlParams.get('annotation') === 'true',
-                    comparison: urlParams.get('comparison'),
-                    extract: urlParams.get('extract'),
-                    nocache: urlParams.get('nocache') === 'true'
-                };
+    const tabButtons =
+    document.querySelectorAll(
+      ".tab-btn"
+    );
 
-                // Apply theme
-                if (this.params.theme === 'dark') {
-                    document.documentElement.style.colorScheme = 'dark';
-                }
+    const pages =
+    document.querySelectorAll(
+      ".page"
+    );
 
-                // Set zoom
-                if (this.params.zoom !== 100) {
-                    document.getElementById('zoomSlider').value = this.params.zoom;
-                }
-            },
+    tabButtons.forEach((button)=>{
 
-            async loadFromParams() {
-                if (this.params.pdf) {
-                    try {
-                        await this.loadPdf(this.params.pdf);
-                        
-                        if (this.params.page) {
-                            this.currentPage = this.params.page;
-                            await this.renderPage();
-                        }
+      button.addEventListener(
+        "click",
+        ()=>{
 
-                        if (this.params.extract) {
-                            if (this.params.extract === 'metadata' || this.params.extract === 'all') {
-                                this.extractMetadata();
-                            }
-                            if (this.params.extract === 'urls' || this.params.extract === 'all') {
-                                await this.extractUrls();
-                            }
-                        }
+          tabButtons.forEach((btn)=>{
 
-                        // Switch to specified tab
-                        if (this.params.tab) {
-                            this.switchTab(this.params.tab);
-                        }
+            btn.classList.remove(
+              "active"
+            );
+          });
 
-                        if (this.params.autoplay) {
-                            this.switchTab('book-mode');
-                        }
-                    } catch (error) {
-                        this.showAlert('Error loading PDF from URL: ' + error.message, 'error');
-                    }
-                }
-            },
+          pages.forEach((page)=>{
 
-            setupEventListeners() {
-                // File upload
-                document.getElementById('pdfUpload').addEventListener('change', (e) => {
-                    this.handleFileUpload(e);
-                });
+            page.classList.remove(
+              "active"
+            );
+          });
 
-                // Drag and drop
-                const uploadBox = document.querySelector('.upload-box');
-                if (uploadBox) {
-                    uploadBox.addEventListener('dragover', (e) => {
-                        e.preventDefault();
-                        uploadBox.classList.add('drag-over');
-                    });
+          button.classList.add(
+            "active"
+          );
 
-                    uploadBox.addEventListener('dragleave', () => {
-                        uploadBox.classList.remove('drag-over');
-                    });
+          document
+          .getElementById(
 
-                    uploadBox.addEventListener('drop', (e) => {
-                        e.preventDefault();
-                        uploadBox.classList.remove('drag-over');
-                        if (e.dataTransfer.files.length) {
-                            document.getElementById('pdfUpload').files = e.dataTransfer.files;
-                            this.handleFileUpload({ target: { files: e.dataTransfer.files } });
-                        }
-                    });
-                }
+            button.dataset.page
 
-                // Tab switching
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.switchTab(btn.dataset.tab);
-                    });
-                });
-
-                // Source code editor
-                document.getElementById('sourceCode').addEventListener('input', (e) => {
-                    this.updatePreview(e.target.value);
-                });
-
-                // Keyboard shortcuts
-                document.addEventListener('keydown', (e) => {
-                    if (this.pdfDoc) {
-                        if (e.key === 'ArrowRight' || e.key === ' ') this.nextPage();
-                        if (e.key === 'ArrowLeft') this.previousPage();
-                        if (e.key === '+' || e.key === '=') this.zoomIn();
-                        if (e.key === '-') this.zoomOut();
-                    }
-                });
-
-                // URL input Enter key
-                document.getElementById('pdfUrlInput').addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        this.loadFromUrl();
-                    }
-                });
-            },
-
-            logLoad() {
-                console.log('Advanced PDF Viewer initialized');
-                console.log('Parameters:', this.params);
-                console.log('Supported Parameters:', {
-                    pdf: 'PDF URL to load',
-                    page: 'Initial page number',
-                    zoom: 'Zoom percentage (50-200)',
-                    tab: 'Active tab (pdf-view, source-code, metadata, urls, book-mode)',
-                    mode: 'View mode',
-                    highlight: 'Text to highlight',
-                    autoplay: 'Auto-play book mode',
-                    theme: 'Color theme (light/dark)',
-                    lang: 'Language code',
-                    export: 'Enable export',
-                    search: 'Search term',
-                    annotation: 'Enable annotations',
-                    comparison: 'Compare PDF URL',
-                    extract: 'Auto-extract (metadata|urls|all)',
-                    nocache: 'Disable caching'
-                });
-            },
-
-            // ========== FILE HANDLING ==========
-            async handleFileUpload(e) {
-                const files = e.target.files;
-                if (files.length === 0) return;
-
-                const file = files[0];
-                if (!file.type.includes('pdf')) {
-                    this.showAlert('Please upload a valid PDF file', 'error');
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = async (event) => {
-                    try {
-                        const typedArray = new Uint8Array(event.target.result);
-                        await this.loadPdfFromArrayBuffer(typedArray);
-                        this.showAlert('PDF loaded successfully: ' + file.name, 'success');
-                    } catch (error) {
-                        this.showAlert('Error loading PDF: ' + error.message, 'error');
-                    }
-                };
-                reader.readAsArrayBuffer(file);
-            },
-
-            async loadFromUrl() {
-                const url = document.getElementById('pdfUrlInput').value.trim();
-                if (!url) {
-                    this.showAlert('Please enter a PDF URL', 'error');
-                    return;
-                }
-
-                this.showAlert('Loading PDF from URL...', 'info');
-                try {
-                    await this.loadPdf(url);
-                    this.showAlert('PDF loaded successfully from URL', 'success');
-                } catch (error) {
-                    this.showAlert('Error loading PDF: ' + error.message, 'error');
-                }
-            },
-
-            async loadPdf(url) {
-                const corsUrl = url; // In production, use a CORS proxy if needed
-                
-                try {
-                    this.pdfDoc = await pdfjsLib.getDocument({
-                        url: corsUrl,
-                        cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
-                        cMapPacked: true
-                    }).promise;
-
-                    this.totalPages = this.pdfDoc.numPages;
-                    this.currentPage = 1;
-                    document.getElementById('pageCount').textContent = this.totalPages;
-                    
-                    await this.renderPage();
-                    this.extractMetadata();
-                    await this.extractUrls();
-                    this.updateBookMode();
-                } catch (error) {
-                    throw new Error('Failed to load PDF: ' + error.message);
-                }
-            },
-
-            async loadPdfFromArrayBuffer(buffer) {
-                try {
-                    this.pdfDoc = await pdfjsLib.getDocument({
-                        data: buffer,
-                        cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
-                        cMapPacked: true
-                    }).promise;
-
-                    this.totalPages = this.pdfDoc.numPages;
-                    this.currentPage = 1;
-                    document.getElementById('pageCount').textContent = this.totalPages;
-                    
-                    // Store as base64 for source code view
-                    const uint8Array = new Uint8Array(buffer);
-                    const binaryString = String.fromCharCode.apply(null, uint8Array);
-                    const base64 = btoa(binaryString);
-                    document.getElementById('sourceCode').value = base64;
-                    
-                    await this.renderPage();
-                    this.extractMetadata();
-                    await this.extractUrls();
-                    this.updateBookMode();
-                } catch (error) {
-                    throw new Error('Failed to load PDF: ' + error.message);
-                }
-            },
-
-            // ========== RENDERING ==========
-            async renderPage(page = this.currentPage) {
-                if (!this.pdfDoc) return;
-
-                try {
-                    const pdfPage = await this.pdfDoc.getPage(page);
-                    const scale = this.scale;
-                    const viewport = pdfPage.getViewport({ scale });
-                    const canvas = document.getElementById('pdfCanvas');
-                    const context = canvas.getContext('2d');
-
-                    canvas.width = viewport.width;
-                    canvas.height = viewport.height;
-
-                    await pdfPage.render({
-                        canvasContext: context,
-                        viewport: viewport
-                    }).promise;
-
-                    document.getElementById('pageNum').textContent = page;
-                    document.getElementById('prevBtn').disabled = page === 1;
-                    document.getElementById('nextBtn').disabled = page === this.totalPages;
-                } catch (error) {
-                    console.error('Error rendering page:', error);
-                }
-            },
-
-            // ========== NAVIGATION ==========
-            async nextPage() {
-                if (this.currentPage < this.totalPages) {
-                    this.currentPage++;
-                    await this.renderPage();
-                }
-            },
-
-            async previousPage() {
-                if (this.currentPage > 1) {
-                    this.currentPage--;
-                    await this.renderPage();
-                }
-            },
-
-            // ========== ZOOM ==========
-            zoomIn() {
-                if (this.scale < 2) {
-                    this.scale += 0.1;
-                    this.updateZoom();
-                }
-            },
-
-            zoomOut() {
-                if (this.scale > 0.5) {
-                    this.scale -= 0.1;
-                    this.updateZoom();
-                }
-            },
-
-            setZoom(percentage) {
-                this.scale = percentage / 100;
-                this.updateZoom();
-            },
-
-            updateZoom() {
-                const zoomPercentage = Math.round(this.scale * 100);
-                document.getElementById('zoomLevel').textContent = zoomPercentage + '%';
-                document.getElementById('zoomSlider').value = zoomPercentage;
-                this.renderPage();
-            },
-
-            // ========== TAB SWITCHING ==========
-            switchTab(tabName) {
-                // Update tab buttons
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                    btn.setAttribute('aria-selected', 'false');
-                });
-                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-                document.querySelector(`[data-tab="${tabName}"]`).setAttribute('aria-selected', 'true');
-
-                // Update content
-                document.querySelectorAll('.content-wrapper').forEach(wrapper => {
-                    wrapper.classList.remove('active');
-                });
-                document.getElementById(tabName).classList.add('active');
-
-                // Update page history
-                window.history.replaceState({}, '', `?tab=${tabName}`);
-            },
-
-            // ========== METADATA EXTRACTION ==========
-            extractMetadata() {
-                if (!this.pdfDoc) return;
-
-                this.pdfDoc.getMetadata().then(metadata => {
-                    const metadataObj = metadata.info || {};
-                    
-                    // Basic metadata
-                    this.metadata = {
-                        'Title': metadataObj.Title || 'Not provided',
-                        'Author': metadataObj.Author || 'Not provided',
-                        'Subject': metadataObj.Subject || 'Not provided',
-                        'Keywords': metadataObj.Keywords || 'Not provided',
-                        'Creator': metadataObj.Creator || 'Not provided',
-                        'Producer': metadataObj.Producer || 'Not provided',
-                        'Creation Date': metadataObj.CreationDate ? new Date(metadataObj.CreationDate).toLocaleString() : 'Not provided',
-                        'Modification Date': metadataObj.ModDate ? new Date(metadataObj.ModDate).toLocaleString() : 'Not provided',
-                        'Total Pages': this.totalPages,
-                        'File Size': 'Unknown',
-                        'PDF Version': metadataObj.PDFFormatVersion || 'Unknown'
-                    };
-
-                    this.displayMetadata();
-                });
-            },
-
-            displayMetadata() {
-                const tbody = document.getElementById('metadataBody');
-                tbody.innerHTML = '';
-
-                for (const [key, value] of Object.entries(this.metadata)) {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td class="metadata-label">${this.escapeHtml(key)}</td>
-                        <td class="metadata-value">${this.escapeHtml(String(value))}</td>
-                    `;
-                    tbody.appendChild(row);
-                }
-            },
-
-            // ========== URL EXTRACTION ==========
-            async extractUrls() {
-                if (!this.pdfDoc) return;
-
-                this.urls.clear();
-
-                for (let i = 1; i <= this.totalPages; i++) {
-                    try {
-                        const page = await this.pdfDoc.getPage(i);
-                        const annotations = await page.getAnnotations();
-
-                        annotations.forEach(annotation => {
-                            if (annotation.url) {
-                                this.urls.add(annotation.url);
-                            } else if (annotation.dest) {
-                                if (typeof annotation.dest === 'string') {
-                                    this.urls.add(annotation.dest);
-                                }
-                            }
-                        });
-                    } catch (error) {
-                        console.error('Error extracting URLs from page ' + i, error);
-                    }
-                }
-
-                this.displayUrls();
-            },
-
-            displayUrls() {
-                const container = document.getElementById('urlsContainer');
-                container.innerHTML = '';
-
-                if (this.urls.size === 0) {
-                    container.innerHTML = '<p class="no-urls">No URLs found in this PDF</p>';
-                    return;
-                }
-
-                let index = 1;
-                this.urls.forEach(url => {
-                    const card = document.createElement('div');
-                    card.className = 'url-card';
-                    
-                    let displayUrl = url;
-                    if (url.length > 50) {
-                        displayUrl = url.substring(0, 47) + '...';
-                    }
-
-                    const isHttpUrl = url.startsWith('http://') || url.startsWith('https://');
-                    const href = isHttpUrl ? url : '#';
-                    const target = isHttpUrl ? '_blank' : '';
-                    const rel = isHttpUrl ? 'noopener noreferrer' : '';
-
-                    card.innerHTML = `
-                        <h4>URL #${index}</h4>
-                        <p title="${url}">${this.escapeHtml(displayUrl)}</p>
-                        <a href="${this.escapeHtml(href)}" target="${target}" rel="${rel}" 
-                           title="Open: ${this.escapeHtml(url)}"
-                           onclick="${!isHttpUrl ? 'return false;' : ''}">
-                            🔗 Open
-                        </a>
-                    `;
-                    container.appendChild(card);
-                    index++;
-                });
-            },
-
-            // ========== SOURCE CODE EDITOR ==========
-            updatePreview(base64Data) {
-                if (!base64Data) return;
-
-                try {
-                    const binaryString = atob(base64Data);
-                    const bytes = new Uint8Array(binaryString.length);
-                    for (let i = 0; i < binaryString.length; i++) {
-                        bytes[i] = binaryString.charCodeAt(i);
-                    }
-
-                    pdfjsLib.getDocument({
-                        data: bytes,
-                        cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
-                        cMapPacked: true
-                    }).promise.then(async (pdfDoc) => {
-                        const page = await pdfDoc.getPage(1);
-                        const scale = 1;
-                        const viewport = page.getViewport({ scale });
-                        const canvas = document.getElementById('previewCanvas');
-                        const context = canvas.getContext('2d');
-
-                        canvas.width = viewport.width;
-                        canvas.height = viewport.height;
-
-                        await page.render({
-                            canvasContext: context,
-                            viewport: viewport
-                        }).promise;
-                    }).catch(error => {
-                        console.error('Preview error:', error);
-                    });
-                } catch (error) {
-                    console.error('Base64 decode error:', error);
-                }
-            },
-
-            // ========== BOOK MODE ==========
-            async updateBookMode() {
-                if (!this.pdfDoc || this.pdfDoc.numPages < 2) {
-                    document.getElementById('bookLeftContent').innerHTML = '<p>PDF has insufficient pages for book mode</p>';
-                    document.getElementById('bookRightContent').innerHTML = '<p>Book mode requires at least 2 pages</p>';
-                    return;
-                }
-
-                await this.renderBookSpread();
-            },
-
-            async renderBookSpread() {
-                const leftPageNum = this.currentBookPage;
-                const rightPageNum = this.currentBookPage + 1;
-
-                // Render left page
-                if (leftPageNum <= this.pdfDoc.numPages) {
-                    await this.renderBookPage(leftPageNum, 'bookLeftContent');
-                    document.getElementById('bookLeftPageNum').textContent = `Page ${leftPageNum}`;
-                } else {
-                    document.getElementById('bookLeftContent').innerHTML = '<p style="color: var(--text-light);">No more pages</p>';
-                    document.getElementById('bookLeftPageNum').textContent = '';
-                }
-
-                // Render right page
-                if (rightPageNum <= this.pdfDoc.numPages) {
-                    await this.renderBookPage(rightPageNum, 'bookRightContent');
-                    document.getElementById('bookRightPageNum').textContent = `Page ${rightPageNum}`;
-                } else {
-                    document.getElementById('bookRightContent').innerHTML = '<p style="color: var(--text-light);">No more pages</p>';
-                    document.getElementById('bookRightPageNum').textContent = '';
-                }
-
-                document.getElementById('bookPageInfo').textContent = `Page ${leftPageNum}-${Math.min(rightPageNum, this.pdfDoc.numPages)} of ${this.pdfDoc.numPages}`;
-            },
-
-            async renderBookPage(pageNum, containerId) {
-                try {
-                    const page = await this.pdfDoc.getPage(pageNum);
-                    const scale = 0.8;
-                    const viewport = page.getViewport({ scale });
-                    const canvas = document.createElement('canvas');
-                    const context = canvas.getContext('2d');
-
-                    canvas.width = viewport.width;
-                    canvas.height = viewport.height;
-                    canvas.className = 'preview-pdf';
-
-                    await page.render({
-                        canvasContext: context,
-                        viewport: viewport
-                    }).promise;
-
-                    const container = document.getElementById(containerId);
-                    container.innerHTML = '';
-                    container.appendChild(canvas);
-                } catch (error) {
-                    console.error('Error rendering book page:', error);
-                }
-            },
-
-            bookNextSpread() {
-                if (this.currentBookPage + 1 < this.pdfDoc.numPages) {
-                    this.currentBookPage += 2;
-                    this.renderBookSpread();
-                }
-            },
-
-            bookPreviousSpread() {
-                if (this.currentBookPage > 1) {
-                    this.currentBookPage = Math.max(1, this.currentBookPage - 2);
-                    this.renderBookSpread();
-                }
-            },
-
-            // ========== UTILITIES ==========
-            showAlert(message, type = 'info') {
-                const container = document.getElementById('alertContainer');
-                const alert = document.createElement('div');
-                alert.className = `alert alert-${type}`;
-                alert.innerHTML = `
-                    <span>${this.escapeHtml(message)}</span>
-                    <button class="alert-close" onclick="this.parentElement.remove()" aria-label="Close alert">×</button>
-                `;
-                container.appendChild(alert);
-
-                setTimeout(() => {
-                    if (alert.parentElement) {
-                        alert.remove();
-                    }
-                }, 5000);
-            },
-
-            escapeHtml(text) {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            }
-        };
-
-        // Initialize app when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => app.init());
-        } else {
-            app.init();
+          )
+          .classList.add(
+            "active"
+          );
         }
-    </script>
+      );
+    });
+
+    /* =========================================
+       RESTORE STATE
+    ========================================== */
+
+    try{
+
+      const savedState =
+
+      JSON.parse(
+
+        localStorage.getItem(
+
+          "dpgnotes_pdf_state"
+        )
+      );
+
+      if(savedState){
+
+        currentPage =
+        savedState.page
+        || currentPage;
+
+        scale =
+        savedState.scale
+        || scale;
+      }
+
+    }catch(error){
+
+      console.log(error);
+    }
+
+    /* =========================================
+       RESIZE
+    ========================================== */
+
+    let resizeTimer;
+
+    window.addEventListener(
+      "resize",
+      ()=>{
+
+        clearTimeout(
+          resizeTimer
+        );
+
+        resizeTimer =
+        setTimeout(()=>{
+
+          renderPage();
+
+        },300);
+      }
+    );
+
+    /* =========================================
+       INIT
+    ========================================== */
+
+    if(pdfURL){
+
+      loadPDF();
+
+    }else{
+
+      alert(
+        "Missing PDF URL"
+      );
+    }
+
+  </script>
+
 </body>
-</html>
+
+</html>0
