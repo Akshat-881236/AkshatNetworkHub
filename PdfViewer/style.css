@@ -171,8 +171,13 @@
       background:white;
       border-radius:18px;
       max-width:100%;
+      height:auto;
       touch-action:pan-y;
       -webkit-user-drag:none;
+      user-select:none;
+      cursor:grab;
+      display:block;
+      margin:auto;
       user-select:none;
       cursor:grab;
     }
