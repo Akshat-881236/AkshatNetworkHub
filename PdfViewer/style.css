@@ -161,10 +161,13 @@
     }
 
     .canvas-container{
-      overflow:auto;
+      overflow-y:auto;
+      overflow-x:hidden;
       text-align:center;
-      touch-action:none;
-      overscroll-behavior:none;
+      touch-action:pan-y;
+      overscroll-behavior-y:contain;
+      -webkit-overflow-scrolling:touch;
+      max-height:80vh;
     }
 
     canvas{
@@ -172,7 +175,6 @@
       border-radius:18px;
       max-width:100%;
       height:auto;
-      touch-action:pan-y;
       -webkit-user-drag:none;
       user-select:none;
       cursor:grab;
