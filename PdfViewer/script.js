@@ -497,17 +497,21 @@ async function renderBookMode(){
   );
 
   document.getElementById(
-    "bookPageInfo"
-  ).textContent =
+  "bookPageInfo"
+).textContent =
 
-  `Pages ${currentBookPage}
-   -
-   ${Math.min(
+`Pages ${currentBookPage}
+ -
+ ${Math.min(
 
-      currentBookPage + 1,
+    currentBookPage + 1,
 
-      pdfDoc.numPages
-   )}`;
+    pdfDoc.numPages
+ )}
+
+ of
+
+ ${pdfDoc.numPages}`;
 }
 
 /* =========================================
