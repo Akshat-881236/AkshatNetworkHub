@@ -1,0 +1,543 @@
+/* =========================================
+       RESET
+    ========================================== */
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --bg:#020617;
+      --surface:#0f172a;
+      --surface-2:#111827;
+      --primary:#2563eb;
+      --text:#f8fafc;
+      --muted:#94a3b8;
+      --border:#1e293b;
+    }
+
+    body{
+      font-family:
+      Inter,
+      system-ui,
+      sans-serif;
+      background:
+      var(--bg);
+      color:
+      var(--text);
+      overflow-x:hidden;
+    }
+
+    button{
+      font-family:inherit;
+    }
+
+    /* =========================================
+       HEADER
+    ========================================== */
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background: rgba(2,6,23,.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding:1rem;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      flex-wrap:wrap;
+    }
+
+    .branding h1{
+      font-size:1.25rem;
+      font-weight:800;
+    }
+
+    .branding p{
+      margin-top:.25rem;
+      color:var(--muted);
+      font-size:.85rem;
+    }
+
+    /* =========================================
+       ACTIONS
+    ========================================== */
+
+    .actions{
+      display:flex;
+      gap:.7rem;
+      flex-wrap:wrap;
+    }
+
+    .action-btn{
+      border:none;
+      cursor:pointer;
+      background: var(--primary);
+      color:white;
+      padding: .85rem 1rem;
+      border-radius:16px;
+      font-weight:700;
+      transition:.2s;
+    }
+
+    .action-btn:hover{
+
+      opacity:.9;
+    }
+
+    /* =========================================
+       TABS
+    ========================================== */
+
+    .tabs{
+      display:flex;
+      gap:.7rem;
+      overflow:auto;
+      margin-top:1rem;
+      scrollbar-width:none;
+    }
+
+    .tabs::-webkit-scrollbar{
+      display:none;
+    }
+
+    .tab-btn{
+      border:none;
+      background: var(--surface);
+      color: var(--muted);
+      padding: .9rem 1rem;
+      border-radius:16px;
+      cursor:pointer;
+      white-space:nowrap;
+      font-weight:700;
+    }
+
+    .tab-btn.active{
+      background: var(--primary);
+      color:white;
+    }
+
+    /* =========================================
+       MAIN
+    ========================================== */
+
+    main{
+      max-width:1600px;
+      margin:auto;
+      padding:1rem;
+    }
+
+    .page{
+      display:none;
+    }
+
+    .page.active{
+      display:block;
+    }
+
+    /* =========================================
+       VIEWER
+    ========================================== */
+
+    .viewer{
+
+      background:
+      var(--surface);
+
+      border:
+      1px solid var(--border);
+
+      border-radius:24px;
+
+      padding:1rem;
+    }
+
+    .canvas-container{
+      overflow:auto;
+      text-align:center;
+      touch-action:none;
+      overscroll-behavior:none;
+    }
+
+    canvas{
+      background:white;
+      border-radius:18px;
+      max-width:100%;
+      touch-action:pan-y;
+      -webkit-user-drag:none;
+      user-select:none;
+      cursor:grab;
+    }
+
+    canvas:active{
+      cursor:grabbing;
+    }
+
+    /* =========================================
+       CONTROLS
+    ========================================== */
+
+    .controls{
+      margin-top:1rem;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:.7rem;
+    }
+
+    .controls button{
+      border:none;
+      cursor:pointer;
+      background: var(--primary);
+      color:white;
+      padding: .8rem 1rem;
+      border-radius:14px;
+      font-weight:700;
+    }
+
+    .controls span{
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    /* =========================================
+       DETAILS
+    ========================================== */
+
+    .details-grid{
+      display:grid;
+      grid-template-columns:
+      repeat(
+        auto-fit,
+        minmax(260px,1fr)
+      );
+
+      gap:1rem;
+    }
+
+    .detail-card{
+
+      background:
+      var(--surface);
+
+      border:
+      1px solid var(--border);
+
+      border-radius:24px;
+
+      padding:1rem;
+    }
+
+    .detail-card h3{
+
+      color:var(--primary);
+
+      margin-bottom:.8rem;
+    }
+
+    .detail-card p{
+
+      color:var(--muted);
+
+      line-height:1.7;
+    }
+
+    /* =========================================
+       BOOK MODE
+    ========================================== */
+
+    .book-grid{
+
+      display:grid;
+
+      grid-template-columns:
+      1fr 1fr;
+
+      gap:1rem;
+    }
+
+    .book-card{
+
+      background:
+      var(--surface);
+
+      border:
+      1px solid var(--border);
+
+      border-radius:24px;
+
+      padding:1rem;
+
+      overflow:auto;
+
+      text-align:center;
+    }
+
+    /* =========================================
+       MOBILE
+    ========================================== */
+
+    @media(max-width:768px){
+
+      .book-grid{
+
+        grid-template-columns:
+        1fr;
+      }
+
+      .branding{
+
+        text-align:center;
+      }
+
+      .branding h1{
+
+        font-size:1.1rem;
+      }
+
+      .branding p{
+
+        font-size:.8rem;
+      }
+
+      .controls{
+        display:inline-block;
+        flex-direction:column;
+      }
+
+      .action-btn{
+
+        flex:1;
+      }
+    }
+
+    /* =========================================
+        TABLET
+    ========================================== */
+
+    @media(max-width:1024px){
+
+      .book-grid{
+
+        grid-template-columns:
+        1fr;
+      }
+      .action-btn{
+
+        padding: .8rem;
+        flex:1;
+      }
+      .controls{
+        display:inline-block;
+        flex-direction:column;
+      }
+      .branding{
+        text-align:center;
+      }
+      .branding h1{
+        font-size:1.1rem;
+      }
+      .branding p{
+        font-size:.8rem;
+      }
+      /* Optimizing canvas size for tablets for better readability in Both Modes */
+      canvas{
+        max-width:90%;
+      }
+      .canvas-container{
+        overflow-x:auto;
+      }
+      .book-card{
+        overflow-x:auto;
+      }
+      .book-grid{
+        gap:1.5rem;
+      }
+      .controls button{
+        padding: .8rem;
+      }
+      .controls span{
+        margin-top: .5rem;
+      }
+    }
+
+    /* =========================================
+        Small Keypad Phones 
+    ========================================== */
+    @media(max-width:480px){
+
+      .action-btn{
+        padding: .7rem;
+        font-size: .9rem;
+      }
+      .controls button{
+        padding: .7rem;
+        font-size: .9rem;
+      }
+      .controls span{
+        margin-top: .5rem;
+        font-size: .9rem;
+      }
+      .branding h1{
+        font-size:1rem;
+      }
+      .branding p{
+        font-size:.75rem;
+      }
+      .canvas{
+        max-width:100%;
+      }
+      .canvas-container{
+        overflow-x:auto;
+      }
+      .book-card{
+        overflow-x:auto;
+      }
+      .book-grid{
+        gap:1.5rem;
+      }
+      .controls{
+        display:inline-block;
+        flex-direction:column;
+      }
+      .branding{
+        text-align:center;
+      }
+      .page.active{
+        padding: 0.5rem;
+      }
+      .viewer{
+        padding: 0.5rem;
+      }
+      .detail-card{
+        padding: 0.5rem;
+      }
+      .action-btn:hover{
+        opacity: 0.95;
+      }
+      .action-btn:active{
+        transform: scale(0.98);
+      }
+      .controls button:hover{
+        opacity: 0.95;
+      }
+      .topbar{
+        padding: 0.5rem;
+      }
+      .tabs{
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
+    }
+
+    /* For More Extreme Small Screens like 320px width, we can make the viewer full width and stack controls vertically */
+    @media(max-width:320px){
+
+      .viewer{
+        border-radius:0;
+      }
+      .canvas{
+        max-width:100%;
+      }
+      .controls{
+        display:flex;
+        flex-direction:column;
+        gap:0.5rem;
+      }
+      .controls button{
+        width:100%;
+        padding: 0.7rem;
+        font-size: 0.9rem;
+      }
+      .controls span{
+        text-align:center;
+        font-size: 0.9rem;
+      }
+      .book-card{
+        border-radius:0;
+      }
+      .detail-card{
+        border-radius:0;
+        padding: 0.5rem;
+      }
+      .action-btn{
+        padding: 0.7rem;
+        font-size: 0.9rem;
+      }
+       .action-btn:hover{
+        opacity: 0.95;
+      }
+      .action-btn:active{
+        transform: scale(0.98);
+      }
+       .controls button:hover{
+        opacity: 0.95;
+      }
+       .topbar{
+        padding: 0.5rem;
+      }
+       .tabs{
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
+      .branding h1{
+        font-size: 0.9rem;
+      }
+      .branding p{
+        font-size: 0.75rem;
+      }
+      .page.active{
+        padding: 0.5rem;
+      }
+       .viewer{
+        padding: 0.5rem;
+      }
+      .details-grid{
+        gap: 0.5rem;
+      }
+      .canvas-container{
+        overflow-x:auto;
+      }
+      .book-grid{
+        gap: 0.5rem;
+      }
+      .branding{
+        text-align:center;
+      }
+      .tab-btn{
+        padding: 0.7rem;
+        font-size: 0.9rem;
+      }
+      .tab-btn.active{
+        padding: 0.7rem;
+        font-size: 0.9rem;
+      }
+      .detail-card h3{
+        font-size: 0.9rem;
+      }
+    }
+
+    /* =========================================
+       SCROLLBAR STYLES
+    ========================================== */
+    *::-webkit-scrollbar{
+
+      width:8px;
+
+      height:8px;
+    }
+    *::-webkit-scrollbar-track{
+
+      background:var(--surface-2);
+
+      border-radius:8px;
+    }
