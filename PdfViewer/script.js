@@ -226,6 +226,17 @@ async function loadPDF(){
 
       "- Large PDF issue"
     );
+     window.location.href =
+
+   "https://dpgnotes.web.app/" +
+   
+   "?utm_source=pdfviewer" +
+   
+   "&utm_medium=cors_referral" +
+   
+   "&utm_campaign=pdfviewer_redirect" +
+   
+   "&error=wrong_pdf_url";
   }
 }
 
