@@ -64,18 +64,6 @@
             },
             {
                 id: 6,
-                title: "🚀Maching Learning in the AWS Cloud💡",
-                description: "I found this Post helpful and save it hosted by Jiya Yadav. Add Intelligence to Applications with Amazon SageMaker and Amazon Recognition.",
-                link: "https://www.linkedin.com/feed/update/urn:li:activity:7393997541152829440/",
-                date_of_publication: "2026-01-03",
-                author: "Jiya Yadav",
-                likes: 132,
-                comments: 3,
-                shares: 26,
-                category: "Machine Learning"
-            },
-            {
-                id: 7,
                 title: "🚀 Project Update | Learning & Development",
                 description: "Today I worked on improving my web development skills by building a personalized dashboard system and exploring better UI architecture.",
                 link: "https://www.linkedin.com/feed/update/urn:li:activity:7435518182091587585/?originTrackingId=UniSv4YDR%2B%2FM7Dpqk6V5Ew%3D%3D",
@@ -87,7 +75,7 @@
                 category: "Update Announcement"
             },
             {
-                id: 8,
+                id: 7,
                 title: "💡 Uploading Computer Graphic Practical File",
                 description: "🚀 Building the Akshat Network Hub Ecosystem. As part of my continuous journey in Web Development, System Architecture, and Knowledge Sharing, I have been actively building a structured digital ecosystem called Akshat Network Hub.",
                 link: "https://www.linkedin.com/feed/update/urn:li:activity:7435384591982571520/",
@@ -99,7 +87,7 @@
                 category: "Resource Announcement"
             },
             {
-                id: 9,
+                id: 8,
                 title: "🚀 Project Update | Learning & Development",
                 description: "Today I worked on improving my web development skills by building a personalized dashboard system and exploring better UI architecture.",
                 link: "https://www.linkedin.com/feed/update/urn:li:activity:7435386228671205377/?originTrackingId=YcR7Td6NW5gRp8CzJcjR0g%3D%3D",
@@ -111,7 +99,7 @@
                 category: "Update Announcement"
             },
             {
-                id: 10,
+                id: 9,
                 title: "🚀 New Resource Uploaded in Learning Club Site titled Java Programming Practical File",
                 description: "This page represents the BCA SEM - 4 Java Programming Practical File Lab Manual Document, listing all the practical perform by me in DPG Degree college, Gurugram. The document serves as a comprehensive record of the practical exercises completed during the semester, showcasing the application of theoretical concepts in Java programming through hands-on lab work.",
                 link: "https://www.linkedin.com/feed/update/urn:li:activity:7435954525661974528/",
@@ -123,7 +111,7 @@
                 category: "Resource Announcement"
             },
             {
-                id: 11,
+                id: 10,
                 title: "🚀 Achievement Unlocked – 3rd Rank in BCA Semester 2 🎓",
                 description: "I am proud to share my second major academic achievement — securing 3rd Rank in BCA Semester 2 with a score of 449/550 (SGPA: 9.0) at DPG Degree College, affiliated to MDU Rohtak.",
                 link: "https://www.linkedin.com/feed/update/urn:li:activity:7429880639442800640/",
@@ -135,9 +123,9 @@
                 category: "Sharing Achievements"
             },
             {
-                id: 12,
+                id: 11,
                 title: "🚀 MIC Physical Education (25PED401MV01) Resource Alert🎓",
-                description: "🚀 Built a Complete SEO-Optimized Educational Web App for My Physical Education (MIC) Preparation! As a BCA student, I explored how coding can transform academic learning.",
+                description: "Built a Complete SEO-Optimized Educational Web App for My Physical Education (MIC) Preparation! As a BCA student, I explored how coding can transform academic learning.",
                 link: "https://www.linkedin.com/feed/update/urn:li:activity:7446251685972422659/",
                 date_of_publication: "2026-04-04",
                 author: "Akshat Prasad",
